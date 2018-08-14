@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/login_background"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight=".4"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size_130px"
+                android:layout_gravity="center"
+
+                android:orientation="vertical"
+                android:src="@drawable/logo">
+
+            </ImageView>
+
+            <TextView
+                android:id="@+id/tv_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dimValue_15"
+                android:layout_marginRight="@dimen/dimValue_15"
+                android:layout_marginTop="@dimen/dimValue_5"
+                android:gravity="center"
+                android:text="@string/tv_description"
+                android:textColor="@color/text_color_white"
+                android:textSize="@dimen/dimTextSize_12" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight=".6"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginLeft="@dimen/dimValue_15"
+                android:layout_marginRight="@dimen/dimValue_15"
+                android:layout_weight=".4"
+                android:orientation="vertical">
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/dimValue_1"
+                    android:layout_gravity="center"
+                    android:layout_weight=".1"
+                    android:background="@color/Body_bg" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="@dimen/dimValue_15"
+                    android:layout_weight=".4"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/lock_icon"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".2"
+                        android:background="@color/text_color_white"
+                        android:gravity="center"
+                        android:textColor="@color/Dark_red"
+                        android:textSize="@dimen/dimTextSize_20" />
+
+                    <EditText
+                        android:id="@+id/edt_otp"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".8"
+                        android:background="@color/white"
+                        android:clickable="true"
+                        android:enabled="true"
+                        android:gravity="left|center"
+                        android:hint="@string/hint_text"
+                        android:inputType="number"
+                        android:paddingLeft="@dimen/dimValue_10"
+                        android:textSize="@dimen/dimTextSize_14" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_proceed"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="@dimen/dimValue_10"
+                    android:layout_weight=".4"
+                    android:background="@color/Delete_btn"
+                    android:gravity="center"
+                    android:text="@string/proceed_text"
+                    android:textColor="@color/text_color_white"
+                    android:textSize="@dimen/dimTextSize_14" />
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/dimValue_1"
+                    android:layout_gravity="center"
+                    android:layout_weight=".1"
+                    android:background="@color/Body_bg" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight=".6"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight=".65"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_dontReciveOtp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="@string/dont_recive_otp_text"
+                        android:textColor="@color/Body_bg"
+                        android:textSize="@dimen/dimTextSize_14" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/resend_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="@dimen/dimValue_25"
+                    android:layout_weight=".35"
+                    android:background="@drawable/border_layout_red">
+
+                    <TextView
+                        android:id="@+id/tv_resend"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="@string/resend_otp_text"
+                        android:textColor="@color/icons"
+                        android:textSize="@dimen/dimTextSize_16" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

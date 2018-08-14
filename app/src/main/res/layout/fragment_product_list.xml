@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/inner_background"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dimValue_10"
+        android:layout_marginTop="@dimen/dimValue_10"
+        android:text=""
+        android:textColor="@color/primary_text"
+        android:textSize="@dimen/dimTextSize_16" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight=".9"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/CategoriesItems_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </android.support.v7.widget.RecyclerView>
+
+
+        </LinearLayout>
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="0dp"-->
+            <!--android:layout_weight=".1"-->
+            <!--android:gravity="bottom">-->
+
+            <!--<LinearLayout-->
+                <!--android:id="@+id/orderPlaceLayout"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_alignParentBottom="true"-->
+                <!--android:background="@color/Light_Green"-->
+                <!--android:paddingBottom="@dimen/dimValue_14"-->
+                <!--android:paddingTop="@dimen/dimValue_14">-->
+
+                <!--<TextView-->
+                    <!--android:id="@+id/tv_placeOrder"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:gravity="center"-->
+                    <!--android:text="PLACE ORDER"-->
+                    <!--android:textColor="@color/text_color_white"-->
+                    <!--android:textSize="@dimen/dimTextSize_20" />-->
+            <!--</LinearLayout>-->
+        <!--</LinearLayout>-->
+    </LinearLayout>
+</LinearLayout>

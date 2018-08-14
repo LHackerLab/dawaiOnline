@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/inner_background"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="@dimen/dimValue_5"
+        android:layout_weight=".89"
+        android:id="@+id/linearLayout"
+        android:orientation="vertical">
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/reycyle_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </android.support.v7.widget.RecyclerView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="@dimen/dimValue_10"
+        android:layout_weight=".11"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:id="@+id/add_new_address"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/dimValue_1"
+            android:layout_marginRight="@dimen/dimValue_1"
+            android:layout_marginTop="@dimen/dimValue_1"
+            android:background="@drawable/border_layout_red">
+
+            <TextView
+                android:id="@+id/address_icon"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".35"
+                android:gravity="center|right"
+                android:textColor="@color/Dark_red"
+                android:textSize="@dimen/dimTextSize_25" />
+
+            <TextView
+                android:id="@+id/tv_add_new_address"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".65"
+                android:gravity="left|center"
+                android:paddingLeft="@dimen/dimValue_5"
+                android:text="@string/Add_new_Address"
+                android:textColor="@color/Dark_red"
+                android:textSize="@dimen/dimTextSize_18">
+
+            </TextView>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/inner_background">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/linear"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <View
+                android:id="@+id/view"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight=".1" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_margin="@dimen/dimValue_10"
+                android:layout_weight=".7"
+                android:background="@drawable/border_layout"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/dimValue_13"
+                    android:background="@drawable/border_layout"
+                    android:orientation="vertical">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight=".2" />
+
+                    <TextView
+                        android:id="@+id/tv_thanku"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight=".2"
+                        android:gravity="center"
+                        android:text="@string/thank_you"
+                        android:textColor="@color/Yellow_light"
+                        android:textSize="@dimen/dimTextSize_40" />
+
+                    <TextView
+                        android:id="@+id/tv_success"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight=".1"
+                        android:fontFamily="sans-serif-condensed"
+                        android:gravity="center"
+                        android:text="@string/your_order_placed_successfully"
+                        android:textColor="@color/text_color_white"
+                        android:textSize="@dimen/dimTextSize_16" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_gravity="center"
+                        android:layout_weight=".2"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <View
+                            android:layout_width="@dimen/size_226px"
+                            android:layout_height="1dp"
+                            android:layout_gravity="center"
+                            android:background="@color/Yellow_light" />
+
+                        <View
+                            android:layout_width="@dimen/size_150px"
+                            android:layout_height="1dp"
+                            android:layout_gravity="center"
+                            android:layout_margin="@dimen/dimValue_3"
+                            android:background="@color/Yellow_light" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="@dimen/dimValue_6"
+                        android:layout_weight=".2"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tv_order"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight=".5"
+                            android:gravity="right|center"
+                            android:text="@string/Order_number"
+                            android:textColor="@color/Yellow_light"
+                            android:textSize="@dimen/dimTextSize_16" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight=".05"
+                            android:gravity="center"
+                            android:text="-"
+                            android:textColor="@color/Yellow_light"
+                            android:textSize="@dimen/dimTextSize_18" />
+
+                        <TextView
+                            android:id="@+id/tv_orderNumber"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight=".45"
+                            android:gravity="left|center"
+                            android:text=""
+                            android:textColor="@color/Yellow_light"
+                            android:textSize="@dimen/dimTextSize_16" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight=".1" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/view2"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight=".09" />
+
+            <LinearLayout
+                android:id="@+id/layout_trakOrder"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_margin="@dimen/dimValue_10"
+                android:layout_weight=".11"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_track"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/border_layout_red"
+                    android:gravity="center"
+                    android:text="@string/track_order"
+                    android:textColor="@color/red"
+                    android:textSize="@dimen/dimTextSize_20" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</android.support.design.widget.CoordinatorLayout>
