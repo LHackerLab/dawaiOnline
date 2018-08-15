@@ -18,6 +18,10 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import fusionsoftware.loop.dawaionline.R;
@@ -27,7 +31,9 @@ import fusionsoftware.loop.dawaionline.balltrianglecustomprogress.BallTriangleDi
 import fusionsoftware.loop.dawaionline.database.DbHelper;
 import fusionsoftware.loop.dawaionline.framework.IAsyncWorkCompletedCallback;
 import fusionsoftware.loop.dawaionline.framework.ServiceCaller;
+import fusionsoftware.loop.dawaionline.model.ContentDataAsArray;
 import fusionsoftware.loop.dawaionline.model.Data;
+import fusionsoftware.loop.dawaionline.model.Result;
 import fusionsoftware.loop.dawaionline.utilities.CompatibilityUtility;
 import fusionsoftware.loop.dawaionline.utilities.FontManager;
 import fusionsoftware.loop.dawaionline.utilities.Utility;
@@ -63,7 +69,7 @@ public class SelectCategoryFragment extends Fragment {
     }
 
     private SelectCatagoryAdapter adapter;
-    private List<Data> categoryList;
+    private List<Result> categoryList;
     RecyclerView recyclerView;
     StaggeredGridLayoutManager gaggeredGridLayoutManager;
     private Context context;
@@ -84,8 +90,6 @@ public class SelectCategoryFragment extends Fragment {
         DashboardActivity rootActivity = (DashboardActivity) getActivity();
         rootActivity.setScreencart(true);
         rootActivity.setScreenSave(false);
-        rootActivity.setScreenLocation(false);
-        rootActivity.setScreenFavourite(false);
         regular = FontManager.getFontTypeface(context, "fonts/roboto.regular.ttf");
         materialDesignIcons = FontManager.getFontTypefaceMaterialDesignIcons(context, "fonts/materialdesignicons-webfont.otf");
         init();
@@ -95,6 +99,7 @@ public class SelectCategoryFragment extends Fragment {
 
     //set data in reycle view
     private void init() {
+        categoryList = new ArrayList<>();
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         linearLayout = (LinearLayout) view.findViewById(R.id.linearLayout);
         TextView title = (TextView) view.findViewById(R.id.tv_title);
@@ -111,16 +116,6 @@ public class SelectCategoryFragment extends Fragment {
 //        }
         // recyclerView.setLayoutManager(gaggeredGridLayoutManager);
 
-    }
- private void  setCategoryData(){
-        DbHelper dbHelper = new DbHelper(context);
-        categoryList = dbHelper.GetAllCategoryData();
-        if (categoryList != null && categoryList.size() > 0) {
-            adapter = new SelectCatagoryAdapter(context, categoryList);
-            recyclerView.setAdapter(adapter);
-        } else {
-            noDataFound();
-        }
     }
 
     private void noDataFound() {
@@ -145,13 +140,20 @@ public class SelectCategoryFragment extends Fragment {
             final BallTriangleDialog dotDialog = new BallTriangleDialog(context);
             dotDialog.show();
             ServiceCaller serviceCaller = new ServiceCaller(context);
-            serviceCaller.callAllCategoryListService(storeId, menuId, new IAsyncWorkCompletedCallback() {
+            serviceCaller.callAllCategoryListService(new IAsyncWorkCompletedCallback() {
                 @Override
                 public void onDone(String workName, boolean isComplete) {
                     if (isComplete) {
-                        setCategoryData();
-                    }
-                    else{
+                        ContentDataAsArray contentDataAsArray = new Gson().fromJson(workName, ContentDataAsArray.class);
+                        for (Result result : contentDataAsArray.getResults())
+                            categoryList.addAll(Arrays.asList(result));
+                        if (categoryList != null && categoryList.size() > 0) {
+                            adapter = new SelectCatagoryAdapter(context, categoryList);
+                            recyclerView.setAdapter(adapter);
+                        } else {
+                            noDataFound();
+                        }
+                    } else {
                         noDataFound();
                     }
                     if (dotDialog.isShowing()) {
@@ -161,10 +163,13 @@ public class SelectCategoryFragment extends Fragment {
                 }
             });
         } else {
-         //   Utility.alertForErrorMessage(Contants.OFFLINE_MESSAGE, context);//off line msg....
+            //   Utility.alertForErrorMessage(Contants.OFFLINE_MESSAGE, context);//off line msg....
             LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View view = inflater.inflate(R.layout.no_data_found, null);
-            TextView nodata= (TextView) view.findViewById(R.id.nodata);
+            TextView nodata = (TextView) view.findViewById(R.id.nodata);
+            TextView nodataIcon = (TextView) view.findViewById(R.id.nodataIcon);
+            nodataIcon.setTypeface(materialDesignIcons);
+            nodataIcon.setText(Html.fromHtml("&#xf187;"));
             nodata.setText("No internet connection found");
             linearLayout.setGravity(Gravity.CENTER);
             linearLayout.removeAllViews();

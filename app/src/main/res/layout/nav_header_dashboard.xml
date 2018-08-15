@@ -16,7 +16,7 @@
         android:layout_width="@dimen/size_80px"
         android:layout_height="@dimen/size_80px"
         android:layout_marginTop="@dimen/dimValue_25">
-        <microsys.evergreen.utilities.CircleImageView
+        <fusionsoftware.loop.dawaionline.utilities.CircleImageView
             android:id="@+id/profileImage"
             android:layout_width="@dimen/size_80px"
             android:layout_height="@dimen/size_80px"

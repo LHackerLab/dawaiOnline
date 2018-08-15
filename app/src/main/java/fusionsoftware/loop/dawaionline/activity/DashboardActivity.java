@@ -10,7 +10,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -19,18 +18,15 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
@@ -42,17 +38,14 @@ import java.util.List;
 import fusionsoftware.loop.dawaionline.R;
 import fusionsoftware.loop.dawaionline.adapter.NavMenuCustomAdapter;
 import fusionsoftware.loop.dawaionline.database.DbHelper;
-import fusionsoftware.loop.dawaionline.fragments.LocationFragment;
 import fusionsoftware.loop.dawaionline.fragments.MyBasketFragment;
-import fusionsoftware.loop.dawaionline.fragments.SelectStoreFragment;
+import fusionsoftware.loop.dawaionline.fragments.SelectCategoryFragment;
 import fusionsoftware.loop.dawaionline.framework.IAsyncWorkCompletedCallback;
 import fusionsoftware.loop.dawaionline.framework.ServiceCaller;
 import fusionsoftware.loop.dawaionline.model.Data;
 import fusionsoftware.loop.dawaionline.model.MyBasket;
 import fusionsoftware.loop.dawaionline.utilities.CompatibilityUtility;
-import fusionsoftware.loop.dawaionline.utilities.Contants;
 import fusionsoftware.loop.dawaionline.utilities.FontManager;
-import fusionsoftware.loop.dawaionline.utilities.Utility;
 
 import static fusionsoftware.loop.dawaionline.utilities.Utility.isOnline;
 
@@ -61,7 +54,7 @@ public class DashboardActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
     ListView list_menuitem;
     private Boolean CheckOrientation = false;
-    public TextView title, cart, save, location, favourite, username, phoneNumber, cart_dot, logout, LogoutIcon, actionbar_notifcation_textview;
+    public TextView title, cart, save, username, phoneNumber, cart_dot, logout, LogoutIcon;
     private Typeface regular, materialdesignicons_font, medium;
     DrawerLayout drawer;
     ImageView image_logo, profileImage;
@@ -99,7 +92,6 @@ public class DashboardActivity extends AppCompatActivity
         getUserProfileService();//get user profile
         setItemCart();// add item in cart...........
         Listmenu();//list menu
-        GetAllCitiesService();
         setUserDetail();
     }
 
@@ -141,10 +133,6 @@ public class DashboardActivity extends AppCompatActivity
         save.setTypeface(regular);
         cart.setTypeface(materialdesignicons_font);
         cart.setText(Html.fromHtml("&#xf111;"));
-        location.setTypeface(materialdesignicons_font);
-        location.setText(Html.fromHtml("&#xf34e;"));
-        favourite.setTypeface(materialdesignicons_font);
-        favourite.setText(Html.fromHtml("&#xf2d1;"));
         logout.setTypeface(regular);
         LogoutIcon.setTypeface(materialdesignicons_font);
     }
@@ -155,8 +143,6 @@ public class DashboardActivity extends AppCompatActivity
         cart = (TextView) toolbar.findViewById(R.id.cart);
         save = (TextView) toolbar.findViewById(R.id.save);
         image_logo = (ImageView) toolbar.findViewById(R.id.image_logo);
-        location = (TextView) toolbar.findViewById(R.id.location);
-        favourite = (TextView) toolbar.findViewById(R.id.favourite);
         username = (TextView) findViewById(R.id.username);
         logout = (TextView) findViewById(R.id.logout);
         LogoutIcon = (TextView) findViewById(R.id.LogoutIcon);
@@ -166,7 +152,6 @@ public class DashboardActivity extends AppCompatActivity
         cart_dot = (TextView) findViewById(R.id.cart_dot);
 
         cart.setOnClickListener(this);
-        location.setOnClickListener(this);
     }
 
     //chech Portait And LandSacpe Orientation
@@ -182,18 +167,7 @@ public class DashboardActivity extends AppCompatActivity
 
     //open default fragment
     private void setUpDashboardFragment() {
-        SharedPreferences locationPrefs = getSharedPreferences("LocationPreferences", Context.MODE_PRIVATE);
-        int localityId = 0;
-        if (locationPrefs != null) {
-            localityId = locationPrefs.getInt("LocalityId", 0);
-        }
-        //open screen based location already selected or not
-        Fragment fragment;
-        if (localityId == 0) {
-            fragment = LocationFragment.newInstance("", false);
-        } else {
-            fragment = SelectStoreFragment.newInstance(localityId, "");
-        }
+        SelectCategoryFragment fragment = SelectCategoryFragment.newInstance(0, 0);
         moveFragment(fragment);
     }
 
@@ -211,8 +185,8 @@ public class DashboardActivity extends AppCompatActivity
         List<String> icondatalist = new ArrayList<>();
         icondatalist.add(String.valueOf(Html.fromHtml("&#xf2dc;")));
         // icondatalist.add(String.valueOf(Html.fromHtml("&#xf09c;")));
-        icondatalist.add(String.valueOf(Html.fromHtml("&#xF34e;")));
-        icondatalist.add(String.valueOf(Html.fromHtml("&#xf2d1;")));
+//        icondatalist.add(String.valueOf(Html.fromHtml("&#xF34e;")));
+//        icondatalist.add(String.valueOf(Html.fromHtml("&#xf2d1;")));
         icondatalist.add(String.valueOf(Html.fromHtml("&#xf5f8;")));
         icondatalist.add(String.valueOf(Html.fromHtml("&#xf53e;")));
         icondatalist.add(String.valueOf(Html.fromHtml("&#xf2da;")));
@@ -221,8 +195,8 @@ public class DashboardActivity extends AppCompatActivity
         List<String> stringList = new ArrayList<>();
         stringList.add("Home");
         // stringList.add("Notifications");
-        stringList.add("Change Location");
-        stringList.add("My Favourite Stores");
+//        stringList.add("Change Location");
+//        stringList.add("My Favourite Stores");
         stringList.add("My Addresses");
         stringList.add("Track My Order");
         stringList.add("My Order History");
@@ -267,25 +241,6 @@ public class DashboardActivity extends AppCompatActivity
 
     }
 
-    //set location ....
-    public void setScreenLocation(boolean screenLocation) {
-        if (screenLocation) {
-            this.location.setVisibility(View.VISIBLE);
-        } else {
-            this.location.setVisibility(View.GONE);
-        }
-
-
-    }
-
-    //set location ....
-    public void setScreenFavourite(boolean screenFavourite) {
-        if (screenFavourite) {
-            this.favourite.setVisibility(View.VISIBLE);
-        } else {
-            this.favourite.setVisibility(View.GONE);
-        }
-    }
 
     //set cart dot....
     public void setScreenCartDot(boolean screenCartDot) {
@@ -375,9 +330,6 @@ public class DashboardActivity extends AppCompatActivity
             case R.id.cart:
                 getSupportFragmentManager().beginTransaction().replace(R.id.container, new MyBasketFragment()).addToBackStack(null).commit();
                 break;
-            case R.id.location:
-                getSupportFragmentManager().beginTransaction().replace(R.id.container, new LocationFragment()).addToBackStack(null).commit();
-                break;
             case R.id.logoutLayout:
                 logout();
                 break;
@@ -394,19 +346,6 @@ public class DashboardActivity extends AppCompatActivity
         }
     }
 
-    //    GetAllCities api
-    private void GetAllCitiesService() {
-
-        if (isOnline(DashboardActivity.this)) {
-            ServiceCaller serviceCaller = new ServiceCaller(DashboardActivity.this);
-            serviceCaller.callGetCitiesDataService(Contants.LIST_PAGE_SIZE, 1, new IAsyncWorkCompletedCallback() {
-                @Override
-                public void onDone(String workName, boolean isComplete) {
-
-                }
-            });
-        }
-    }
 
     // delete user details from database............
     private void deleteUserData() {
@@ -419,21 +358,12 @@ public class DashboardActivity extends AppCompatActivity
                 .setMessage("Would you like to Logout?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-//                        LoginManager.getInstance().logOut();//for facebook logout
                         // logout
-                        int localityId = 0;
-                        SharedPreferences locationPrefs = getSharedPreferences("LocationPreferences", Context.MODE_PRIVATE);
-                        // localityId = locationPrefs.getInt("LocalityId", 0);
-                        SharedPreferences.Editor editor = locationPrefs.edit();
-                        editor.clear();
-                        editor.apply();
                         dbHelper.deleteUserData(loginId);
                         dbHelper.deleteAllAddressData();
-                        dbHelper.deleteFavouriteStoreData();
                         dbHelper.deleteAllBasketOrderData();
                         dbHelper.deleteMyAllOrderHistoryData();
                         dbHelper.deleteTrackOrderData();
-                        dbHelper.deleteSelectedStoreData();
                         Intent intent = new Intent(DashboardActivity.this, LoginActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);

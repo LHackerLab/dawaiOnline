@@ -163,8 +163,6 @@ public class OrderConfirmFragment extends Fragment implements View.OnClickListen
         DashboardActivity rootActivity = (DashboardActivity) getActivity();
         rootActivity.setScreencart(false);
         rootActivity.setScreenSave(false);
-        rootActivity.setScreenFavourite(false);
-        rootActivity.setScreenLocation(false);
         rootActivity.setScreenCartDot(false);
         font_cash = (TextView) view.findViewById(R.id.font_cash);
         payonline = (TextView) view.findViewById(R.id.arrow_icon);
@@ -344,7 +342,6 @@ public class OrderConfirmFragment extends Fragment implements View.OnClickListen
     //remove data from cart.................
     private void clearBasketData() {
         final DbHelper dbHelper = new DbHelper(context);
-        dbHelper.deleteSelectedStoreById(storeId);//delete after order create for remove basket data
         dbHelper.deleteBasketOrderDataByStoreId(storeId);
     }
 

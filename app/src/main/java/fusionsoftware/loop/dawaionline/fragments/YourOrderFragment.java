@@ -162,8 +162,6 @@ public class YourOrderFragment extends Fragment implements View.OnClickListener 
         DashboardActivity rootActivity = (DashboardActivity) getActivity();
         rootActivity.setScreencart(false);
         rootActivity.setScreenSave(false);
-        rootActivity.setScreenFavourite(false);
-        rootActivity.setScreenLocation(false);
         rootActivity.setScreenCartDot(false);
         edt_promoCode = (EditText) view.findViewById(R.id.edt_promoCode);
         // tv_off = (TextView) view.findViewById(R.id.tv_off);
@@ -300,73 +298,18 @@ public class YourOrderFragment extends Fragment implements View.OnClickListener 
                 applyPromoCode();
                 break;
             case R.id.tv_continueLayout:
-                //compareDates();
                 createNewOrder();
                 break;
-//            case R.id.tv_edit_icon:
-//                UserAddressListFragment fragment = UserAddressListFragment.newInstance(true, 0);
-//                moveFragment(fragment);
-//                break;
             case R.id.tv_cancel:
                 edt_promoCode.setText("");
                 tv_apply.setVisibility(View.VISIBLE);
                 tv_cancel.setVisibility(View.GONE);
                 break;
             case R.id.layout_done:
-                //checkEditOrNot();
                 break;
         }
     }
 
-    private void compareDates() {
-        Calendar now = Calendar.getInstance();
-        DbHelper dbHelper = new DbHelper(context);
-        Data storedata = dbHelper.getStoreData(storeId);
-        if (storedata != null) {
-            try {
-                String[] startArray, endArray;
-                String openTime = null, closeTime = null;
-                Date startDateTime = null, endDateTime = null;
-                startDateTime = Utility.toCalendar(storedata.getOpeningTime());
-                endDateTime = Utility.toCalendar(storedata.getClosingTime());
-                String dateStartStr = Utility.convertDate(startDateTime);
-                String dateEndStr = Utility.convertDate(endDateTime);
-                if (dateStartStr != null) {
-                    startArray = dateStartStr.split(",");
-                    openTime = startArray[3] + ":" + startArray[4] + " " + startArray[5];
-                }
-                if (dateEndStr != null) {
-                    endArray = dateEndStr.split(",");
-                    closeTime = endArray[3] + ":" + endArray[4] + " " + endArray[5];
-                }
-                int hour = now.get(Calendar.HOUR);
-                int minute = now.get(Calendar.MINUTE);
-                String ampm = DateUtils.getAMPMString(now.get(Calendar.AM_PM));
-
-                Date currentTime = parseDate(hour + ":" + minute + " " + ampm);
-                Date startTime = parseDate(openTime);
-                Date endTime = parseDate(closeTime);
-                if (currentTime.before(endTime) && currentTime.after(startTime)) {
-                    createNewOrder();
-                } else {
-                    Utility.alertForErrorMessage("This Store is Closed at the moment", context);
-                }
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    SimpleDateFormat inputParser = new SimpleDateFormat("hh:mm a");
-
-    private Date parseDate(String date) {
-
-        try {
-            return inputParser.parse(date);
-        } catch (ParseException e) {
-            return new Date(0);
-        }
-    }
 
     //create new Order
 

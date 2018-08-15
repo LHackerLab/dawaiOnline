@@ -3,7 +3,6 @@ package fusionsoftware.loop.dawaionline.framework;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -12,11 +11,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import fusionsoftware.loop.dawaionline.database.DbHelper;
 import fusionsoftware.loop.dawaionline.model.Addresses;
-import fusionsoftware.loop.dawaionline.model.CacheServiceCallData;
 import fusionsoftware.loop.dawaionline.model.ContentData;
 import fusionsoftware.loop.dawaionline.model.ContentDataAsArray;
 import fusionsoftware.loop.dawaionline.model.CreateOrderDetails;
@@ -360,155 +357,6 @@ public class ServiceCaller {
     }
 
 
-    //call select city data
-    public void callGetCitiesDataService(final int pageSize, final int pageIndex, final IAsyncWorkCompletedCallback workCompletedCallback) {
-
-        final String url = Contants.SERVICE_BASE_URL + Contants.SELECT_CITY_URL;
-        DbHelper dbHelper = new DbHelper(context);
-        CacheServiceCallData cacheServiceCallData = dbHelper.getCacheServiceCallByUrl(url);
-
-        JSONObject obj = new JSONObject();
-        try {
-            obj.put("PageSize", pageSize);
-            obj.put("PageNumber", pageIndex);
-            if (cacheServiceCallData != null && cacheServiceCallData.getServerRequestDateTime() != null) {
-                obj.put("ServerRequestDateTime", cacheServiceCallData.getServerRequestDateTime());
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        Log.d(Contants.LOG_TAG, "Payload*****" + obj);
-        new ServiceHelper().callService(url, obj, new IServiceSuccessCallback() {
-            @Override
-            public void onDone(String callerUrl, final String result, String error) {
-
-                final ContentDataAsArray data = new Gson().fromJson(result, ContentDataAsArray.class);
-                if (data != null) {
-                    Log.d(Contants.LOG_TAG, "data downloaded for City list is :" + data.getData().length);
-                    if (data.getData().length > 0) {
-                        parseAndSaveGetCitiesData(data);
-                        final int currentpageIndex = pageIndex + 1;
-                        callGetCitiesDataService(pageSize, currentpageIndex, new IAsyncWorkCompletedCallback() {
-                            @Override
-                            public void onDone(String workName, boolean isComplete) {
-                                Log.d(Contants.LOG_TAG, "service caller complete called");
-                                if (isComplete) {
-                                    Log.d(Contants.LOG_TAG, "City List call all done: records downloaded: " + currentpageIndex * pageSize);
-                                }
-                                if (workName.equalsIgnoreCase("listService recursion done")) {
-                                    Log.d(Contants.LOG_TAG, "recurse service caller workitemcallback called.");
-                                    workCompletedCallback.onDone("listService recursion done", true);
-                                }
-                            }
-                        });
-
-                    } else {
-                        updateLastRequestDateTime(url, data);
-                        Log.d(Contants.LOG_TAG, "service caller workitemcallback called.");
-                        workCompletedCallback.onDone("listService recursion done", true);
-                    }
-                } else {
-                    workCompletedCallback.onDone("listService recursion done", false);
-                }
-            }
-
-        });
-    }
-
-    //parse and save city data.............
-    public void parseAndSaveGetCitiesData(final ContentDataAsArray data) {
-        new AsyncTask<Void, Void, Boolean>() {
-
-            @Override
-            protected Boolean doInBackground(Void... voids) {
-                DbHelper dbhelper = new DbHelper(context);
-                if (data.getData() != null && data.getData().length != 0) {
-                    for (Data cityData : data.getData()) {
-                        dbhelper.upsertCityData(cityData);
-                    }
-                }
-                return true;
-            }
-        }.execute();
-
-    }
-
-    //update last request date time based on url
-    private void updateLastRequestDateTime(String url, ContentDataAsArray data) {
-        DbHelper dbhelper = new DbHelper(context);
-        CacheServiceCallData cacheServiceCallData = new CacheServiceCallData();
-        cacheServiceCallData.setUrl(url);
-        if (data.getResponse() != null) {
-            cacheServiceCallData.setServerRequestDateTime(data.getResponse().getServerResponseTime());
-        }
-        dbhelper.upsertCacheServiceCallData(cacheServiceCallData);
-    }
-
-    //////////////call select localities data
-    public void getAllLocalitiesService(final int pageSize, final int pageIndex, final IAsyncWorkCompletedCallback workCompletedCallback) {
-
-        final String url = Contants.SERVICE_BASE_URL + Contants.GET_ALL_LOCALITIES_URL;
-        DbHelper dbHelper = new DbHelper(context);
-        CacheServiceCallData cacheServiceCallData = dbHelper.getCacheServiceCallByUrl(url);
-        JSONObject obj = new JSONObject();
-        try {
-            obj.put("PageSize", pageSize);
-            obj.put("PageNumber", pageIndex);
-            if (cacheServiceCallData != null && cacheServiceCallData.getServerRequestDateTime() != null) {
-                obj.put("ServerRequestDateTime", cacheServiceCallData.getServerRequestDateTime());
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        Log.d(Contants.LOG_TAG, "Payload*****" + obj);
-        new ServiceHelper().callService(url, obj, new IServiceSuccessCallback() {
-            @Override
-            public void onDone(String callerUrl, final String result, String error) {
-
-                final ContentDataAsArray data = new Gson().fromJson(result, ContentDataAsArray.class);
-                if (data != null) {
-                    Log.d(Contants.LOG_TAG, "data downloaded for localities list is :" + data.getData().length);
-                    if (data.getData().length > 0) {
-                        parseAndSaveGetAllLocalitiesData(data);
-                        final int currentpageIndex = pageIndex + 1;
-                        getAllLocalitiesService(pageSize, currentpageIndex, new IAsyncWorkCompletedCallback() {
-                            @Override
-                            public void onDone(String workName, boolean isComplete) {
-                                Log.d(Contants.LOG_TAG, "service caller complete called");
-                                if (isComplete) {
-                                    Log.d(Contants.LOG_TAG, "localities List call all done: records downloaded: " + currentpageIndex * pageSize);
-                                }
-                                if (workName.equalsIgnoreCase("listService recursion done")) {
-                                    Log.d(Contants.LOG_TAG, "recurse service caller workitemcallback called.");
-                                    workCompletedCallback.onDone("listService recursion done", true);
-                                }
-                            }
-                        });
-
-                    } else {
-                        updateLastRequestDateTime(url, data);
-                        Log.d(Contants.LOG_TAG, "service caller workitemcallback called.");
-                        workCompletedCallback.onDone("listService recursion done", true);
-                    }
-                } else {
-                    workCompletedCallback.onDone("listService recursion done", false);
-                }
-            }
-
-        });
-    }
-
-    //parse and save getAll Localities data
-    public void parseAndSaveGetAllLocalitiesData(final ContentDataAsArray data) {
-        DbHelper dbhelper = new DbHelper(context);
-        if (data.getData() != null && data.getData().length != 0) {
-            for (Data localtiesData : data.getData()) {
-                dbhelper.upsertGetAllLocalitiesData(localtiesData);
-            }
-        }
-
-    }
-
     //call Delete address data
     public void callDeleteAddressDataService(int addressId, int loginId, final IAsyncWorkCompletedCallback workCompletedCallback) {
 
@@ -540,148 +388,26 @@ public class ServiceCaller {
         });
     }
 
-    //get all store list data...........
-    public void callGetAllStoreListService(int localityId, int loginId, final IAsyncWorkCompletedCallback workCompletedCallback) {
-
-        final String url = Contants.SERVICE_BASE_URL + Contants.GetAllStoreByLocality;
-        JSONObject obj = new JSONObject();
-        try {
-            obj.put("LocalityId", localityId);
-            obj.put("LoginID", loginId);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        Log.d(Contants.LOG_TAG, "Payload*****" + obj);
-        new ServiceHelper().callService(url, obj, new IServiceSuccessCallback() {
-            @Override
-            public void onDone(String doneWhatCode, String result, String error) {
-                if (result != null) {
-                    parseAndSavesStoreListData(result, workCompletedCallback);
-                } else {
-                    workCompletedCallback.onDone("callGetAllStoreListService done", false);
-                }
-            }
-        });
-    }
-
-    //parse and save get all store list data
-    public void parseAndSavesStoreListData(final String result, final IAsyncWorkCompletedCallback workCompletedCallback) {
-        new AsyncTask<Void, Void, Boolean>() {
-
-
-            @Override
-            protected Boolean doInBackground(Void... voids) {
-                Boolean flag = false;
-                ContentDataAsArray data = new Gson().fromJson(result, ContentDataAsArray.class);
-                DbHelper dbHelper = new DbHelper(context);
-                if (data != null) {
-                    if (data.getResponse() != null && data.getResponse().getSuccess()) {
-                        dbHelper.deleteAllStoreData();
-                        for (Data storeData : data.getData()) {
-                            if (storeData != null) {
-                                dbHelper.upsertAllStore(storeData);
-                            }
-                        }
-                        flag = true;
-                    }
-                }
-                return flag;
-            }
-
-
-            @Override
-            protected void onPostExecute(Boolean flag) {
-                super.onPostExecute(flag);
-                if (flag) {
-                    workCompletedCallback.onDone("callGetAllStoreListService done", true);
-                } else {
-                    workCompletedCallback.onDone("callGetAllStoreListService done", false);
-                }
-            }
-        }.execute();
-    }
-
-
-    //call all menulist by store id
-    public void callGetAllMenuListService(int storeId, final IAsyncWorkCompletedCallback workCompletedCallback) {
-
-        final String url = Contants.SERVICE_BASE_URL + Contants.GetAllMenuListByStoreId;
-        JSONObject obj = new JSONObject();
-        try {
-            obj.put("StoreId", storeId);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        Log.d(Contants.LOG_TAG, "Payload*****" + obj);
-        new ServiceHelper().callService(url, obj, new IServiceSuccessCallback() {
-            @Override
-            public void onDone(String doneWhatCode, String result, String error) {
-                if (result != null) {
-                    parseAndSaveAllMenuListData(result, workCompletedCallback);
-                } else {
-                    workCompletedCallback.onDone("callGetAllMenuListService done", false);
-                }
-            }
-        });
-    }
-
-    //parse and save All CategoryList data
-    public void parseAndSaveAllMenuListData(final String result, final IAsyncWorkCompletedCallback workCompletedCallback) {
-        new AsyncTask<Void, Void, Boolean>() {
-
-
-            @Override
-            protected Boolean doInBackground(Void... voids) {
-                Boolean flag = false;
-                ContentDataAsArray data = new Gson().fromJson(result, ContentDataAsArray.class);
-                if (data != null) {
-                    if (data.getData() != null) {
-                        DbHelper dbHelper = new DbHelper(context);
-                        dbHelper.deleteAllMenuData();
-                        for (Data menuData : data.getData()) {
-                            if (menuData != null) {
-                                dbHelper.upsertMenuData(menuData);
-                            }
-                        }
-                        flag = true;
-                    }
-                }
-                return flag;
-            }
-
-            @Override
-            protected void onPostExecute(Boolean flag) {
-                super.onPostExecute(flag);
-                if (flag) {
-                    workCompletedCallback.onDone("callAllCategoryListService done", true);
-                } else {
-                    workCompletedCallback.onDone("callAllCategoryListService done", false);
-                }
-            }
-        }.execute();
-    }
-
 
     //call All CategoryList data
-    public void callAllCategoryListService(int storeId, int menuId, final IAsyncWorkCompletedCallback workCompletedCallback) {
+    public void callAllCategoryListService(final IAsyncWorkCompletedCallback workCompletedCallback) {
 
         final String url = Contants.SERVICE_BASE_URL + Contants.GetAllCategoryByMenuId;
         JSONObject obj = new JSONObject();
-        try {
-            obj.put("MenuId", menuId);
-            obj.put("StoreId", storeId);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            obj.put("MenuId", menuId);
+//            obj.put("StoreId", storeId);
+//
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
         Log.d(Contants.LOG_TAG, "Payload*****" + obj);
         new ServiceHelper().callService(url, obj, new IServiceSuccessCallback() {
             @Override
             public void onDone(String doneWhatCode, String result, String error) {
                 if (result != null) {
-                    parseAndSaveAllCategoryListData(result, workCompletedCallback);
+                    workCompletedCallback.onDone(result, true);
+//                    parseAndSaveAllCategoryListData(result, workCompletedCallback);
                 } else {
                     workCompletedCallback.onDone("callAllCategoryListService done", false);
                 }
@@ -690,48 +416,48 @@ public class ServiceCaller {
     }
 
     //parse and save All CategoryList data
-    public void parseAndSaveAllCategoryListData(final String result, final IAsyncWorkCompletedCallback workCompletedCallback) {
-        new AsyncTask<Void, Void, Boolean>() {
-
-
-            @Override
-            protected Boolean doInBackground(Void... voids) {
-                Boolean flag = false;
-                ContentDataAsArray data = new Gson().fromJson(result, ContentDataAsArray.class);
-                if (data != null) {
-                    if (data.getResponse() != null && data.getResponse().getSuccess()) {
-                        DbHelper dbHelper = new DbHelper(context);
-                        dbHelper.deleteAllCategoryData();
-                        for (Data categoryData : data.getData()) {
-                            if (categoryData != null) {
-                                dbHelper.upsertAllCategory(categoryData);
-                            }
-                        }
-                        flag = true;
-                    }
-                }
-                return flag;
-            }
-
-            @Override
-            protected void onPostExecute(Boolean flag) {
-                super.onPostExecute(flag);
-                if (flag) {
-                    workCompletedCallback.onDone("callAllCategoryListService done", true);
-                } else {
-                    workCompletedCallback.onDone("callAllCategoryListService done", false);
-                }
-            }
-        }.execute();
-    }
+//    public void parseAndSaveAllCategoryListData(final String result, final IAsyncWorkCompletedCallback workCompletedCallback) {
+//        new AsyncTask<Void, Void, Boolean>() {
+//
+//
+//            @Override
+//            protected Boolean doInBackground(Void... voids) {
+//                Boolean flag = false;
+//                ContentDataAsArray data = new Gson().fromJson(result, ContentDataAsArray.class);
+//                if (data != null) {
+//                    if (data.getResponse() != null && data.getResponse().getSuccess()) {
+//                        DbHelper dbHelper = new DbHelper(context);
+//                        dbHelper.deleteAllCategoryData();
+//                        for (Data categoryData : data.getData()) {
+//                            if (categoryData != null) {
+//                                dbHelper.upsertAllCategory(categoryData);
+//                            }
+//                        }
+//                        flag = true;
+//                    }
+//                }
+//                return flag;
+//            }
+//
+//            @Override
+//            protected void onPostExecute(Boolean flag) {
+//                super.onPostExecute(flag);
+//                if (flag) {
+//                    workCompletedCallback.onDone("callAllCategoryListService done", true);
+//                } else {
+//                    workCompletedCallback.onDone("callAllCategoryListService done", false);
+//                }
+//            }
+//        }.execute();
+//    }
 
     //call All CategoryList data
-    public void callAllProductListService(int storeId, int categoryId, final IAsyncWorkCompletedCallback workCompletedCallback) {
+    public void callAllProductListService( int categoryId, final IAsyncWorkCompletedCallback workCompletedCallback) {
 
         final String url = Contants.SERVICE_BASE_URL + Contants.GetAllProductByCategory;
         JSONObject obj = new JSONObject();
         try {
-            obj.put("StoreId", storeId);
+//            obj.put("StoreId", storeId);
             obj.put("CategoryId", categoryId);
 
         } catch (JSONException e) {
@@ -810,119 +536,6 @@ public class ServiceCaller {
         });
     }
 
-    //...........Get FavouriteStoreByUser  data....................
-
-    public void callGetFavouriteStoreByUserService(int LoginID, final IAsyncWorkCompletedCallback workCompletedCallback) {
-
-        final String url = Contants.SERVICE_BASE_URL + Contants.GetFavouriteStoreByUser;
-        JSONObject obj = new JSONObject();
-        try {
-            obj.put("LoginID", LoginID);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        Log.d(Contants.LOG_TAG, "Payload*****" + obj);
-        new ServiceHelper().callService(url, obj, new IServiceSuccessCallback() {
-            @Override
-            public void onDone(String doneWhatCode, String result, String error) {
-                if (result != null) {
-                    parseAndSaveFavouriteStoreByUserData(result, workCompletedCallback);
-                } else {
-                    workCompletedCallback.onDone("callGetFavouriteStoreByUserService done", false);
-                }
-            }
-        });
-    }
-
-    //parse and save Favourite Store By User data
-    public void parseAndSaveFavouriteStoreByUserData(final String result, final IAsyncWorkCompletedCallback workCompletedCallback) {
-        new AsyncTask<Void, Void, Boolean>() {
-
-            @Override
-            protected Boolean doInBackground(Void... voids) {
-                Boolean flag = false;
-                ContentData data = new Gson().fromJson(result, ContentData.class);
-                if (data != null) {
-                    if (data.getResponse() != null && data.getResponse().getSuccess()) {
-                        DbHelper dbHelper = new DbHelper(context);
-                        if (data.getData() != null) {
-                            dbHelper.deleteFavouriteStoreData();
-                            dbHelper.upsertFavouriteStoreData(data.getData());
-                            flag = true;
-                        }
-                    }
-                }
-                return flag;
-            }
-
-            @Override
-            protected void onPostExecute(Boolean flag) {
-                super.onPostExecute(flag);
-                if (flag) {
-                    workCompletedCallback.onDone("callGetFavouriteStoreByUserService done", true);
-                } else {
-                    workCompletedCallback.onDone("callGetFavouriteStoreByUserService done", false);
-                }
-            }
-        }.execute();
-    }
-    //.................................Add update favourite store ..............................
-
-
-    public void callAddUpdateFavouriteStoreByUserService(int LoginID, int StoreId, final IAsyncWorkCompletedCallback workCompletedCallback) {
-
-        final String url = Contants.SERVICE_BASE_URL + Contants.AddUpdateFavourite;
-        JSONObject obj = new JSONObject();
-        try {
-            obj.put("LoginID", LoginID);
-            obj.put("FavouriteStoreId", StoreId);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        Log.d(Contants.LOG_TAG, "Payload*****" + obj);
-        new ServiceHelper().callService(url, obj, new IServiceSuccessCallback() {
-            @Override
-            public void onDone(String doneWhatCode, String result, String error) {
-                if (result != null) {
-                    parseAndSaveAddUpdateFavouriteStoreByUserData(result, workCompletedCallback);
-                } else {
-                    workCompletedCallback.onDone("callAddUpdateFavouriteStoreByUserService done", false);
-                }
-            }
-        });
-    }
-
-    //parse and save Favourite Store By User data
-    public void parseAndSaveAddUpdateFavouriteStoreByUserData(final String result, final IAsyncWorkCompletedCallback workCompletedCallback) {
-        new AsyncTask<Void, Void, Boolean>() {
-
-            @Override
-            protected Boolean doInBackground(Void... voids) {
-                Boolean flag = false;
-                ContentData data = new Gson().fromJson(result, ContentData.class);
-                if (data != null) {
-                    if (data.getResponse() != null && data.getResponse().getSuccess()) {
-                        DbHelper dbHelper = new DbHelper(context);
-                        if (data.getData() != null) {
-                            dbHelper.upsertFavouriteStoreData(data.getData());
-                        }
-                    }
-                    flag = true;
-                }
-                return flag;
-            }
-
-            @Override
-            protected void onPostExecute(Boolean flag) {
-                super.onPostExecute(flag);
-                if (flag) {
-                    workCompletedCallback.onDone("callAddUpdateFavouriteStoreByUserService done", true);
-                } else {
-                    workCompletedCallback.onDone("callAddUpdateFavouriteStoreByUserService done", false);
-                }
-            }
-        }.execute();
-    }
     //............................. my all order history.................................
 
     //get My All Order  history data................
@@ -1094,7 +707,7 @@ public class ServiceCaller {
             @Override
             public void onDone(String doneWhatCode, String result, String error) {
                 if (result != null) {
-                     workCompletedCallback.onDone(result, true);
+                    workCompletedCallback.onDone(result, true);
 //                    Log.d(Contants.LOG_TAG, "dataahjhhh*****" + result);
 //                    parseAndSaveGetOrderByOrderNumber(result, workCompletedCallback);
                 } else {

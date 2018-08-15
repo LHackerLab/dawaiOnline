@@ -46,7 +46,6 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     private List<Data> productData;
     private Context context;
     //HashSet<Integer> selectedPosition = new HashSet<>();
-    private int storeId;
     private int categoryId;
     private Typeface materialDesignIcons, medium, italic, regular;
     private ProductItemActionListener actionListener;
@@ -55,10 +54,9 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         this.actionListener = actionListener;
     }
 
-    public ProductListAdapter(Context context, List<Data> productData, int storeId, int categoryId) {
+    public ProductListAdapter(Context context, List<Data> productData, int categoryId) {
         this.context = context;
         this.productData = productData;
-        this.storeId = storeId;
         this.categoryId = categoryId;
         this.medium = FontManager.getFontTypeface(context, "fonts/roboto.medium.ttf");
         this.regular = FontManager.getFontTypeface(context, "fonts/roboto.regular.ttf");
@@ -186,7 +184,6 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         myBasket.setProductId(productData.get(position).getProductId());
         String productName = productData.get(position).getProductName();
         myBasket.setProductName(productName);
-        myBasket.setStoreId(storeId);
         myBasket.setCategoryId(categoryId);
         if (productData.get(position).getUOM() != null && productData.get(position).getUOM().equalsIgnoreCase("kg")) {
             myBasket.setQuantity(productData.get(position).getCountValue());
@@ -199,55 +196,13 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         if (getCurrentDateTime() != null) {
             myBasket.setOrderTime(getCurrentDateTime());
         }
-        Data storeData = dbHelper.getStoreData(storeId);//get store details
-        if (storeData != null) {
-            storeData.setCategoryId(categoryId);
-            dbHelper.upsertSelectedStoreData(storeData);
-            dbHelper.upsertBasketOrderData(myBasket);
-        }
+//        Data storeData = dbHelper.getStoreData(storeId);//get store details
+//        if (storeData != null) {
+//            storeData.setCategoryId(categoryId);
+//            dbHelper.upsertSelectedStoreData(storeData);
+        dbHelper.upsertBasketOrderData(myBasket);
+//        }
         notifyDataSetChanged();
-    }
-
-    //add product in database
-    private void addProduct(float quantity, int position, Boolean orderAddOrDelete) {
-        DbHelper dbHelper = new DbHelper(context);
-        MyBasket myBasket = new MyBasket();
-        myBasket.setProductId(productData.get(position).getProductId());
-        String productName = productData.get(position).getProductName();
-        myBasket.setProductName(productName);
-        myBasket.setStoreId(storeId);
-        myBasket.setCategoryId(categoryId);
-        //myBasket.setQuantity(productQuantity);
-        myBasket.setPrice(productData.get(position).getUnitPrice());
-        myBasket.setDiscount(productData.get(position).getDiscount());
-        myBasket.setUOM(productData.get(position).getUOM());
-        if (getCurrentDateTime() != null) {
-            myBasket.setOrderTime(getCurrentDateTime());
-        }
-        Data storeData = dbHelper.getStoreData(storeId);//get store details
-        if (storeData != null) {
-            storeData.setCategoryId(categoryId);
-            storeData.setStoreId(storeId);
-            dbHelper.upsertSelectedStoreData(storeData);
-            dbHelper.upsertBasketOrderData(myBasket);
-        }
-        notifyDataSetChanged();
-
-    }
-
-
-    //calculate product price with the help of Quantity
-    private String getProductPrice(int position) {
-        productData.get(position).getUnitPrice();
-        return "";
-    }
-
-    //save basket id till order not place and basket not clear
-    public void saveBasketIdpreference(int id) {
-        SharedPreferences preferenceForId = context.getSharedPreferences("SaveBasketId", context.MODE_PRIVATE);
-        SharedPreferences.Editor edit = preferenceForId.edit();
-        edit.putInt("BasketId", id);
-        edit.commit();
     }
 
     //get current date time

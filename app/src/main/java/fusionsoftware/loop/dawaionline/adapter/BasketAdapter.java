@@ -38,8 +38,9 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.ViewHolder
     private List<Data> basketdata;
     private Context context;
     private Typeface materialDesignIcons, medium, regular, bold;
-     DbHelper dbHelper;
+    DbHelper dbHelper;
     Data data;
+
     public BasketAdapter(Context context, List<Data> basketdata) {
         this.context = context;
         this.basketdata = basketdata;
@@ -59,14 +60,13 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.ViewHolder
     @Override
     public void onBindViewHolder(final ViewHolder viewHolder, final int i) {
         dbHelper = new DbHelper(context);
-       data=dbHelper.getStoreData(basketdata.get(i).getStoreId());
         viewHolder.storeName.setText(basketdata.get(i).getStoreName());
         viewHolder.checkOutIcon.setText(Html.fromHtml("&#xf054;"));
         List<MyBasket> orderList = dbHelper.GetAllBasketOrderDataBasedOnStoreId(basketdata.get(i).getStoreId());
         if (orderList != null && orderList.size() > 0) {
             LinearLayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
             viewHolder.recycleView_inner.setLayoutManager(layoutManager);
-            BasketInnerAdapter adapter = new BasketInnerAdapter(context, orderList, basketdata, i, basketdata.get(i).getStoreId(),basketdata.get(i).getCategoryId());
+            BasketInnerAdapter adapter = new BasketInnerAdapter(context, orderList, basketdata, i, basketdata.get(i).getStoreId(), basketdata.get(i).getCategoryId());
             viewHolder.recycleView_inner.setAdapter(adapter);
         }
 
@@ -74,16 +74,17 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.ViewHolder
         viewHolder.checkoutLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(data.getStoreStatus().equalsIgnoreCase("true")) {
+                if (data.getStoreStatus().equalsIgnoreCase("true")) {
                     Utility.setStoreIDFromSharedPreferences(context, basketdata.get(i).getStoreId());
                     UserAddressListFragment fragment = UserAddressListFragment.newInstance(true, basketdata.get(i).getStoreId());
                     moveFragment(fragment);
-                }else{
+                } else {
                     Utility.alertForErrorMessage("Sorry store is closed.", context);
                 }
             }
         });
     }
+
     private void moveFragment(Fragment fragment) {
         FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
         fragmentManager.beginTransaction()
@@ -106,7 +107,7 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.ViewHolder
         public ViewHolder(View view) {
             super(view);
             recycleView_inner = (RecyclerView) view.findViewById(R.id.recycleView_inner);
-         //   edit = (TextView) view.findViewById(R.id.edit);
+            //   edit = (TextView) view.findViewById(R.id.edit);
             storeName = (TextView) view.findViewById(R.id.storeName);
             checkOut = (TextView) view.findViewById(R.id.checkOut);
             checkOutIcon = (TextView) view.findViewById(R.id.checkOutIcon);

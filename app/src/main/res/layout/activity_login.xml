@@ -94,6 +94,7 @@
                 android:layout_marginLeft="@dimen/dimValue_15"
                 android:layout_marginRight="@dimen/dimValue_15"
                 android:layout_marginTop="@dimen/dimValue_10"
+                android:layout_marginBottom="@dimen/dimValue_10"
                 android:layout_weight=".15"
                 android:background="@color/Delete_btn"
                 android:gravity="center"
@@ -155,77 +156,33 @@
 
 
             <LinearLayout
+                android:id="@+id/layout_seeMenu"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_margin="@dimen/dimValue_20"
                 android:layout_weight=".15"
+                android:background="@color/Submit_btnBg"
+                android:gravity="center"
                 android:orientation="horizontal">
 
-                <LinearLayout
-                    android:id="@+id/layout_facebook"
-                    android:layout_width="0dp"
+                <TextView
+                    android:id="@+id/tv_see_menu_icon"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_weight=".5"
-                    android:orientation="horizontal">
+                    android:gravity="center"
+                    android:paddingRight="@dimen/dimValue_15"
+                    android:text="s"
+                    android:textColor="@color/Dark_red"
+                    android:textSize="@dimen/dimTextSize_20" />
 
-                    <TextView
-                        android:id="@+id/tv_facebook_icon"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="top|end"
-                        android:layout_weight=".4"
-                        android:background="@color/facebook_dark"
-                        android:gravity="center|right"
-                        android:paddingRight="@dimen/dimValue_10"
-                        android:text="f"
-                        android:textColor="@color/text_color_white"
-                        android:textSize="@dimen/dimTextSize_20" />
-
-                    <TextView
-                        android:id="@+id/tv_fbText"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="top|end"
-                        android:layout_weight=".6"
-                        android:background="@color/facebook_dark"
-                        android:gravity="center|left"
-                        android:paddingLeft="@dimen/dimValue_5"
-                        android:text="Login"
-                        android:textColor="@color/text_color_white"
-                        android:textSize="@dimen/dimTextSize_18" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/layout_seeMenu"
-                    android:layout_width="0dp"
+                <TextView
+                    android:id="@+id/tv_see_menu_text"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_weight=".5"
-                    android:background="@color/Submit_btnBg"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/tv_see_menu_icon"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="top|end"
-                        android:layout_weight=".35"
-                        android:gravity="center"
-                        android:paddingLeft="@dimen/dimValue_10"
-                        android:text="s"
-                        android:textColor="@color/Dark_red"
-                        android:textSize="@dimen/dimTextSize_20" />
-
-                    <TextView
-                        android:id="@+id/tv_see_menu_text"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="top|end"
-                        android:layout_weight=".65"
-                        android:gravity="center|left"
-                        android:text="See Menu"
-                        android:textColor="@color/Dark_red"
-                        android:textSize="@dimen/dimTextSize_18" />
-                </LinearLayout>
+                    android:gravity="center"
+                    android:text="See Menu"
+                    android:textColor="@color/Dark_red"
+                    android:textSize="@dimen/dimTextSize_18" />
             </LinearLayout>
 
             <View

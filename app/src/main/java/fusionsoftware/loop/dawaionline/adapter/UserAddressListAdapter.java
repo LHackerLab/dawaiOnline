@@ -9,7 +9,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +21,6 @@ import java.util.List;
 import fusionsoftware.loop.dawaionline.R;
 import fusionsoftware.loop.dawaionline.database.DbHelper;
 import fusionsoftware.loop.dawaionline.fragments.AddNewAddressFragment;
-import fusionsoftware.loop.dawaionline.fragments.LocationFragment;
 import fusionsoftware.loop.dawaionline.fragments.YourOrderFragment;
 import fusionsoftware.loop.dawaionline.framework.IAsyncWorkCompletedCallback;
 import fusionsoftware.loop.dawaionline.framework.ServiceCaller;
@@ -46,12 +44,12 @@ public class UserAddressListAdapter extends RecyclerView.Adapter<UserAddressList
     private int StoreId;
 
 
-    public UserAddressListAdapter(Context context, List<Addresses> addresslist, Boolean navigateFlag, int localityId,int StoreId) {
+    public UserAddressListAdapter(Context context, List<Addresses> addresslist, Boolean navigateFlag, int localityId, int StoreId) {
         this.context = context;
         this.addresslist = addresslist;
         this.navigateFlag = navigateFlag;
         this.localityId = localityId;
-        this.StoreId=StoreId;
+        this.StoreId = StoreId;
         layoutInflater = (LayoutInflater.from(context));
         roboto_light = FontManager.getFontTypefaceMaterialDesignIcons(context, "fonts/roboto.light.ttf");
         this.medium = FontManager.getFontTypeface(context, "fonts/roboto.medium.ttf");
@@ -87,50 +85,11 @@ public class UserAddressListAdapter extends RecyclerView.Adapter<UserAddressList
         holder.mainLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DbHelper dbHelper= new DbHelper(context);
-                Data storeData=dbHelper.getStoreData(StoreId);
+                DbHelper dbHelper = new DbHelper(context);
                 if (navigateFlag) {
-                        if (localityId != addresslist.get(position).getLocalityId()) {
-                            new AlertDialog.Builder(context)
-                                    .setTitle("Change Location")
-                                    .setCancelable(false)
-                                    .setMessage("Your selected location is not match with address location.")
-                                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            LocationFragment fragment = LocationFragment.newInstance("", true);
-                                            moveFragment(fragment);
-                                        }
-                                    })
-                                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            // user doesn't want to change the Location
-                                            dialog.dismiss();
-                                        }
-                                    })
-                                    .show();
-
-                        } else if (storeData != null) {
-                            YourOrderFragment fragment = YourOrderFragment.newInstance(addresslist.get(position).getAddressId(), StoreId);
-                            moveFragment(fragment);
-                        } else {
-                            new AlertDialog.Builder(context)
-                                    .setTitle("Change Store")
-                                    .setCancelable(false)
-                                    .setMessage("selected store not comes under the selected location.")
-                                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            LocationFragment fragment = LocationFragment.newInstance("", true);
-                                            moveFragment(fragment);
-                                        }
-                                    })
-                                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            // user doesn't want to change the Location
-                                            dialog.dismiss();
-                                        }
-                                    })
-                                    .show();
-                        }
+                    YourOrderFragment fragment = YourOrderFragment.newInstance(addresslist.get(position).getAddressId(), StoreId);
+                    moveFragment(fragment);
+                } else {
 
                 }
             }
@@ -192,9 +151,9 @@ public class UserAddressListAdapter extends RecyclerView.Adapter<UserAddressList
 
     //delete address
     private void callDeleteAddressService(int addressId, final int position) {
-        DbHelper dbHelper= new DbHelper(context);
+        DbHelper dbHelper = new DbHelper(context);
         Data data = dbHelper.getUserData();
-        if (data!=null){
+        if (data != null) {
             final ServiceCaller serviceCaller = new ServiceCaller(context);
             serviceCaller.callDeleteAddressDataService(addressId, data.getLoginID(), new IAsyncWorkCompletedCallback() {
                 @Override
@@ -203,8 +162,8 @@ public class UserAddressListAdapter extends RecyclerView.Adapter<UserAddressList
                         DbHelper dbHelper = new DbHelper(context);
                         dbHelper.deleteAddressData(addresslist.get(position).getAddressId());
                         addresslist.remove(position);
-                        Intent intent=new Intent("data");
-                        intent.putExtra("flag","true");
+                        Intent intent = new Intent("data");
+                        intent.putExtra("flag", "true");
                         context.sendBroadcast(intent);
                         notifyDataSetChanged();
                     } else {

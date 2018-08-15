@@ -22,6 +22,7 @@ import java.util.List;
 import fusionsoftware.loop.dawaionline.R;
 import fusionsoftware.loop.dawaionline.fragments.ProductListFragment;
 import fusionsoftware.loop.dawaionline.model.Data;
+import fusionsoftware.loop.dawaionline.model.Result;
 import fusionsoftware.loop.dawaionline.utilities.FontManager;
 
 
@@ -34,7 +35,7 @@ public class SelectCatagoryAdapter extends RecyclerView.Adapter<SelectCatagoryAd
     private Boolean addNewAddressFlage;
 
     private Context mContext;
-    private List<Data> categoryList;
+    private List<Result> categoryList;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView discription, title;
@@ -52,7 +53,7 @@ public class SelectCatagoryAdapter extends RecyclerView.Adapter<SelectCatagoryAd
         }
     }
 
-    public SelectCatagoryAdapter(Context mContext, List<Data> categoryList) {
+    public SelectCatagoryAdapter(Context mContext, List<Result> categoryList) {
         this.mContext = mContext;
         this.categoryList = categoryList;
         this.medium = FontManager.getFontTypeface(mContext, "fonts/roboto.medium.ttf");
@@ -70,26 +71,12 @@ public class SelectCatagoryAdapter extends RecyclerView.Adapter<SelectCatagoryAd
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
-        if (categoryList.get(position).getCategoryName() != null) {
-            holder.title.setText(categoryList.get(position).getCategoryName());
-            holder.title.setVisibility(View.VISIBLE);
-        } else {
-            holder.title.setVisibility(View.GONE);
-        }
-
-        if (categoryList.get(position).getCategoryPictures() != null) {
-            Picasso.with(mContext).load(categoryList.get(position).getCategoryPictures()).resize(100, 100).placeholder(R.drawable.logo).into(holder.imageView);
-        }
-        if (categoryList.get(position).getCategoryDescription() != null) {
-            holder.discription.setText(categoryList.get(position).getCategoryDescription());
-            holder.discription.setVisibility(View.VISIBLE);
-        } else {
-            holder.discription.setVisibility(View.GONE);
-        }
+        holder.title.setText(categoryList.get(position).getCategoryName());
+        Picasso.with(mContext).load(categoryList.get(position).getCategoryPictures()).resize(100, 100).placeholder(R.drawable.logo).into(holder.imageView);
         holder.card_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ProductListFragment fragment = ProductListFragment.newInstance(categoryList.get(position).getCategoryId(), categoryList.get(position).getStoreId());
+                ProductListFragment fragment = ProductListFragment.newInstance(categoryList.get(position).getCategoryId(), categoryList.get(position).getCategoryName());
                 moveFragment(fragment);
             }
         });

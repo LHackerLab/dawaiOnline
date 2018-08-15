@@ -109,8 +109,6 @@ public class MyBasketFragment extends Fragment implements View.OnClickListener {
         rootActivity.setScreenTitle("My Basket");
         rootActivity.setScreencart(false);
         rootActivity.setScreenSave(false);
-        rootActivity.setScreenFavourite(false);
-        rootActivity.setScreenLocation(false);
         rootActivity.setScreenCartDot(false);
         arrow_icon = (TextView) view.findViewById(R.id.arrow_icon);
         tv_continue = (TextView) view.findViewById(R.id.tv_continue);
@@ -124,24 +122,24 @@ public class MyBasketFragment extends Fragment implements View.OnClickListener {
         recyclerView.setLayoutManager(layoutManager);
         DbHelper dbHelper = new DbHelper(context);
         // List<MyBasket> orderList = dbHelper.GetAllBasketOrderData();
-        List<Data> orderList = dbHelper.getAllSelectedStoreData();
-        if (orderList != null && orderList.size() > 0) {
-            adapter = new BasketAdapter(context, orderList);
-            recyclerView.setAdapter(adapter);
-        } else {
-            LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View view = inflater.inflate(R.layout.no_data_found, null);
-            TextView nodataIcon = (TextView) view.findViewById(R.id.nodataIcon);
-            TextView nodata = (TextView) view.findViewById(R.id.nodata);
-            nodata.setTypeface(regular);
-            nodataIcon.setTypeface(materialDesignIcons);
-            nodataIcon.setText(Html.fromHtml("&#xf187;"));
-            nodata.setText("No Order Found In Basket");
-            layout_basket.setGravity(Gravity.CENTER);
-            layout_basket.removeAllViews();
-            layout_basket.addView(view);
-            continuelayout.setVisibility(View.VISIBLE);
-        }
+//        List<Data> orderList = dbHelper.getAllSelectedStoreData();
+//        if (orderList != null && orderList.size() > 0) {
+//            adapter = new BasketAdapter(context, orderList);
+//            recyclerView.setAdapter(adapter);
+//        } else {
+        LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view = inflater.inflate(R.layout.no_data_found, null);
+        TextView nodataIcon = (TextView) view.findViewById(R.id.nodataIcon);
+        TextView nodata = (TextView) view.findViewById(R.id.nodata);
+        nodata.setTypeface(regular);
+        nodataIcon.setTypeface(materialDesignIcons);
+        nodataIcon.setText(Html.fromHtml("&#xf187;"));
+        nodata.setText("No Order Found In Basket");
+        layout_basket.setGravity(Gravity.CENTER);
+        layout_basket.removeAllViews();
+        layout_basket.addView(view);
+        continuelayout.setVisibility(View.VISIBLE);
+//        }
     }
 
     //notifiy adapter if data delete
@@ -189,18 +187,7 @@ public class MyBasketFragment extends Fragment implements View.OnClickListener {
 
     //open home fragement
     private void setUpHomeFragment() {
-        SharedPreferences locationPrefs = context.getSharedPreferences("LocationPreferences", Context.MODE_PRIVATE);
-        int localityId = 0;
-        if (locationPrefs != null) {
-            localityId = locationPrefs.getInt("LocalityId", 0);
-        }
-        //open screen based location already selected or not
-        Fragment fragment;
-        if (localityId == 0) {
-            fragment = LocationFragment.newInstance("", false);
-        } else {
-            fragment = SelectStoreFragment.newInstance(localityId, "");
-        }
+        YourOrderFragment fragment = YourOrderFragment.newInstance(0, 0);
         moveFragment(fragment);
     }
 

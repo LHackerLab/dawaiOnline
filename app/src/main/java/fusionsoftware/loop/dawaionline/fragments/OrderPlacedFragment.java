@@ -37,8 +37,10 @@ public class OrderPlacedFragment extends Fragment implements View.OnClickListene
         fragment.setArguments(args);
         return fragment;
     }
+
     private String OrderNumber;
     private String mParam2;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,8 +68,6 @@ public class OrderPlacedFragment extends Fragment implements View.OnClickListene
         DashboardActivity rootActivity = (DashboardActivity) getActivity();
         rootActivity.setScreencart(true);
         rootActivity.setScreenSave(false);
-        rootActivity.setScreenFavourite(false);
-        rootActivity.setScreenLocation(false);
         rootActivity.setItemCart();
         initViews();//initilization...........
         setTypeFace();//set text style.......
@@ -99,16 +99,13 @@ public class OrderPlacedFragment extends Fragment implements View.OnClickListene
             textView_orderNumber.setText(OrderNumber);
         }
     }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.layout_trakOrder:
                 TrackOrderFragment fragment = TrackOrderFragment.newInstance("", "");
                 moveFragment(fragment);
-//                Intent intent = new Intent(context, DashboardActivity.class);
-//                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-//                intent.putExtra("NavigateFlag",1);
-//                startActivity(intent);
                 break;
         }
     }

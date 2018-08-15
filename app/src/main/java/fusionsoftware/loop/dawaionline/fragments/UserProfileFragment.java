@@ -79,8 +79,6 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
         rootActivity.setScreencart(true);
         rootActivity.setItemCart();
         rootActivity.setScreenSave(false);
-        rootActivity.setScreenFavourite(false);
-        rootActivity.setScreenLocation(false);
         user_icon = (TextView) view.findViewById(R.id.user_icon);
         phone_icon = (TextView) view.findViewById(R.id.phone_icon);
         email_icon = (TextView) view.findViewById(R.id.email_icon);

@@ -35,12 +35,12 @@ import fusionsoftware.loop.dawaionline.utilities.FontManager;
 import fusionsoftware.loop.dawaionline.utilities.Utility;
 
 
-public class ProductListFragment extends Fragment implements View.OnClickListener {
+public class ProductListFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
 
     // TODO: Rename and change types of parameters
     private int categoryId;
-    private int storeId;
+    private String categoryName;
 
 
     public ProductListFragment() {
@@ -49,11 +49,11 @@ public class ProductListFragment extends Fragment implements View.OnClickListene
 
 
     // TODO: Rename and change types and number of parameters
-    public static ProductListFragment newInstance(int categoryId, int storeId) {
+    public static ProductListFragment newInstance(int categoryId, String categoryName) {
         ProductListFragment fragment = new ProductListFragment();
         Bundle args = new Bundle();
         args.putInt("categoryId", categoryId);
-        args.putInt("storeId", storeId);
+        args.putString("categoryName", categoryName);
         fragment.setArguments(args);
         return fragment;
     }
@@ -63,7 +63,7 @@ public class ProductListFragment extends Fragment implements View.OnClickListene
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             categoryId = getArguments().getInt("categoryId");
-            storeId = getArguments().getInt("storeId");
+            categoryName = getArguments().getString("categoryName");
         }
     }
 
@@ -74,7 +74,7 @@ public class ProductListFragment extends Fragment implements View.OnClickListene
     View view;
     TextView tv_placeOrder, title;
     private List<Data> productList;
-    Typeface materialDesignIcons,bold;
+    Typeface materialDesignIcons, bold;
     int StoreId;
 
     @Override
@@ -91,8 +91,6 @@ public class ProductListFragment extends Fragment implements View.OnClickListene
         DashboardActivity rootActivity = (DashboardActivity) getActivity();
         rootActivity.setScreencart(true);
         rootActivity.setItemCart();
-        rootActivity.setScreenLocation(false);
-        rootActivity.setScreenFavourite(false);
         rootActivity.setScreenSave(false);
         materialDesignIcons = FontManager.getFontTypefaceMaterialDesignIcons(context, "fonts/materialdesignicons-webfont.otf");
         init();
@@ -122,16 +120,13 @@ public class ProductListFragment extends Fragment implements View.OnClickListene
     }
 
 
-    private void setProductData(){
+    private void setProductData() {
         DbHelper dbHelper = new DbHelper(context);
-        Data data = dbHelper.getCategoryData(categoryId);
-        if (data != null) {
-            title.setText(data.getCategoryName());
-            title.setTypeface(bold);
-        }
+        title.setText(categoryName);
+        title.setTypeface(bold);
         productList = dbHelper.GetAllProductBasedOnCategoryIdData(categoryId);
         if (productList != null && productList.size() > 0) {
-            ProductListAdapter adapter = new ProductListAdapter(context, productList, storeId, categoryId);
+            ProductListAdapter adapter = new ProductListAdapter(context, productList, categoryId);
             recyclerView.setAdapter(adapter);
             adapter.setActionListener(new ProductListAdapter.ProductItemActionListener() {
                 @Override
@@ -200,12 +195,12 @@ public class ProductListFragment extends Fragment implements View.OnClickListene
             final BallTriangleDialog dotDialog = new BallTriangleDialog(context);
             dotDialog.show();
             ServiceCaller serviceCaller = new ServiceCaller(context);
-            serviceCaller.callAllProductListService(StoreId, categoryId, new IAsyncWorkCompletedCallback() {
+            serviceCaller.callAllProductListService(categoryId, new IAsyncWorkCompletedCallback() {
                 @Override
                 public void onDone(String workName, boolean isComplete) {
                     if (isComplete) {
                         setProductData();
-                    }else {
+                    } else {
                         noDataFound();
                     }
 
@@ -216,10 +211,10 @@ public class ProductListFragment extends Fragment implements View.OnClickListene
                 }
             });
         } else {
-           // Utility.alertForErrorMessage(Contants.OFFLINE_MESSAGE, context);//off line msg....
+            // Utility.alertForErrorMessage(Contants.OFFLINE_MESSAGE, context);//off line msg....
             LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View view = inflater.inflate(R.layout.no_data_found, null);
-            TextView nodata= (TextView) view.findViewById(R.id.nodata);
+            TextView nodata = (TextView) view.findViewById(R.id.nodata);
             nodata.setText("No internet connection found");
             linearLayout.setGravity(Gravity.CENTER);
             linearLayout.removeAllViews();
@@ -227,25 +222,4 @@ public class ProductListFragment extends Fragment implements View.OnClickListene
         }
     }
 
-
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-//            case R.id.orderPlaceLayout:
-//                DbHelper dbHelper = new DbHelper(context);
-//                List<MyBasket> orderList = dbHelper.GetAllBasketOrderData();
-//                if (orderList != null && orderList.size() > 0) {
-//                    Utility.setStoreIDFromSharedPreferences(context, storeId);
-//                    UserAddressListFragment fragment = UserAddressListFragment.newInstance(true, "");
-//                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-//                    fragmentManager.beginTransaction()
-//                            .replace(R.id.container, fragment)
-//                            .addToBackStack(null)
-//                            .commit();
-//                } else {
-//                    Utility.alertForErrorMessage("Please Select Anyone Item", getActivity());
-//                }
-//                break;
-        }
-    }
 }

@@ -88,8 +88,6 @@ public class UserAddressListFragment extends Fragment implements View.OnClickLis
         rootActivity.setScreencart(true);
         rootActivity.setItemCart();
         rootActivity.setScreenSave(false);
-        rootActivity.setScreenFavourite(false);
-        rootActivity.setScreenLocation(false);
         reycyle_view = (RecyclerView) view.findViewById(R.id.reycyle_view);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
         reycyle_view.setLayoutManager(linearLayoutManager);

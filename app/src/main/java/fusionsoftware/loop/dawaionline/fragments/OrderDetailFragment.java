@@ -258,8 +258,6 @@ public class OrderDetailFragment extends Fragment {
         DashboardActivity rootActivity = (DashboardActivity) getActivity();
         rootActivity.setScreencart(false);
         rootActivity.setScreenSave(false);
-        rootActivity.setScreenFavourite(false);
-        rootActivity.setScreenLocation(false);
         rootActivity.setScreenCartDot(false);
         tv_cancelOrder = (TextView) view.findViewById(R.id.tv_cancel_order);
         rupee_icon = (TextView) view.findViewById(R.id.rupee_icon);

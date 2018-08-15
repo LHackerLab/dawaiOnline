@@ -78,32 +78,7 @@
                         android:visibility="gone" />
 
                     <TextView
-                        android:id="@+id/favourite"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_alignParentTop="true"
-                        android:layout_marginRight="@dimen/dimValue_30"
-                        android:layout_toLeftOf="@+id/cart"
-                        android:layout_toStartOf="@+id/cart"
-                        android:gravity="right|center"
-                        android:visibility="gone"
-                        android:textColor="@color/green"
-                        android:textSize="@dimen/dimTextSize_25" />
-
-                    <TextView
-                        android:id="@+id/location"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_below="@+id/title"
-                        android:layout_marginRight="@dimen/dimValue_30"
-                        android:layout_toLeftOf="@+id/cart"
-                        android:layout_toStartOf="@+id/cart"
-                        android:gravity="right|center"
-                        android:textColor="@color/green"
-                        android:textSize="@dimen/dimTextSize_25" />
-                    <TextView
                         android:id="@+id/cart_dot"
-                        android:background="@drawable/cart_circle"
                         android:layout_width="@dimen/size_18px"
                         android:layout_height="@dimen/size_18px"
                         android:layout_alignParentEnd="true"
@@ -112,9 +87,10 @@
                         android:layout_marginBottom="@dimen/dimValue_20"
                         android:layout_marginEnd="@dimen/dimValue_15"
                         android:layout_marginRight="@dimen/dimValue_15"
+                        android:background="@drawable/cart_circle"
                         android:gravity="center"
-                        android:textColor="@color/text_color_white"
                         android:text="j"
+                        android:textColor="@color/text_color_white"
                         android:textSize="@dimen/dimTextSize_12"
                         android:visibility="gone" />
 
@@ -125,9 +101,9 @@
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
                         android:layout_alignParentTop="true"
-                        android:layout_marginTop="@dimen/dimValue_5"
                         android:layout_marginEnd="@dimen/dimValue_20"
                         android:layout_marginRight="@dimen/dimValue_20"
+                        android:layout_marginTop="@dimen/dimValue_5"
                         android:gravity="right|center"
                         android:textColor="@color/green"
                         android:textSize="@dimen/dimTextSize_35" />

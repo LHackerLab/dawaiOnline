@@ -5,14 +5,52 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/inner_background"
-    android:gravity="center">
+    android:gravity="center"
+    android:orientation="vertical">
 
     <ImageView
-        android:layout_width="200dp"
+        android:layout_width="250dp"
         android:layout_height="200dp"
         android:layout_gravity="center"
-        android:scaleType="fitXY"
+        android:scaleType="fitCenter"
         android:src="@drawable/track_img">
 
     </ImageView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimValue_20"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/tv_one"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/dimValue_15"
+            android:layout_marginRight="@dimen/dimValue_15"
+            android:layout_marginTop="@dimen/dimValue_10"
+            android:layout_weight=".5"
+            android:background="@color/Delete_btn"
+            android:gravity="center"
+            android:text="Login 1"
+            android:textAllCaps="false"
+            android:textColor="@color/text_color_white"
+            android:textSize="@dimen/dimTextSize_14" />
+
+        <Button
+            android:id="@+id/tv_two"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/dimValue_15"
+            android:layout_marginRight="@dimen/dimValue_15"
+            android:layout_marginTop="@dimen/dimValue_10"
+            android:layout_weight=".5"
+            android:background="@color/Yellow_color"
+            android:gravity="center"
+            android:text="Login 2"
+            android:textAllCaps="false"
+            android:textColor="@color/text_color_white"
+            android:textSize="@dimen/dimTextSize_14" />
+    </LinearLayout>
 </LinearLayout>

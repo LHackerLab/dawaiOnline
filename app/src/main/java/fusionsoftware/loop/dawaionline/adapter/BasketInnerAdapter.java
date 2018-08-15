@@ -120,7 +120,7 @@ public class BasketInnerAdapter extends RecyclerView.Adapter<BasketInnerAdapter.
                 dbHelper.deleteBasketOrderDataByProductId(basketItemdata.get(i).getProductId());
                 basketItemdata.remove(i);
                 if (basketItemdata.size() == 0) {//delete store data if all item deleted from this store
-                    dbHelper.deleteSelectedStoreById(storeId);
+//                    dbHelper.deleteSelectedStoreById(storeId);
                     storeData.remove(storePosition);
                     if (storeData.size() == 0) {
                         ((FragmentActivity) context).getSupportFragmentManager().popBackStack();//back to profile screen
@@ -153,11 +153,11 @@ public class BasketInnerAdapter extends RecyclerView.Adapter<BasketInnerAdapter.
         myBasket.setUOM(UOM);
         if (Quantity != 0) {
             dbHelper.upsertBasketOrderData(myBasket);
-            Data storeData = dbHelper.getStoreData(storeId);//get store details
-            if (storeData != null) {
-                storeData.setCategoryId(CategoryId);
-                dbHelper.upsertSelectedStoreData(storeData);
-            }
+//            Data storeData = dbHelper.getStoreData(storeId);//get store details
+//            if (storeData != null) {
+//                storeData.setCategoryId(CategoryId);
+//                dbHelper.upsertSelectedStoreData(storeData);
+//            }
         }
         if (orderAddOrDelete) {
             // Toast.makeText(context, Quantity +  UOM + " ADD Into Your Card", Toast.LENGTH_SHORT).show();

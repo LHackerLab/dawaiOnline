@@ -87,9 +87,7 @@ public class TrackOrderFragment extends Fragment {
         DashboardActivity rootActivity = (DashboardActivity) getActivity();
         rootActivity.setScreencart(true);
         rootActivity.setScreenSave(false);
-        rootActivity.setScreenFavourite(false);
         rootActivity.setItemCart();
-        rootActivity.setScreenLocation(true);
         return view;
     }
 
@@ -132,7 +130,7 @@ public class TrackOrderFragment extends Fragment {
                                 if (dotDialog.isShowing()) {
                                     dotDialog.dismiss();
                                 }
-                            }catch (Exception x){
+                            } catch (Exception x) {
                                 x.printStackTrace();
                             }
                         }

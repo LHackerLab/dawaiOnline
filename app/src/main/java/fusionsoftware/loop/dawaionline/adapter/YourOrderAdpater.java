@@ -62,13 +62,13 @@ public class YourOrderAdpater extends RecyclerView.Adapter<YourOrderAdpater.View
 
         holder.nameofdish_item.setText(orderDataList.get(i).getProductName());
         holder.price_item.setText(orderDataList.get(i).getPrice() + "");
-        holder.edit_icon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ProductListFragment fragment = ProductListFragment.newInstance(orderDataList.get(i).getCategoryId(), orderDataList.get(i).getStoreId());
-                moveFragment(fragment);
-            }
-        });
+//        holder.edit_icon.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                ProductListFragment fragment = ProductListFragment.newInstance(orderDataList.get(i).getCategoryId(), orderDataList.get(i).getStoreId());
+//                moveFragment(fragment);
+//            }
+//        });
 //        holder.delete_icon.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {

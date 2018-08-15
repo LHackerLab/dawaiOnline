@@ -128,8 +128,6 @@ public class UpdateProfileFragment extends Fragment implements View.OnClickListe
         DashboardActivity rootActivity = (DashboardActivity) getActivity();
         rootActivity.setScreencart(true);
         rootActivity.setScreenSave(true);
-        rootActivity.setScreenFavourite(false);
-        rootActivity.setScreenLocation(false);
         rootActivity.setItemCart();
         rootActivity.save.setVisibility(View.VISIBLE);// visible save ......
         rootActivity.save.setOnClickListener(this);//set onclick on save .....

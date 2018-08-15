@@ -87,20 +87,7 @@ public class AddNewAddressFragment extends Fragment implements View.OnClickListe
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         view = inflater.inflate(R.layout.fragment_add_new_address, container, false);
         init();//intilization............
-        getLocality();
         return view;
-    }
-
-    private void getLocality() {
-        DbHelper dbHelper = new DbHelper(context);
-        SharedPreferences locationPrefs = context.getSharedPreferences("LocationPreferences", Context.MODE_PRIVATE);
-        if (locationPrefs != null) {
-            localityId = locationPrefs.getInt("LocalityId", 0);
-            Data data = dbHelper.getAllLocalitiesDataById(localityId);
-            if (data != null) {
-                select_locality.setText(data.getLocalityName());
-            }
-        }
     }
 
     //set icons
@@ -127,8 +114,8 @@ public class AddNewAddressFragment extends Fragment implements View.OnClickListe
         DashboardActivity rootActivity = (DashboardActivity) getActivity();
         rootActivity.setScreencart(true);
         rootActivity.setScreenSave(false);
-        rootActivity.setScreenFavourite(false);
-        rootActivity.setScreenLocation(false);
+//        rootActivity.setScreenFavourite(false);
+//        rootActivity.setScreenLocation(false);
         rootActivity.setItemCart();
 //        proceed = (Button) v.findViewById(R.id.btn_proceed);
         addNewAddress = (EditText) view.findViewById(R.id.edt_address);
@@ -179,10 +166,10 @@ public class AddNewAddressFragment extends Fragment implements View.OnClickListe
 //            if (data != null) {
 //                select_city.setText(data.getCityName());
 //            }
-            Data mData = dbHelper.getAllLocalitiesDataById(localityid);
-            if (mData != null) {
-                select_locality.setText(mData.getLocalityName());
-            }
+//            Data mData = dbHelper.getAllLocalitiesDataById(localityid);
+//            if (mData != null) {
+//                select_locality.setText(mData.getLocalityName());
+//            }
         }
     }
 
@@ -199,33 +186,13 @@ public class AddNewAddressFragment extends Fragment implements View.OnClickListe
 //            case R.id.selectCityLayout:
 //                selectCity();
 //                break;
-            case R.id.selectlocalityLayout:
-                selectlocality();
-                break;
+//            case R.id.selectlocalityLayout:
+//                selectlocality();
+//                break;
         }
 
     }
 
-    private void selectlocality() {
-        new AlertDialog.Builder(context)
-                .setTitle("Change Location")
-                .setCancelable(false)
-                .setMessage("Would you like to change your location ?")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        LocationFragment fragment = LocationFragment.newInstance("", true);
-                        moveFragmentWithTag(fragment, "LocationFragment");
-                        //getActivity().getSupportFragmentManager().popBackStack();//back to screen
-                    }
-                })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // user doesn't want to change the Location
-                        dialog.dismiss();
-                    }
-                })
-                .show();
-    }
 
     private void moveFragmentWithTag(Fragment fragment, String tag) {
         FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
@@ -301,7 +268,7 @@ public class AddNewAddressFragment extends Fragment implements View.OnClickListe
                     }
                 });
             } else {
-               Utility.alertForErrorMessage(Contants.OFFLINE_MESSAGE, context);
+                Utility.alertForErrorMessage(Contants.OFFLINE_MESSAGE, context);
 
             }
         }

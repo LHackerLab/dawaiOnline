@@ -1,7 +1,6 @@
 package fusionsoftware.loop.dawaionline.adapter;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -9,7 +8,6 @@ import android.graphics.Typeface;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,11 +22,9 @@ import fusionsoftware.loop.dawaionline.R;
 import fusionsoftware.loop.dawaionline.activity.DashboardActivity;
 import fusionsoftware.loop.dawaionline.activity.LoginActivity;
 import fusionsoftware.loop.dawaionline.database.DbHelper;
-import fusionsoftware.loop.dawaionline.fragments.FavouriteStoresFragment;
-import fusionsoftware.loop.dawaionline.fragments.LocationFragment;
 import fusionsoftware.loop.dawaionline.fragments.MyAllOrderHistoryFragment;
 import fusionsoftware.loop.dawaionline.fragments.MyBasketFragment;
-import fusionsoftware.loop.dawaionline.fragments.SelectStoreFragment;
+import fusionsoftware.loop.dawaionline.fragments.SelectCategoryFragment;
 import fusionsoftware.loop.dawaionline.fragments.TrackOrderFragment;
 import fusionsoftware.loop.dawaionline.fragments.UserAddressListFragment;
 import fusionsoftware.loop.dawaionline.fragments.UserProfileFragment;
@@ -117,36 +113,24 @@ public class NavMenuCustomAdapter extends BaseAdapter {
                     if (position == 0) {
                         setUpHomeFragment();
                     }
-//                    if (position == 1) {
-//                        NotificationFragment fragment = NotificationFragment.newInstance("", "");
-//                        moveFragment(fragment);
-//                    }
                     if (position == 1) {
-                        LocationFragment fragment = LocationFragment.newInstance("", false);
-                        moveFragment(fragment);
-                    }
-                    if (position == 2) {
-                        FavouriteStoresFragment fragment = FavouriteStoresFragment.newInstance("", "");
-                        moveFragment(fragment);
-                    }
-                    if (position == 3) {
                         UserAddressListFragment fragment = UserAddressListFragment.newInstance(false, 0);
                         moveFragment(fragment);
                     }
-                    if (position == 4) {
+                    if (position == 2) {
                         TrackOrderFragment fragment = TrackOrderFragment.newInstance("", "");
                         moveFragment(fragment);
                     }
-                    if (position == 5) {
+                    if (position == 3) {
                         MyAllOrderHistoryFragment fragment = MyAllOrderHistoryFragment.newInstance(0, "");
                         moveFragment(fragment);
                     }
-                    if (position == 6) {
+                    if (position == 4) {
                         MyBasketFragment fragment = MyBasketFragment.newInstance("", "");
                         moveFragment(fragment);
                     }
 
-                    if (position == 7) {
+                    if (position == 5) {
                         UserProfileFragment fragment = UserProfileFragment.newInstance("", "");
                         moveFragment(fragment);
                     }
@@ -173,18 +157,7 @@ public class NavMenuCustomAdapter extends BaseAdapter {
 
     //open home fragement
     private void setUpHomeFragment() {
-        SharedPreferences locationPrefs = context.getSharedPreferences("LocationPreferences", Context.MODE_PRIVATE);
-        int localityId = 0;
-        if (locationPrefs != null) {
-            localityId = locationPrefs.getInt("LocalityId", 0);
-        }
-        //open screen based location already selected or not
-        Fragment fragment;
-        if (localityId == 0) {
-            fragment = LocationFragment.newInstance("", false);
-        } else {
-            fragment = SelectStoreFragment.newInstance(localityId, "");
-        }
+        SelectCategoryFragment fragment = SelectCategoryFragment.newInstance(0, 0);
         moveFragment(fragment);
     }
 
