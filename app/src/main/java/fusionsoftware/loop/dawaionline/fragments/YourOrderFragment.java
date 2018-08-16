@@ -294,9 +294,6 @@ public class YourOrderFragment extends Fragment implements View.OnClickListener 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.tv_apply:
-                applyPromoCode();
-                break;
             case R.id.tv_continueLayout:
                 createNewOrder();
                 break;
@@ -388,51 +385,4 @@ public class YourOrderFragment extends Fragment implements View.OnClickListener 
                 .commit();
     }
 
-    //apply promo cade
-    private void applyPromoCode() {
-        final String promoCode = edt_promoCode.getText().toString();
-        if (promoCode.length() != 0) {
-            if (Utility.isOnline(context)) {
-                final BallTriangleDialog dotDialog = new BallTriangleDialog(context);
-                dotDialog.show();
-                ServiceCaller serviceCaller = new ServiceCaller(context);
-                serviceCaller.applyPromoCodeService(promoCode, loginID, new IAsyncWorkCompletedCallback() {
-                    @Override
-                    public void onDone(String result, boolean isComplete) {
-                        if (isComplete) {
-                            ContentData contentData = new Gson().fromJson(result, ContentData.class);
-                            if (contentData != null) {
-                                if (contentData.getResponse() != null && contentData.getResponse().getSuccess()) {
-                                    Data data = contentData.getData();
-                                    promoCodeDiscount = data.getDiscount();
-                                    promoCodeId = data.getPromoCodeId();
-                                    if (promoCodeDiscount != 0) {
-                                        tv_apply.setVisibility(View.GONE);
-                                        tv_cancel.setVisibility(View.VISIBLE);
-                                        edt_promoCode.clearFocus();
-                                        edt_promoCode.setText("Promocode" + " " + promoCode + " " + "applied successfully");
-
-                                    }
-                                } else {
-                                    Utility.alertForErrorMessage("Please enter correct code", context);
-                                }
-
-                            } else {
-                                Utility.alertForErrorMessage("Please enter correct code", context);
-                            }
-                        } else {
-                            Utility.alertForErrorMessage("Please enter correct code", context);
-                        }
-                        if (dotDialog.isShowing()) {
-                            dotDialog.dismiss();
-                        }
-                    }
-                });
-            } else {
-                Utility.alertForErrorMessage(Contants.OFFLINE_MESSAGE, context);//off line msg....
-            }
-        } else {
-            Utility.alertForErrorMessage("Please Enter Promo Code", context);
-        }
-    }
 }

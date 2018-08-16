@@ -11,14 +11,14 @@ public class ContentDataAsArray {
     private Data[] data;
 
     public Result[] getResults() {
-        return results;
+        return result;
     }
 
     public void setResults(Result[] results) {
-        this.results = results;
+        this.result = results;
     }
 
-    private Result[] results;
+    private Result[] result;
 
     public Response getResponse() {
         return response;

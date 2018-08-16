@@ -16,7 +16,7 @@ public class Contants {
     public static final String APP_DIRECTORY = "/E" + DEFAULT_APPLICATION_NAME + "Directory/";
     public static final String DATABASE_NAME = "dawai.db";// Environment.getExternalStorageDirectory() +  APP_DIRECTORY + "evergreen.db";
 
-    public static String SERVICE_BASE_URL = "http://103.233.79.234:1000/api/";
+    public static String SERVICE_BASE_URL = "http://dawaionline.96.lt/apis/";
 
     public static String outputBasePath = Environment.getExternalStorageDirectory().getAbsolutePath();
     public static String outputDirectoryLocation = outputBasePath + "/dawaiUnzipped/";
@@ -45,11 +45,9 @@ public class Contants {
     public static final String AddNewAddress = "Address/AddNewAddress";
     public static final String UpdateAddress = "Address/UpdateAddress";
     public static final String GetAllAddress = "Address/GetAllAddress";
-    public static final String SELECT_CITY_URL = "Cities/GetAllCities";
-    public static final String GET_ALL_LOCALITIES_URL = "Localities/GetAllLocalities";
     public static final String DeleteAddress = "Address/DeleteAddress";
-    public static final String GetAllCategoryByMenuId= "Category/GetAllCategoryByMenuId";
-    public static final String GetAllProductByCategory = "Product/GetAllProductByCategory";
+    public static final String GetAllCategory= "getAllCategory.php";
+    public static final String GetAllProductByCategory = "GetAllProductByCategory.php";
     public static final String GetAllStoreByLocality = "Store/GetAllStoreByLocality";
     public static final String GetStoreDetailsById = "Store/GetStoreDetailsById";
     public static final String ApplyPromoCode = "PromoCode/ApplyPromoCode";

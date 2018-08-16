@@ -20,10 +20,10 @@
             android:layout_margin="@dimen/dimValue_5"
             android:orientation="horizontal">
 
-            <ImageView
+            <fusionsoftware.loop.dawaionline.utilities.CircleImageView
                 android:id="@+id/image_catagory"
                 android:layout_width="0dp"
-                android:layout_height="@dimen/size_80px"
+                android:layout_height="@dimen/size_50px"
                 android:layout_weight=".4"
                 android:scaleType="centerCrop" />
 
@@ -33,20 +33,9 @@
                 android:layout_height="match_parent"
                 android:layout_weight=".6"
                 android:gravity="center"
-                android:padding="@dimen/dimValue_5"
                 android:textColor="@color/primary_text"
-                android:textSize="@dimen/dimTextSize_14" />
+                android:textSize="@dimen/dimTextSize_12" />
         </LinearLayout>
-
-        <TextView
-            android:id="@+id/tv_catagory_description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/dimValue_5"
-            android:layout_marginTop="@dimen/dimValue_5"
-            android:singleLine="true"
-            android:textColor="@color/secondary_text"
-            android:textSize="@dimen/dimTextSize_12" />
 
 
     </LinearLayout>

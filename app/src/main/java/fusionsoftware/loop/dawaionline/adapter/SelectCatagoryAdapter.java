@@ -23,6 +23,7 @@ import fusionsoftware.loop.dawaionline.R;
 import fusionsoftware.loop.dawaionline.fragments.ProductListFragment;
 import fusionsoftware.loop.dawaionline.model.Data;
 import fusionsoftware.loop.dawaionline.model.Result;
+import fusionsoftware.loop.dawaionline.utilities.CircleImageView;
 import fusionsoftware.loop.dawaionline.utilities.FontManager;
 
 
@@ -38,17 +39,15 @@ public class SelectCatagoryAdapter extends RecyclerView.Adapter<SelectCatagoryAd
     private List<Result> categoryList;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView discription, title;
-        public ImageView imageView;
+        public TextView title;
+        public CircleImageView imageView;
         public CardView card_view;
 
         public MyViewHolder(View view) {
             super(view);
-            discription = (TextView) view.findViewById(R.id.tv_catagory_description);
             title = (TextView) view.findViewById(R.id.tv_catagory_name);
-            imageView = (ImageView) view.findViewById(R.id.image_catagory);
+            imageView = (CircleImageView) view.findViewById(R.id.image_catagory);
             card_view = (CardView) view.findViewById(R.id.card_view);
-            discription.setTypeface(regular);
             title.setTypeface(medium);
         }
     }

@@ -33,6 +33,8 @@ import fusionsoftware.loop.dawaionline.activity.DashboardActivity;
 import fusionsoftware.loop.dawaionline.database.DbHelper;
 import fusionsoftware.loop.dawaionline.model.Data;
 import fusionsoftware.loop.dawaionline.model.MyBasket;
+import fusionsoftware.loop.dawaionline.model.Response;
+import fusionsoftware.loop.dawaionline.model.Result;
 import fusionsoftware.loop.dawaionline.utilities.FontManager;
 import fusionsoftware.loop.dawaionline.utilities.Utility;
 
@@ -43,10 +45,9 @@ import fusionsoftware.loop.dawaionline.utilities.Utility;
 
 public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.ViewHolder> {
 
-    private List<Data> productData;
+    private List<Result> productData;
     private Context context;
     //HashSet<Integer> selectedPosition = new HashSet<>();
-    private int categoryId;
     private Typeface materialDesignIcons, medium, italic, regular;
     private ProductItemActionListener actionListener;
 
@@ -54,10 +55,9 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         this.actionListener = actionListener;
     }
 
-    public ProductListAdapter(Context context, List<Data> productData, int categoryId) {
+    public ProductListAdapter(Context context, List<Result> productData) {
         this.context = context;
         this.productData = productData;
-        this.categoryId = categoryId;
         this.medium = FontManager.getFontTypeface(context, "fonts/roboto.medium.ttf");
         this.regular = FontManager.getFontTypeface(context, "fonts/roboto.regular.ttf");
         this.italic = FontManager.getFontTypeface(context, "fonts/roboto.italic.ttf");
@@ -75,20 +75,9 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         Picasso.with(context).load(productData.get(position).getProductPicturesUrl()).resize(800, 800).placeholder(R.drawable.logo).into(viewHolder.productImage);
         Picasso.with(context).load(productData.get(position).getProductPicturesUrl()).resize(800, 800).placeholder(R.drawable.logo).into(viewHolder.productImageCopy);
         viewHolder.productTitle.setText(productData.get(position).getProductName());
-        if (productData.get(position).getUnitPrice() != 0) {
-            if (productData.get(position).getUOM() != null) {
-                viewHolder.productPrice.setText(String.valueOf(productData.get(position).getUnitPrice()) + " " + productData.get(position).getUOM());
-            } else {
-                viewHolder.productPrice.setText(String.valueOf(productData.get(position).getUnitPrice()));
-            }
-        }
-        if (productData.get(position).getProductDetails() != null) {
-            viewHolder.productDetails.setText(productData.get(position).getProductDetails());
-        } else {
-            viewHolder.productDetails.setVisibility(View.GONE);
-
-
-        }
+        viewHolder.productSubTitle.setText(productData.get(position).getProductSubTitle());
+        viewHolder.productPrice.setText(String.valueOf(productData.get(position).getUnitPrice()));
+        viewHolder.productDetails.setText(productData.get(position).getProductDetails());
         viewHolder.tv_discount.setText(String.valueOf(productData.get(position).getDiscount()) + "% off");
 //        if (selectedPosition.contains(position)) {
 //            viewHolder.orderLayout.setVisibility(View.VISIBLE);
@@ -184,7 +173,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         myBasket.setProductId(productData.get(position).getProductId());
         String productName = productData.get(position).getProductName();
         myBasket.setProductName(productName);
-        myBasket.setCategoryId(categoryId);
+        myBasket.setCategoryId(productData.get(position).getCategoryId());
         if (productData.get(position).getUOM() != null && productData.get(position).getUOM().equalsIgnoreCase("kg")) {
             myBasket.setQuantity(productData.get(position).getCountValue());
         } else {
@@ -222,10 +211,9 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView productTitle, tv_notice, tv_or, tv_discount, productPrice, icon_drop_down, done_icon, rupees_icon, productDetails, textView_addToCart,
-                selectItem, wieght_1kg, increase_Product, textView_nos, decrement_Product;
+        TextView productTitle, tv_or, tv_discount, productPrice, rupees_icon, productDetails, textView_addToCart,
+                productSubTitle, wieght_1kg, increase_Product, textView_nos, decrement_Product;
         ImageView productImage, productImageCopy;
-        EditText enterManually;
         LinearLayout orderLayout, linearLayout_liter, laout_or, layout_enter_manually, linearLayout_weight1;
         CardView card_view;
 
@@ -236,9 +224,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             productPrice = (TextView) view.findViewById(R.id.productPrice);
             productImage = (ImageView) view.findViewById(R.id.productImage);
             productImageCopy = (ImageView) view.findViewById(R.id.productImageCopy);
-            icon_drop_down = (TextView) view.findViewById(R.id.icon_drop_down);
             rupees_icon = (TextView) view.findViewById(R.id.rupees_icon);
-            tv_notice = (TextView) view.findViewById(R.id.tv_notice);
             tv_or = (TextView) view.findViewById(R.id.tv_or);
             textView_addToCart = (TextView) view.findViewById(R.id.textView_addToCart);
             orderLayout = (LinearLayout) view.findViewById(R.id.orderLayout);
@@ -247,6 +233,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             textView_nos = (TextView) view.findViewById(R.id.textView_nos);
             increase_Product = (TextView) view.findViewById(R.id.increase_Product);
             decrement_Product = (TextView) view.findViewById(R.id.decrement_Product);
+            productSubTitle = (TextView) view.findViewById(R.id.productSubTitle);
             productTitle.setTypeface(medium);
 //            icon_drop_down.setTypeface(materialDesignIcons);
 //            icon_drop_down.setText(Html.fromHtml("&#xf140;"));
@@ -255,7 +242,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             productDetails.setTypeface(regular);
             productPrice.setTypeface(medium);
             textView_addToCart.setTypeface(medium);
-            tv_notice.setTypeface(regular);
+            productSubTitle.setTypeface(regular);
             tv_discount.setTypeface(italic);
         }
     }

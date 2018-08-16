@@ -280,6 +280,16 @@ public class Result {
 
     private int ProductId;
     private String ProductName;
+
+    public String getProductSubTitle() {
+        return ProductSubTitle;
+    }
+
+    public void setProductSubTitle(String productSubTitle) {
+        ProductSubTitle = productSubTitle;
+    }
+
+    private String ProductSubTitle;
     private float UnitPrice;
     private float GST;
     private float Discount;
@@ -363,7 +373,13 @@ public class Result {
 
     private String ProductDetails;
 
-    public String getProductDetails() {
+    public String getProductDetails()
+
+
+
+
+
+    {
         return ProductDetails;
     }
 

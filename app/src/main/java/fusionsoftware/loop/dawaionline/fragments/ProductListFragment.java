@@ -19,17 +19,24 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import fusionsoftware.loop.dawaionline.R;
 import fusionsoftware.loop.dawaionline.activity.DashboardActivity;
 import fusionsoftware.loop.dawaionline.adapter.ProductListAdapter;
+import fusionsoftware.loop.dawaionline.adapter.SelectCatagoryAdapter;
 import fusionsoftware.loop.dawaionline.balltrianglecustomprogress.BallTriangleDialog;
 import fusionsoftware.loop.dawaionline.cartanimation.CircleAnimationUtil;
 import fusionsoftware.loop.dawaionline.database.DbHelper;
 import fusionsoftware.loop.dawaionline.framework.IAsyncWorkCompletedCallback;
 import fusionsoftware.loop.dawaionline.framework.ServiceCaller;
+import fusionsoftware.loop.dawaionline.model.ContentDataAsArray;
 import fusionsoftware.loop.dawaionline.model.Data;
+import fusionsoftware.loop.dawaionline.model.Result;
 import fusionsoftware.loop.dawaionline.utilities.CompatibilityUtility;
 import fusionsoftware.loop.dawaionline.utilities.FontManager;
 import fusionsoftware.loop.dawaionline.utilities.Utility;
@@ -73,9 +80,8 @@ public class ProductListFragment extends Fragment {
     private Context context;
     View view;
     TextView tv_placeOrder, title;
-    private List<Data> productList;
+    private List<Result> productList;
     Typeface materialDesignIcons, bold;
-    int StoreId;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -94,14 +100,13 @@ public class ProductListFragment extends Fragment {
         rootActivity.setScreenSave(false);
         materialDesignIcons = FontManager.getFontTypefaceMaterialDesignIcons(context, "fonts/materialdesignicons-webfont.otf");
         init();
-        getStore();
         getAllProductList();
         return view;
     }
 
     // initilization............
     private void init() {
-
+        productList = new ArrayList<>();
         linearLayout = (LinearLayout) view.findViewById(R.id.linearLayout);
         recyclerView = (RecyclerView) view.findViewById(R.id.CategoriesItems_recycler_view);
         recyclerView.setHasFixedSize(true);
@@ -120,13 +125,11 @@ public class ProductListFragment extends Fragment {
     }
 
 
-    private void setProductData() {
-        DbHelper dbHelper = new DbHelper(context);
+    private void setProductData(List<Result> productList) {
         title.setText(categoryName);
         title.setTypeface(bold);
-        productList = dbHelper.GetAllProductBasedOnCategoryIdData(categoryId);
         if (productList != null && productList.size() > 0) {
-            ProductListAdapter adapter = new ProductListAdapter(context, productList, categoryId);
+            ProductListAdapter adapter = new ProductListAdapter(context, productList);
             recyclerView.setAdapter(adapter);
             adapter.setActionListener(new ProductListAdapter.ProductItemActionListener() {
                 @Override
@@ -181,13 +184,6 @@ public class ProductListFragment extends Fragment {
         linearLayout.addView(view);
     }
 
-    private void getStore() {
-        SharedPreferences StorePrefs = context.getSharedPreferences("StoreIdPreferences", Context.MODE_PRIVATE);
-        StoreId = 0;
-        if (StorePrefs != null) {
-            StoreId = StorePrefs.getInt("StoreId", 0);
-        }
-    }
 
     //get all Product list data
     private void getAllProductList() {
@@ -195,11 +191,15 @@ public class ProductListFragment extends Fragment {
             final BallTriangleDialog dotDialog = new BallTriangleDialog(context);
             dotDialog.show();
             ServiceCaller serviceCaller = new ServiceCaller(context);
-            serviceCaller.callAllProductListService(categoryId, new IAsyncWorkCompletedCallback() {
+            serviceCaller.callProductData(categoryId, new IAsyncWorkCompletedCallback() {
                 @Override
                 public void onDone(String workName, boolean isComplete) {
                     if (isComplete) {
-                        setProductData();
+                        ContentDataAsArray contentDataAsArray = new Gson().fromJson(workName, ContentDataAsArray.class);
+                        for (Result result : contentDataAsArray.getResults()) {
+                            productList.addAll(Arrays.asList(result));
+                        }
+                        setProductData(productList);
                     } else {
                         noDataFound();
                     }
@@ -207,7 +207,6 @@ public class ProductListFragment extends Fragment {
                     if (dotDialog.isShowing()) {
                         dotDialog.dismiss();
                     }
-
                 }
             });
         } else {

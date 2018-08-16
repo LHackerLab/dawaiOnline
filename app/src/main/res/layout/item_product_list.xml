@@ -61,7 +61,17 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dimValue_2"
                         android:textColor="@color/primary_text"
-                        android:textSize="@dimen/dimTextSize_16" />
+                        android:textSize="@dimen/dimTextSize_14" />
+
+                    <TextView
+                        android:id="@+id/productSubTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimValue_5"
+                        android:gravity="left"
+                        android:singleLine="true"
+                        android:textColor="@color/secondary_text"
+                        android:textSize="@dimen/dimTextSize_12" />
 
                     <TextView
                         android:id="@+id/productDetails"
@@ -71,17 +81,17 @@
                         android:gravity="left"
                         android:singleLine="true"
                         android:textColor="@color/secondary_text"
-                        android:textSize="@dimen/dimTextSize_14" />
+                        android:textSize="@dimen/dimTextSize_12" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimValue_7"
                         android:orientation="horizontal">
 
                         <LinearLayout
-                            android:layout_width="0dp"
+                            android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_weight=".8"
                             android:gravity="left|center"
                             android:orientation="horizontal">
 
@@ -116,16 +126,6 @@
                                 android:textColor="@color/primary_text"
                                 android:textSize="@dimen/dimTextSize_14" />
                         </LinearLayout>
-
-                        <TextView
-                            android:id="@+id/icon_drop_down"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.2"
-                            android:gravity="center|top"
-                            android:padding="@dimen/dimValue_5"
-                            android:textColor="@color/green"
-                            android:textSize="@dimen/dimTextSize_25" />
                     </LinearLayout>
 
 
@@ -281,24 +281,6 @@
                         android:text="@string/Addtocart"
                         android:textColor="@color/white"
                         android:textSize="@dimen/dimTextSize_14" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/linearLayout_notice"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/dimValue_10"
-                    android:visibility="gone">
-                    <!--android:visibility="gone">-->
-
-                    <TextView
-                        android:id="@+id/tv_notice"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/notice"
-                        android:textSize="@dimen/dimTextSize_12" />
-
 
                 </LinearLayout>
             </LinearLayout>
