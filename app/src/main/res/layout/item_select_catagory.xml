@@ -23,7 +23,7 @@
             <fusionsoftware.loop.dawaionline.utilities.CircleImageView
                 android:id="@+id/image_catagory"
                 android:layout_width="0dp"
-                android:layout_height="@dimen/size_50px"
+                android:layout_height="@dimen/size_70px"
                 android:layout_weight=".4"
                 android:scaleType="centerCrop" />
 

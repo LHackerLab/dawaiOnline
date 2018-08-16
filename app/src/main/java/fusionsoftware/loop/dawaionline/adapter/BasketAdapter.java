@@ -35,13 +35,13 @@ import fusionsoftware.loop.dawaionline.utilities.Utility;
  * Created by user on 8/14/2017.
  */
 public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.ViewHolder> {
-    private List<Data> basketdata;
+    private List<MyBasket> basketdata;
     private Context context;
     private Typeface materialDesignIcons, medium, regular, bold;
     DbHelper dbHelper;
     Data data;
 
-    public BasketAdapter(Context context, List<Data> basketdata) {
+    public BasketAdapter(Context context, List<MyBasket> basketdata) {
         this.context = context;
         this.basketdata = basketdata;
         this.medium = FontManager.getFontTypeface(context, "fonts/roboto.medium.ttf");
@@ -60,13 +60,13 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.ViewHolder
     @Override
     public void onBindViewHolder(final ViewHolder viewHolder, final int i) {
         dbHelper = new DbHelper(context);
-        viewHolder.storeName.setText(basketdata.get(i).getStoreName());
+        viewHolder.categoryName.setText(basketdata.get(i).getCategoryName());
         viewHolder.checkOutIcon.setText(Html.fromHtml("&#xf054;"));
-        List<MyBasket> orderList = dbHelper.GetAllBasketOrderDataBasedOnStoreId(basketdata.get(i).getStoreId());
+        List<MyBasket> orderList = dbHelper.GetAllBasketOrderDataBasedOnCategoryId(basketdata.get(i).getCategoryId());
         if (orderList != null && orderList.size() > 0) {
             LinearLayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
             viewHolder.recycleView_inner.setLayoutManager(layoutManager);
-            BasketInnerAdapter adapter = new BasketInnerAdapter(context, orderList, basketdata, i, basketdata.get(i).getStoreId(), basketdata.get(i).getCategoryId());
+            BasketInnerAdapter adapter = new BasketInnerAdapter(context, orderList, basketdata, i, basketdata.get(i).getCategoryId());
             viewHolder.recycleView_inner.setAdapter(adapter);
         }
 
@@ -74,13 +74,8 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.ViewHolder
         viewHolder.checkoutLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (data.getStoreStatus().equalsIgnoreCase("true")) {
-                    Utility.setStoreIDFromSharedPreferences(context, basketdata.get(i).getStoreId());
-                    UserAddressListFragment fragment = UserAddressListFragment.newInstance(true, basketdata.get(i).getStoreId());
-                    moveFragment(fragment);
-                } else {
-                    Utility.alertForErrorMessage("Sorry store is closed.", context);
-                }
+                UserAddressListFragment fragment = UserAddressListFragment.newInstance(true, 0);
+                moveFragment(fragment);
             }
         });
     }
@@ -101,19 +96,19 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.ViewHolder
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         RecyclerView recycleView_inner;
-        TextView storeName, checkOut, checkOutIcon;
+        TextView categoryName, checkOut, checkOutIcon;
         LinearLayout checkoutLayout;
 
         public ViewHolder(View view) {
             super(view);
             recycleView_inner = (RecyclerView) view.findViewById(R.id.recycleView_inner);
             //   edit = (TextView) view.findViewById(R.id.edit);
-            storeName = (TextView) view.findViewById(R.id.storeName);
+            categoryName = (TextView) view.findViewById(R.id.categoryName);
             checkOut = (TextView) view.findViewById(R.id.checkOut);
             checkOutIcon = (TextView) view.findViewById(R.id.checkOutIcon);
             checkoutLayout = (LinearLayout) view.findViewById(R.id.checkoutLayout);
             checkOut.setTypeface(medium);
-            storeName.setTypeface(medium);
+            categoryName.setTypeface(medium);
             //edit.setTypeface(medium);
             checkOutIcon.setTypeface(materialDesignIcons);
         }

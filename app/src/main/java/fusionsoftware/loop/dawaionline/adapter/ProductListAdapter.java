@@ -50,14 +50,16 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     //HashSet<Integer> selectedPosition = new HashSet<>();
     private Typeface materialDesignIcons, medium, italic, regular;
     private ProductItemActionListener actionListener;
+    String categoryName;
 
     public void setActionListener(ProductItemActionListener actionListener) {
         this.actionListener = actionListener;
     }
 
-    public ProductListAdapter(Context context, List<Result> productData) {
+    public ProductListAdapter(Context context, List<Result> productData, String categoryName) {
         this.context = context;
         this.productData = productData;
+        this.categoryName = categoryName;
         this.medium = FontManager.getFontTypeface(context, "fonts/roboto.medium.ttf");
         this.regular = FontManager.getFontTypeface(context, "fonts/roboto.regular.ttf");
         this.italic = FontManager.getFontTypeface(context, "fonts/roboto.italic.ttf");
@@ -79,77 +81,36 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         viewHolder.productPrice.setText(String.valueOf(productData.get(position).getUnitPrice()));
         viewHolder.productDetails.setText(productData.get(position).getProductDetails());
         viewHolder.tv_discount.setText(String.valueOf(productData.get(position).getDiscount()) + "% off");
-//        if (selectedPosition.contains(position)) {
-//            viewHolder.orderLayout.setVisibility(View.VISIBLE);
-//            viewHolder.icon_drop_down.setText(Html.fromHtml("&#xf143;"));
-//        } else {
-//            viewHolder.orderLayout.setVisibility(View.GONE);
-//            viewHolder.icon_drop_down.setText(Html.fromHtml("&#xf140;"));
-//        }
         if (productData.get(position).getCountValue() != 0) {
-
-            if (productData.get(position).getUOM() != null && productData.get(position).getUOM().equals("kg")) {
-                viewHolder.textView_nos.setText(String.valueOf(productData.get(position).getCountValue()));
-            } else {
-                DecimalFormat df = new DecimalFormat("0");
-                String value = df.format(productData.get(position).getCountValue());
-                viewHolder.textView_nos.setText(value);
-            }
+            DecimalFormat df = new DecimalFormat("0");
+            String value = df.format(productData.get(position).getCountValue());
+            viewHolder.textView_nos.setText(value);
         }
 
         viewHolder.increase_Product.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                float count = productData.get(position).getCountValue();
-                if (productData.get(position).getUOM() != null && productData.get(position).getUOM().equals("kg")) {
-                    productData.get(position).setCountValue((float) (count + 0.5));
-                    //  addProduct((float) (count + 0.5), position, true);
-                } else {
-                    int count1 = (int) productData.get(position).getCountValue();
-                    productData.get(position).setCountValue(count1 + 1);
-                    //   addProduct(count1 + 1, position, true);
-                }
+                int count1 = (int) productData.get(position).getCountValue();
+                productData.get(position).setCountValue(count1 + 1);
+                //   addProduct(count1 + 1, position, true);
                 notifyDataSetChanged();
             }
         });
         viewHolder.decrement_Product.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (productData.get(position).getUOM() != null && productData.get(position).getUOM().equals("kg")) {
-                    float count = productData.get(position).getCountValue();
-                    if (count > 0.5) {
-                        productData.get(position).setCountValue((float) (count - 0.5));
-                        // addProduct((float) (count - 0.5), position, true);
-                    }
-                } else {
-                    int count1 = (int) productData.get(position).getCountValue();
-                    if (count1 > 1) {
-                        productData.get(position).setCountValue(count1 - 1);
-                        // addProduct(count1 - 1, position, true);
-                    }
+                int count1 = (int) productData.get(position).getCountValue();
+                if (count1 > 1) {
+                    productData.get(position).setCountValue(count1 - 1);
+                    // addProduct(count1 - 1, position, true);
                 }
                 notifyDataSetChanged();
             }
 
         });
-//        viewHolder.icon_drop_down.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//                if (selectedPosition.contains(position)) {
-//                    selectedPosition.clear();
-//                } else {
-//                    selectedPosition.clear();
-//                    selectedPosition.add(position);
-//                    notifyItemChanged(position);
-//                }
-//                notifyDataSetChanged();
-//            }
-//        });
         viewHolder.textView_addToCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Toast.makeText(context, productData.get(position).getCountValue() + " " + productData.get(position).getUOM() + productName + " ADD Into Your Card", Toast.LENGTH_LONG).show();
                 final DashboardActivity rootActivity = (DashboardActivity) context;
                 if (rootActivity != null) {
                     if (actionListener != null)
@@ -174,23 +135,12 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         String productName = productData.get(position).getProductName();
         myBasket.setProductName(productName);
         myBasket.setCategoryId(productData.get(position).getCategoryId());
-        if (productData.get(position).getUOM() != null && productData.get(position).getUOM().equalsIgnoreCase("kg")) {
-            myBasket.setQuantity(productData.get(position).getCountValue());
-        } else {
-            myBasket.setQuantity((float) productData.get(position).getCountValue());
-        }
+        myBasket.setQuantity(productData.get(position).getCountValue());
         myBasket.setPrice(productData.get(position).getUnitPrice());
         myBasket.setDiscount(productData.get(position).getDiscount());
-        myBasket.setUOM(productData.get(position).getUOM());
-        if (getCurrentDateTime() != null) {
-            myBasket.setOrderTime(getCurrentDateTime());
-        }
-//        Data storeData = dbHelper.getStoreData(storeId);//get store details
-//        if (storeData != null) {
-//            storeData.setCategoryId(categoryId);
-//            dbHelper.upsertSelectedStoreData(storeData);
+        myBasket.setOrderTime(getCurrentDateTime());
+        myBasket.setCategoryName(categoryName);
         dbHelper.upsertBasketOrderData(myBasket);
-//        }
         notifyDataSetChanged();
     }
 
@@ -212,9 +162,9 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView productTitle, tv_or, tv_discount, productPrice, rupees_icon, productDetails, textView_addToCart,
-                productSubTitle, wieght_1kg, increase_Product, textView_nos, decrement_Product;
+                productSubTitle, increase_Product, textView_nos, decrement_Product;
         ImageView productImage, productImageCopy;
-        LinearLayout orderLayout, linearLayout_liter, laout_or, layout_enter_manually, linearLayout_weight1;
+        LinearLayout orderLayout;
         CardView card_view;
 
         public ViewHolder(View view) {
@@ -235,8 +185,6 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             decrement_Product = (TextView) view.findViewById(R.id.decrement_Product);
             productSubTitle = (TextView) view.findViewById(R.id.productSubTitle);
             productTitle.setTypeface(medium);
-//            icon_drop_down.setTypeface(materialDesignIcons);
-//            icon_drop_down.setText(Html.fromHtml("&#xf140;"));
             rupees_icon.setTypeface(materialDesignIcons);
             rupees_icon.setText(Html.fromHtml("&#xf1af;"));
             productDetails.setTypeface(regular);

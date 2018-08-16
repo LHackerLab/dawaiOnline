@@ -14,6 +14,7 @@ public class MyBasket {
     public void setCountValue(int countValue) {
         this.countValue = countValue;
     }
+
     private int ProductId;
     private String ProductName;
     private int StoreId;
@@ -31,6 +32,7 @@ public class MyBasket {
 
     private String OrderTime;
     private float discount;
+
     public int getProductId() {
         return ProductId;
     }
@@ -80,6 +82,15 @@ public class MyBasket {
     }
 
     private int CategoryId;
+    private String CategoryName;
+
+    public String getCategoryName() {
+        return CategoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        CategoryName = categoryName;
+    }
 
     public int getCategoryId() {
         return CategoryId;

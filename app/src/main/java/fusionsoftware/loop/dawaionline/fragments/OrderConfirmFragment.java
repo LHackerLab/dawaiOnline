@@ -220,7 +220,7 @@ public class OrderConfirmFragment extends Fragment implements View.OnClickListen
         Data userData = dbHelper.getUserData();
         loginID = userData.getLoginID();
         Addresses addresses = dbHelper.getAllAddressesData(addressId);
-        List<MyBasket> orderList = dbHelper.GetAllBasketOrderDataBasedOnStoreId(storeId);
+        List<MyBasket> orderList = dbHelper.GetAllBasketOrderDataBasedOnCategoryId(storeId);
         if (orderList != null && orderList.size() > 0) {
             adapter = new OrderConfirmAdapter(context, orderList, storeId);
             recyclerView.setAdapter(adapter);
@@ -342,7 +342,7 @@ public class OrderConfirmFragment extends Fragment implements View.OnClickListen
     //remove data from cart.................
     private void clearBasketData() {
         final DbHelper dbHelper = new DbHelper(context);
-        dbHelper.deleteBasketOrderDataByStoreId(storeId);
+//        dbHelper.deleteBasketOrderDataByStoreId(storeId);
     }
 
 

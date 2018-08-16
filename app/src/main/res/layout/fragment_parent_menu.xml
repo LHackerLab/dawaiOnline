@@ -389,11 +389,11 @@
             android:layout_marginLeft="@dimen/dimValue_10"
             android:layout_marginRight="@dimen/dimValue_10"
             android:layout_marginTop="@dimen/dimValue_5"
-            android:background="@drawable/capsuleshape_fill_button"
-            android:drawableRight="@drawable/ic_trending_up_black_24dp"
+            android:background="@drawable/capsuleshape_fill_button_blue"
             android:drawableLeft="@drawable/ic_menu_slideshow"
-            android:paddingLeft="@dimen/dimValue_10"
+            android:drawableRight="@drawable/ic_trending_up_black_24dp"
             android:gravity="center"
+            android:paddingLeft="@dimen/dimValue_10"
             android:paddingRight="@dimen/dimValue_10"
             android:text="Order with Prescription"
             android:textAllCaps="false"
@@ -410,7 +410,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_marginLeft="@dimen/dimValue_5"
-                android:layout_marginRight="@dimen/dimValue_5"/>
+                android:layout_marginRight="@dimen/dimValue_5" />
 
             <fusionsoftware.loop.dawaionline.viewpagerindicator.CirclePageIndicator
                 android:id="@+id/indicator"
@@ -425,20 +425,30 @@
                 app:pageColor="#FF0000"
                 app:snap="false" />
         </RelativeLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dimValue_10"
+            android:layout_marginRight="@dimen/dimValue_10"
+            android:layout_marginTop="@dimen/dimValue_5"
+            android:text="Trending Articles"
+            android:textColor="@color/shop_name"
+            android:textSize="@dimen/dimTextSize_14" />
         <!--view pager -->
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="@dimen/size_150px"
-            android:layout_marginTop="@dimen/dimValue_10"
-            android:layout_marginBottom="@dimen/dimValue_10">
+            android:layout_marginBottom="@dimen/dimValue_10"
+            android:layout_marginTop="@dimen/dimValue_10">
 
             <android.support.v4.view.ViewPager
                 android:id="@+id/pagertwo"
                 android:layout_width="fill_parent"
-                android:layout_marginLeft="@dimen/dimValue_5"
-                android:layout_marginRight="@dimen/dimValue_5"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true" />
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="@dimen/dimValue_5"
+                android:layout_marginRight="@dimen/dimValue_5" />
 
             <fusionsoftware.loop.dawaionline.viewpagerindicator.CirclePageIndicator
                 android:id="@+id/indicatortwo"

@@ -1,14 +1,15 @@
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="microsys.evergreen.fragment.MyBasketFragment">
+    android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/layout_basket"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:background="@drawable/inner_background"
+        android:layout_weight=".92"
         android:orientation="vertical">
 
         <TextView
@@ -44,21 +45,21 @@
     <LinearLayout
         android:id="@+id/continuelayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_alignParentBottom="true"
+        android:layout_weight=".08"
         android:layout_gravity="bottom"
         android:background="@color/Yellow_color"
         android:gravity="center"
-        android:padding="@dimen/dimValue_13"
         android:visibility="gone">
 
         <TextView
             android:id="@+id/tv_continue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Build Order"
+            android:text="@string/Continue"
             android:textColor="@color/text_color_white"
-            android:textSize="@dimen/dimTextSize_20" />
+            android:textSize="@dimen/dimTextSize_14" />
 
         <TextView
             android:id="@+id/arrow_icon"
@@ -69,4 +70,4 @@
             android:textColor="@color/text_color_white"
             android:textSize="@dimen/dimTextSize_24" />
     </LinearLayout>
-</android.support.design.widget.CoordinatorLayout>
+</LinearLayout>

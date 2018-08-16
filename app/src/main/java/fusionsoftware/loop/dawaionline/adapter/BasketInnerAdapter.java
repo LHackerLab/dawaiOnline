@@ -31,21 +31,17 @@ import fusionsoftware.loop.dawaionline.utilities.FontManager;
  */
 
 public class BasketInnerAdapter extends RecyclerView.Adapter<BasketInnerAdapter.ViewHolder> {
-    private List<MyBasket> basketItemdata;
+    private List<MyBasket> basketItemdata, categoryData;
     private Context context;
     private Typeface materialDesignIcons, medium, regular, bold;
-    private List<Data> storeData;
-    private int storePosition;
-    private int storeId;
-    private int CategoryId;
+    private int categoryPosition,categoryId;
 
-    public BasketInnerAdapter(Context context, List<MyBasket> basketItemdata, List<Data> storeData, int storePosition, int storeId, int CategoryId) {
+    public BasketInnerAdapter(Context context, List<MyBasket> basketItemdata, List<MyBasket> categoryData, int categoryPosition,int categoryId) {
         this.context = context;
         this.basketItemdata = basketItemdata;
-        this.storeData = storeData;
-        this.storePosition = storePosition;
-        this.storeId = storeId;
-        this.CategoryId = CategoryId;
+        this.categoryData = categoryData;
+        this.categoryPosition = categoryPosition;
+        this.categoryId = categoryId;
         this.medium = FontManager.getFontTypeface(context, "fonts/roboto.medium.ttf");
         this.regular = FontManager.getFontTypeface(context, "fonts/roboto.regular.ttf");
         this.bold = FontManager.getFontTypeface(context, "fonts/roboto.bold.ttf");
@@ -62,115 +58,78 @@ public class BasketInnerAdapter extends RecyclerView.Adapter<BasketInnerAdapter.
     @Override
     public void onBindViewHolder(final ViewHolder viewHolder, final int i) {
         if (basketItemdata.get(i).getQuantity() != 0) {
-            if (basketItemdata.get(i).getUOM() != null && basketItemdata.get(i).getUOM().equalsIgnoreCase("kg")) {
-                viewHolder.Quantity.setText(String.valueOf(basketItemdata.get(i).getQuantity()));
-            } else {
-                DecimalFormat df = new DecimalFormat("0");
-                String value = df.format(basketItemdata.get(i).getQuantity());
-                viewHolder.Quantity.setText(value);
-            }
+            DecimalFormat df = new DecimalFormat("0");
+            String value = df.format(basketItemdata.get(i).getQuantity());
+            viewHolder.Quantity.setText(value);
         }
 
-
-//        if (basketItemdata.get(i).getUOM().equals("kg")) {
-//            viewHolder.Quantity.setText(basketItemdata.get(i).getQuantity() + " " + basketItemdata.get(i).getUOM());
-//        }else{
-//            viewHolder.Quantity.setText(String.valueOf((int)(basketItemdata.get(i).getQuantity()) + " " + basketItemdata.get(i).getUOM()));
-//        }
         viewHolder.item_name.setText(basketItemdata.get(i).getProductName());
-        viewHolder.itemPrice.setText(String.valueOf(basketItemdata.get(i).getPrice()) + " " + basketItemdata.get(i).getUOM());
+        viewHolder.itemPrice.setText(String.valueOf(basketItemdata.get(i).getPrice()));
         viewHolder.increase_Product.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                float count = basketItemdata.get(i).getQuantity();
-                if (basketItemdata.get(i).getUOM() != null && basketItemdata.get(i).getUOM().equalsIgnoreCase("kg")) {
-                    basketItemdata.get(i).setQuantity((float) (count + 0.5));
-                    addProduct(i, true);
-                } else {
-                    int count1 = (int) basketItemdata.get(i).getQuantity();
-                    basketItemdata.get(i).setQuantity(count1 + 1);
-                    addProduct(i, true);
-                }
+                int count1 = (int) basketItemdata.get(i).getQuantity();
+                basketItemdata.get(i).setQuantity(count1 + 1);
+                addProduct(i);
                 notifyDataSetChanged();
             }
         });
-        viewHolder.decrement_Product.setOnClickListener(new View.OnClickListener() {
+        viewHolder.decrement_Product.setOnClickListener(new View.OnClickListener()
+
+        {
             @Override
             public void onClick(View view) {
-                if (basketItemdata.get(i).getUOM() != null && basketItemdata.get(i).getUOM().equalsIgnoreCase("kg")) {
-                    float count = basketItemdata.get(i).getQuantity();
-                    if (count > 0.5) {
-                        basketItemdata.get(i).setQuantity((float) (count - 0.5));
-                        addProduct(i, false);
-                    }
-                } else {
-                    int count1 = (int) basketItemdata.get(i).getQuantity();
-                    if (count1 > 1) {
-                        basketItemdata.get(i).setQuantity(count1 - 1);
-                        addProduct(i, false);
-                    }
+                int count1 = (int) basketItemdata.get(i).getQuantity();
+                if (count1 > 1) {
+                    basketItemdata.get(i).setQuantity(count1 - 1);
+                    addProduct(i);
                 }
                 notifyDataSetChanged();
             }
         });
-        viewHolder.icon_delete.setOnClickListener(new View.OnClickListener() {
+        viewHolder.icon_delete.setOnClickListener(new View.OnClickListener()
+
+        {
             @Override
             public void onClick(View view) {
                 DbHelper dbHelper = new DbHelper(context);
                 dbHelper.deleteBasketOrderDataByProductId(basketItemdata.get(i).getProductId());
                 basketItemdata.remove(i);
                 if (basketItemdata.size() == 0) {//delete store data if all item deleted from this store
-//                    dbHelper.deleteSelectedStoreById(storeId);
-                    storeData.remove(storePosition);
-                    if (storeData.size() == 0) {
+                    dbHelper.deleteBasketOrderDataByCategoryId(categoryId);
+                    categoryData.remove(categoryPosition);
+                    if (categoryData.size() == 0) {
                         ((FragmentActivity) context).getSupportFragmentManager().popBackStack();//back to profile screen
                     } else {
                         Intent myIntent = new Intent("basketItem");
                         myIntent.putExtra("basketFlag", true);
                         LocalBroadcastManager.getInstance(context).sendBroadcast(myIntent);
                     }
-                }
-                notifyDataSetChanged();
+                    }
+                    notifyDataSetChanged();
             }
         });
     }
 
     //add product in database
-    private void addProduct(int position, Boolean orderAddOrDelete) {
+    private void addProduct(int position) {
         float Quantity = 0;
         DbHelper dbHelper = new DbHelper(context);
         MyBasket myBasket = new MyBasket();
         myBasket.setProductId(basketItemdata.get(position).getProductId());
         String productName = basketItemdata.get(position).getProductName();
         myBasket.setProductName(productName);
-        myBasket.setStoreId(storeId);
-        myBasket.setCategoryId(CategoryId);
+        myBasket.setCategoryId(basketItemdata.get(position).getCategoryId());
         Quantity = basketItemdata.get(position).getQuantity();
         myBasket.setQuantity(Quantity);
         myBasket.setPrice(basketItemdata.get(position).getPrice());
         myBasket.setDiscount(basketItemdata.get(position).getDiscount());
-        String UOM = basketItemdata.get(position).getUOM();
-        myBasket.setUOM(UOM);
-        if (Quantity != 0) {
-            dbHelper.upsertBasketOrderData(myBasket);
-//            Data storeData = dbHelper.getStoreData(storeId);//get store details
-//            if (storeData != null) {
-//                storeData.setCategoryId(CategoryId);
-//                dbHelper.upsertSelectedStoreData(storeData);
-//            }
-        }
-        if (orderAddOrDelete) {
-            // Toast.makeText(context, Quantity +  UOM + " ADD Into Your Card", Toast.LENGTH_SHORT).show();
-        } else {
-            if (Quantity == 0) {//if quantity 0 then delete order in data base
-                dbHelper.deleteBasketOrderDataByProductId(basketItemdata.get(position).getProductId());//delete item
-            }
-            if (Quantity != 0) {
-                //   Toast.makeText(context, Quantity + UOM + " Remove Into Your Card", Toast.LENGTH_SHORT).show();
-            }
-        }
+        myBasket.setCategoryName(basketItemdata.get(position).getCategoryName());
+        dbHelper.upsertBasketOrderData(myBasket);
+//        if (Quantity == 0) {//if quantity 0 then delete order in data base
+//            dbHelper.deleteBasketOrderDataByProductId(basketItemdata.get(position).getProductId());//delete item
+//        }
         notifyDataSetChanged();
-
     }
 
 

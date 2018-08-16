@@ -30,15 +30,16 @@
     <color name="login_box_outline">#D6CB6F</color>
     <color name="down_green">#D8DDB5</color>
     <color name="Yellow_light">#EBE685</color>
+    <color name="black">#050500</color>
 
- <!--new color-->
+    <!--new color-->
     <!--second time color code given by sir-->
     <color name="Header_bg">#388e3c</color>
     <color name="Header_fg">#ffffff</color>
     <color name="Body_bg">#eeeeee</color>
     <color name="Yellow_color">#ffc107</color>
     <color name="Light_Green">#8bc34a</color>
-    <color name="Dark_color"> #212121</color>
+    <color name="Dark_color">#212121</color>
     <color name="Dark_red">#E73C4E</color>
     <color name="Submit_btnBg">#D9CC6E</color>
     <color name="Light_Color_Disable_btns">#666666</color>

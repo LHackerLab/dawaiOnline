@@ -107,14 +107,14 @@ public class SelectCategoryFragment extends Fragment {
         Typeface bold = FontManager.getFontTypeface(context, "fonts/roboto.bold.ttf");
         title.setTypeface(bold);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
-        recyclerView.setLayoutManager(new GridLayoutManager(context, 2));
+//        recyclerView.setLayoutManager(new GridLayoutManager(context, 2));
         recyclerView.setHasFixedSize(false);
 //        if (CompatibilityUtility.isTablet(context)) {
 //            gaggeredGridLayoutManager = new StaggeredGridLayoutManager(3, LinearLayoutManager.VERTICAL);
 //        } else {
-//            gaggeredGridLayoutManager = new StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL);
+        gaggeredGridLayoutManager = new StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL);
 //        }
-        // recyclerView.setLayoutManager(gaggeredGridLayoutManager);
+        recyclerView.setLayoutManager(gaggeredGridLayoutManager);
 
     }
 

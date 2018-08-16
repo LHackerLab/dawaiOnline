@@ -25,6 +25,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 
 import fusionsoftware.loop.dawaionline.R;
@@ -73,6 +75,7 @@ public class MyBasketFragment extends Fragment implements View.OnClickListener {
     private double totalPrice = 0;
     private List<MyBasket> basketdata;
     BasketAdapter adapter;
+    RecyclerView recyclerView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -117,29 +120,48 @@ public class MyBasketFragment extends Fragment implements View.OnClickListener {
         layout_basket = (LinearLayout) view.findViewById(R.id.layout_basket);
         continuelayout.setOnClickListener(this);
         setIcon();//set the icons
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+        recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
         DbHelper dbHelper = new DbHelper(context);
-        // List<MyBasket> orderList = dbHelper.GetAllBasketOrderData();
-//        List<Data> orderList = dbHelper.getAllSelectedStoreData();
-//        if (orderList != null && orderList.size() > 0) {
-//            adapter = new BasketAdapter(context, orderList);
-//            recyclerView.setAdapter(adapter);
-//        } else {
-        LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.no_data_found, null);
-        TextView nodataIcon = (TextView) view.findViewById(R.id.nodataIcon);
-        TextView nodata = (TextView) view.findViewById(R.id.nodata);
-        nodata.setTypeface(regular);
-        nodataIcon.setTypeface(materialDesignIcons);
-        nodataIcon.setText(Html.fromHtml("&#xf187;"));
-        nodata.setText("No Order Found In Basket");
-        layout_basket.setGravity(Gravity.CENTER);
-        layout_basket.removeAllViews();
-        layout_basket.addView(view);
-        continuelayout.setVisibility(View.VISIBLE);
-//        }
+        List<MyBasket> orderList = dbHelper.GetAllBasketOrderData();
+        if (orderList != null && orderList.size() > 0) {
+            shortBasketData(orderList);
+        } else {
+            LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View view = inflater.inflate(R.layout.no_data_found, null);
+            TextView nodataIcon = (TextView) view.findViewById(R.id.nodataIcon);
+            TextView nodata = (TextView) view.findViewById(R.id.nodata);
+            nodata.setTypeface(regular);
+            nodataIcon.setTypeface(materialDesignIcons);
+            nodataIcon.setText(Html.fromHtml("&#xf187;"));
+            nodata.setText("No Order Found In Basket");
+            layout_basket.setGravity(Gravity.CENTER);
+            layout_basket.removeAllViews();
+            layout_basket.addView(view);
+            continuelayout.setVisibility(View.VISIBLE);
+        }
+    }
+
+    //sort  data.................
+    private void shortBasketData(List<MyBasket> resultList) {
+        List<MyBasket> newList = new ArrayList<MyBasket>();
+        for (MyBasket c : resultList) {
+            if (!categoryDataExist(newList, c.getCategoryName())) {
+                newList.add(c);
+            }
+        }
+        adapter = new BasketAdapter(context, newList);
+        recyclerView.setAdapter(adapter);
+    }
+
+    private boolean categoryDataExist(List<MyBasket> newList, String name) {
+        for (MyBasket c : newList) {
+            if (c.getCategoryName().equalsIgnoreCase(name)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     //notifiy adapter if data delete
@@ -149,13 +171,13 @@ public class MyBasketFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    //get message from basketinneradapter for notify adapter
+    //    get message from basketinneradapter for notify adapter
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equalsIgnoreCase("basketItem")) {
                 boolean basketFlag = intent.getBooleanExtra("basketFlag", false);
-                //Do whatever you want with the code here
+//                Do whatever you want with the code here
                 if (basketFlag) {
                     notifiyAdapter();
                 }
@@ -187,7 +209,7 @@ public class MyBasketFragment extends Fragment implements View.OnClickListener {
 
     //open home fragement
     private void setUpHomeFragment() {
-        YourOrderFragment fragment = YourOrderFragment.newInstance(0, 0);
+        ParentFragment fragment = ParentFragment.newInstance(0, 0);
         moveFragment(fragment);
     }
 

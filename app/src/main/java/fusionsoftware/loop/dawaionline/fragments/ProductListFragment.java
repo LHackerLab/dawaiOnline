@@ -129,7 +129,7 @@ public class ProductListFragment extends Fragment {
         title.setText(categoryName);
         title.setTypeface(bold);
         if (productList != null && productList.size() > 0) {
-            ProductListAdapter adapter = new ProductListAdapter(context, productList);
+            ProductListAdapter adapter = new ProductListAdapter(context, productList,categoryName);
             recyclerView.setAdapter(adapter);
             adapter.setActionListener(new ProductListAdapter.ProductItemActionListener() {
                 @Override

@@ -214,7 +214,7 @@ public class YourOrderFragment extends Fragment implements View.OnClickListener 
         Data userData = dbHelper.getUserData();
         Addresses addresses = dbHelper.getAllAddressesData(addressId);
         loginID = userData.getLoginID();
-        List<MyBasket> orderList = dbHelper.GetAllBasketOrderDataBasedOnStoreId(StoreId);
+        List<MyBasket> orderList = dbHelper.GetAllBasketOrderDataBasedOnCategoryId(StoreId);
         if (orderList != null && orderList.size() > 0) {
             adapter = new YourOrderAdpater(context, orderList, storeId);
             recyclerView.setAdapter(adapter);
