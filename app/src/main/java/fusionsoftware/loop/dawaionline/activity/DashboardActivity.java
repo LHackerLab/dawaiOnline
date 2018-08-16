@@ -22,30 +22,40 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import fusionsoftware.loop.dawaionline.R;
 import fusionsoftware.loop.dawaionline.adapter.NavMenuCustomAdapter;
+import fusionsoftware.loop.dawaionline.balltrianglecustomprogress.BallTriangleDialog;
 import fusionsoftware.loop.dawaionline.database.DbHelper;
 import fusionsoftware.loop.dawaionline.fragments.MyBasketFragment;
+import fusionsoftware.loop.dawaionline.fragments.ParentFragment;
 import fusionsoftware.loop.dawaionline.fragments.SelectCategoryFragment;
 import fusionsoftware.loop.dawaionline.framework.IAsyncWorkCompletedCallback;
 import fusionsoftware.loop.dawaionline.framework.ServiceCaller;
+import fusionsoftware.loop.dawaionline.model.ContentDataAsArray;
 import fusionsoftware.loop.dawaionline.model.Data;
 import fusionsoftware.loop.dawaionline.model.MyBasket;
+import fusionsoftware.loop.dawaionline.model.Result;
 import fusionsoftware.loop.dawaionline.utilities.CompatibilityUtility;
 import fusionsoftware.loop.dawaionline.utilities.FontManager;
+import fusionsoftware.loop.dawaionline.utilities.Utility;
 
 import static fusionsoftware.loop.dawaionline.utilities.Utility.isOnline;
 
@@ -59,6 +69,7 @@ public class DashboardActivity extends AppCompatActivity
     DrawerLayout drawer;
     ImageView image_logo, profileImage;
     private LinearLayout logoutLayout;
+    Spinner spinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,11 +99,40 @@ public class DashboardActivity extends AppCompatActivity
 //            moveFragment(fragment);
 //        } else {
         setUpDashboardFragment();
+        getCityList();
 //        }
         getUserProfileService();//get user profile
         setItemCart();// add item in cart...........
         Listmenu();//list menu
         setUserDetail();
+    }
+
+    private void getCityList() {
+        final List<String> stringList = new ArrayList<>();
+        if (Utility.isOnline(this)) {
+            final BallTriangleDialog dotDialog = new BallTriangleDialog(this);
+            dotDialog.show();
+            ServiceCaller serviceCaller = new ServiceCaller(this);
+            serviceCaller.callCityService(new IAsyncWorkCompletedCallback() {
+                @Override
+                public void onDone(String workName, boolean isComplete) {
+                    if (isComplete) {
+                        ContentDataAsArray contentDataAsArray = new Gson().fromJson(workName, ContentDataAsArray.class);
+                        for (Result result : contentDataAsArray.getResults()) {
+                            stringList.addAll(Arrays.asList(result.getCityName()));
+                        }
+                        ArrayAdapter<String> stringArrayAdapter = new ArrayAdapter<String>(DashboardActivity.this, android.R.layout.simple_spinner_dropdown_item, stringList);
+                       stringArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        spinner.setAdapter(stringArrayAdapter);
+                        if (dotDialog.isShowing()) {
+                            dotDialog.dismiss();
+                        }
+                    }
+                }
+            });
+        } else {
+            Toast.makeText(this, "No internet connection found", Toast.LENGTH_SHORT).show();
+        }
     }
 
 
@@ -150,7 +190,7 @@ public class DashboardActivity extends AppCompatActivity
         logoutLayout.setOnClickListener(this);
         phoneNumber = (TextView) findViewById(R.id.phoneNumber);
         cart_dot = (TextView) findViewById(R.id.cart_dot);
-
+        spinner = findViewById(R.id.spinner);
         cart.setOnClickListener(this);
     }
 
@@ -167,7 +207,7 @@ public class DashboardActivity extends AppCompatActivity
 
     //open default fragment
     private void setUpDashboardFragment() {
-        SelectCategoryFragment fragment = SelectCategoryFragment.newInstance(0, 0);
+        ParentFragment fragment = ParentFragment.newInstance(0, 0);
         moveFragment(fragment);
     }
 

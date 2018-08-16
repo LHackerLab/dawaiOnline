@@ -83,8 +83,37 @@ public class Result {
     }
 
     private int CategoryId;
+    private int cityId;
+
+    public String getCityId() {
+        return CityId;
+    }
+
+    public void setCityId(int cityId) {
+        this.cityId = cityId;
+    }
+
     private String CategoryName;
     private String CategoryPictures;
+    private String secondViewPager;
+
+    public String getSecondViewPager() {
+        return secondViewPager;
+    }
+
+    public void setSecondViewPager(String secondViewPager) {
+        this.secondViewPager = secondViewPager;
+    }
+
+    public String getFirstViewPager() {
+        return firstViewPager;
+    }
+
+    public void setFirstViewPager(String firstViewPager) {
+        this.firstViewPager = firstViewPager;
+    }
+
+    private String firstViewPager;
 
     public int getCategoryId() {
         return CategoryId;
@@ -160,15 +189,14 @@ public class Result {
     }
 
 
-    private String CityName;
-
+    private String cityName;
 
     public String getCityName() {
-        return CityName;
+        return cityName;
     }
 
-    public void setCityName(String CityName) {
-        this.CityName = CityName;
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
     }
 
     private int LocalityId;
@@ -374,9 +402,6 @@ public class Result {
     private String ProductDetails;
 
     public String getProductDetails()
-
-
-
 
 
     {

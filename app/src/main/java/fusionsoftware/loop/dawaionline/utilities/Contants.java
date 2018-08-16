@@ -46,7 +46,9 @@ public class Contants {
     public static final String UpdateAddress = "Address/UpdateAddress";
     public static final String GetAllAddress = "Address/GetAllAddress";
     public static final String DeleteAddress = "Address/DeleteAddress";
-    public static final String GetAllCategory= "getAllCategory.php";
+    public static final String GetAllCategory = "getAllCategory.php";
+    public static final String getViewPager = "getViewPager.php";
+    public static final String getCity = "getCity.php";
     public static final String GetAllProductByCategory = "GetAllProductByCategory.php";
     public static final String GetAllStoreByLocality = "Store/GetAllStoreByLocality";
     public static final String GetStoreDetailsById = "Store/GetStoreDetailsById";

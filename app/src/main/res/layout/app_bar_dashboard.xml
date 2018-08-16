@@ -38,7 +38,8 @@
                         android:layout_alignParentTop="true"
                         android:layout_alignStart="@+id/title"
                         android:layout_marginLeft="@dimen/dimValue_83"
-                        android:src="@drawable/logo" />
+                        android:src="@drawable/logo"
+                        android:visibility="gone" />
 
                     <TextView
                         android:id="@+id/title"
@@ -50,16 +51,11 @@
                         android:textSize="@dimen/dimTextSize_20"
                         android:visibility="gone" />
 
-                    <TextView
-                        android:id="@+id/filterIcon"
-                        android:layout_width="wrap_content"
+                    <Spinner
+                        android:id="@+id/spinner"
+                        android:layout_width="@dimen/size_90px"
                         android:layout_height="match_parent"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="@dimen/dimValue_10"
-                        android:gravity="left|center"
-                        android:textColor="@color/icons"
-                        android:textSize="@dimen/dimTextSize_30"
-                        android:visibility="gone" />
+                        android:visibility="visible" />
 
                     <TextView
                         android:id="@+id/save"

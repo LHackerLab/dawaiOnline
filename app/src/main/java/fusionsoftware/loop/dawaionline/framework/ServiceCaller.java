@@ -403,13 +403,6 @@ public class ServiceCaller {
 
         final String url = Contants.SERVICE_BASE_URL + Contants.GetAllCategory;
         JSONObject obj = new JSONObject();
-//        try {
-//            obj.put("MenuId", menuId);
-//            obj.put("StoreId", storeId);
-//
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
         Log.d(Contants.LOG_TAG, "Payload*****" + obj);
         new ServiceHelper().callService(url, obj, new IServiceSuccessCallback() {
             @Override
@@ -419,6 +412,44 @@ public class ServiceCaller {
 //                    parseAndSaveAllCategoryListData(result, workCompletedCallback);
                 } else {
                     workCompletedCallback.onDone("callAllCategoryListService done", false);
+                }
+            }
+        });
+    }
+
+
+    //call  viewpager  data
+    public void callViewPagerService(final IAsyncWorkCompletedCallback workCompletedCallback) {
+
+        final String url = Contants.SERVICE_BASE_URL + Contants.getViewPager;
+        JSONObject obj = new JSONObject();
+        Log.d(Contants.LOG_TAG, "Payload*****" + obj);
+        new ServiceHelper().callService(url, obj, new IServiceSuccessCallback() {
+            @Override
+            public void onDone(String doneWhatCode, String result, String error) {
+                if (result != null) {
+                    workCompletedCallback.onDone(result, true);
+//                    parseAndSaveAllCategoryListData(result, workCompletedCallback);
+                } else {
+                    workCompletedCallback.onDone("callAllCategoryListService done", false);
+                }
+            }
+        });
+    }
+
+    //call  city  data
+    public void callCityService(final IAsyncWorkCompletedCallback workCompletedCallback) {
+
+        final String url = Contants.SERVICE_BASE_URL + Contants.getCity;
+        JSONObject obj = new JSONObject();
+        Log.d(Contants.LOG_TAG, "Payload*****" + obj);
+        new ServiceHelper().callService(url, obj, new IServiceSuccessCallback() {
+            @Override
+            public void onDone(String doneWhatCode, String result, String error) {
+                if (result != null) {
+                    workCompletedCallback.onDone(result, true);
+                } else {
+                    workCompletedCallback.onDone("city data done", false);
                 }
             }
         });
