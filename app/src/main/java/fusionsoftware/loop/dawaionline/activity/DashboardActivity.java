@@ -400,7 +400,6 @@ public class DashboardActivity extends AppCompatActivity
                     public void onClick(DialogInterface dialog, int which) {
                         // logout
                         dbHelper.deleteUserData(loginId);
-                        dbHelper.deleteAllAddressData();
                         dbHelper.deleteAllBasketOrderData();
                         dbHelper.deleteMyAllOrderHistoryData();
                         dbHelper.deleteTrackOrderData();

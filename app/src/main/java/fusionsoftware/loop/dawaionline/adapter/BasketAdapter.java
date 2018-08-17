@@ -24,6 +24,7 @@ import java.util.List;
 
 import fusionsoftware.loop.dawaionline.R;
 import fusionsoftware.loop.dawaionline.database.DbHelper;
+import fusionsoftware.loop.dawaionline.fragments.MyBasketFragment;
 import fusionsoftware.loop.dawaionline.fragments.UserAddressListFragment;
 import fusionsoftware.loop.dawaionline.model.Data;
 import fusionsoftware.loop.dawaionline.model.MyBasket;
@@ -39,11 +40,12 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.ViewHolder
     private Context context;
     private Typeface materialDesignIcons, medium, regular, bold;
     DbHelper dbHelper;
-    Data data;
+    MyBasketFragment myBasketFragment;
 
-    public BasketAdapter(Context context, List<MyBasket> basketdata) {
+    public BasketAdapter(Context context, List<MyBasket> basketdata, MyBasketFragment myBasketFragment) {
         this.context = context;
         this.basketdata = basketdata;
+        this.myBasketFragment = myBasketFragment;
         this.medium = FontManager.getFontTypeface(context, "fonts/roboto.medium.ttf");
         this.regular = FontManager.getFontTypeface(context, "fonts/roboto.regular.ttf");
         this.bold = FontManager.getFontTypeface(context, "fonts/roboto.bold.ttf");
@@ -66,18 +68,18 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.ViewHolder
         if (orderList != null && orderList.size() > 0) {
             LinearLayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
             viewHolder.recycleView_inner.setLayoutManager(layoutManager);
-            BasketInnerAdapter adapter = new BasketInnerAdapter(context, orderList, basketdata, i, basketdata.get(i).getCategoryId());
+            BasketInnerAdapter adapter = new BasketInnerAdapter(context, orderList, basketdata, i, basketdata.get(i).getCategoryId(),myBasketFragment);
             viewHolder.recycleView_inner.setAdapter(adapter);
         }
 
 
-        viewHolder.checkoutLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                UserAddressListFragment fragment = UserAddressListFragment.newInstance(true, 0);
-                moveFragment(fragment);
-            }
-        });
+//        viewHolder.checkoutLayout.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                UserAddressListFragment fragment = UserAddressListFragment.newInstance(true, 0);
+//                moveFragment(fragment);
+//            }
+//        });
     }
 
     private void moveFragment(Fragment fragment) {

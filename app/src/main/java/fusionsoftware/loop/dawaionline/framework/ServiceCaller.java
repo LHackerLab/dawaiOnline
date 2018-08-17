@@ -248,36 +248,38 @@ public class ServiceCaller {
     }
 
     //Set AddNewAddress  data
-    public void SetNewAddressService(int LoginId, String completeAddress, String phoneNumber, String zipcode, String landmark, int localityId, final IAsyncWorkCompletedCallback workCompletedCallback) {
-
+    public void SetNewAddressService(final int LoginId, final String completeAddress, final String phoneNumber, final String zipcode, final String landmark, final String city, final IAsyncWorkCompletedCallback workCompletedCallback) {
         final String url = Contants.SERVICE_BASE_URL + Contants.AddNewAddress;
-        JSONObject obj = new JSONObject();
-        try {
-            obj.put("LoginID", LoginId);
-            obj.put("CompleteAddress", completeAddress);
-            obj.put("PhoneNumber", phoneNumber);
-            obj.put("ZipCode", zipcode);
-            obj.put("LandMark", landmark);
-            obj.put("LocalityId", localityId);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        Log.d(Contants.LOG_TAG, "Payload*****" + obj);
-        new ServiceHelper().callService(url, obj, new IServiceSuccessCallback() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
-            public void onDone(String doneWhatCode, String result, String error) {
-                if (result != null) {
-                    workCompletedCallback.onDone("SetNewAddressService done", true);
-                } else {
-                    workCompletedCallback.onDone("SetNewAddressService done", false);
-                }
+            public void onResponse(String response) {
+                workCompletedCallback.onDone(response, true);
             }
-        });
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                workCompletedCallback.onDone("no", false);
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("LoginID", String.valueOf(LoginId));
+                params.put("CompleteAddress", completeAddress);
+                params.put("PhoneNumber", phoneNumber);
+                params.put("ZipCode", zipcode);
+                params.put("LandMark", landmark);
+                params.put("cityName", city);
+                return params;
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        requestQueue.add(stringRequest);
     }
 
     //Set update Address  data
-    public void updateAddressService(int addressId, int LoginId, String completeAddress, String phoneNumber, String zipcode, String landmark, int LocalityId, final IAsyncWorkCompletedCallback workCompletedCallback) {
+    public void updateAddressService(int addressId, int LoginId, String completeAddress, String phoneNumber, String zipcode, String landmark, final IAsyncWorkCompletedCallback workCompletedCallback) {
 
         final String url = Contants.SERVICE_BASE_URL + Contants.UpdateAddress;
         JSONObject obj = new JSONObject();
@@ -289,7 +291,7 @@ public class ServiceCaller {
             obj.put("LandMark", landmark);
             obj.put("PhoneNumber", phoneNumber);
             obj.put("ZipCode", zipcode);
-            obj.put("LocalityId", LocalityId);
+//            obj.put("LocalityId", LocalityId);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -308,61 +310,30 @@ public class ServiceCaller {
     }
 
     //get all address data...........
-    public void callGetAllAddressService(int LoginId, final IAsyncWorkCompletedCallback workCompletedCallback) {
+    public void callGetAllAddressService(final int LoginId, final IAsyncWorkCompletedCallback workCompletedCallback) {
 
         final String url = Contants.SERVICE_BASE_URL + Contants.GetAllAddress;
-        JSONObject obj = new JSONObject();
-        try {
-            obj.put("LoginId", LoginId);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        Log.d(Contants.LOG_TAG, "Payload*****" + obj);
-        new ServiceHelper().callService(url, obj, new IServiceSuccessCallback() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
-            public void onDone(String doneWhatCode, String result, String error) {
-                if (result != null) {
-                    parseAndSavesGetAllAddressData(result, workCompletedCallback);
-                } else {
-                    workCompletedCallback.onDone("callGetAllAddressService done", false);
-                }
+            public void onResponse(String response) {
+                workCompletedCallback.onDone(response, true);
             }
-        });
-    }
-
-    //parse and save GetAllAddress data
-    public void parseAndSavesGetAllAddressData(final String result, final IAsyncWorkCompletedCallback workCompletedCallback) {
-        new AsyncTask<Void, Void, Boolean>() {
-
+        }, new Response.ErrorListener() {
             @Override
-            protected Boolean doInBackground(Void... voids) {
-                Boolean flag = false;
-                ContentData data = new Gson().fromJson(result, ContentData.class);
-                DbHelper dbHelper = new DbHelper(context);
-                dbHelper.deleteAllAddressData();
-                if (data != null) {
-                    for (Addresses address : data.getAddresses()) {
-                        if (address != null) {
-                            dbHelper.upsertGetAllAddress(address);
-                        }
-                    }
-                    flag = true;
-                }
-                return flag;
+            public void onErrorResponse(VolleyError error) {
+                workCompletedCallback.onDone("no", false);
             }
-
-
+        }) {
             @Override
-            protected void onPostExecute(Boolean flag) {
-                super.onPostExecute(flag);
-                if (flag) {
-                    workCompletedCallback.onDone("callGetAllAddressService done", true);
-                } else {
-                    workCompletedCallback.onDone("callGetAllAddressService done", false);
-                }
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("LoginID", String.valueOf(LoginId));
+                return params;
             }
-        }.execute();
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        requestQueue.add(stringRequest);
     }
 
 

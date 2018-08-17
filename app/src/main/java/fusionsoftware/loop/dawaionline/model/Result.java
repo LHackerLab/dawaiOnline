@@ -7,7 +7,7 @@ package fusionsoftware.loop.dawaionline.model;
 public class Result {
     private String LoginID;
 
-    private String AddressId;
+    private int AddressId;
 
     private String CityId;
 
@@ -26,11 +26,11 @@ public class Result {
         this.LoginID = LoginID;
     }
 
-    public String getAddressId() {
+    public int getAddressId() {
         return AddressId;
     }
 
-    public void setAddressId(String AddressId) {
+    public void setAddressId(int AddressId) {
         this.AddressId = AddressId;
     }
 

@@ -116,7 +116,6 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
                     if (actionListener != null)
                         actionListener.onItemTap(viewHolder.productImageCopy);
                     addItemToCart(position);
-
                     Vibrator vb = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
                     vb.vibrate(20);
                     rootActivity.setItemCart();

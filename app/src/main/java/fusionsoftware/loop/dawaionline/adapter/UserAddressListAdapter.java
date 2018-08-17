@@ -26,6 +26,7 @@ import fusionsoftware.loop.dawaionline.framework.IAsyncWorkCompletedCallback;
 import fusionsoftware.loop.dawaionline.framework.ServiceCaller;
 import fusionsoftware.loop.dawaionline.model.Addresses;
 import fusionsoftware.loop.dawaionline.model.Data;
+import fusionsoftware.loop.dawaionline.model.Result;
 import fusionsoftware.loop.dawaionline.utilities.Contants;
 import fusionsoftware.loop.dawaionline.utilities.FontManager;
 import fusionsoftware.loop.dawaionline.utilities.Utility;
@@ -35,21 +36,19 @@ import fusionsoftware.loop.dawaionline.utilities.Utility;
  * Created by user on 8/14/2017.
  */
 public class UserAddressListAdapter extends RecyclerView.Adapter<UserAddressListAdapter.ViewHolder> {
-    private List<Addresses> addresslist;
+    private List<Result> addresslist;
     private Context context;
     Typeface roboto_light, regular, materialdesignicons_font, medium;
     private LayoutInflater layoutInflater;
     private Boolean navigateFlag;
     private int localityId;
-    private int StoreId;
 
 
-    public UserAddressListAdapter(Context context, List<Addresses> addresslist, Boolean navigateFlag, int localityId, int StoreId) {
+    public UserAddressListAdapter(Context context, List<Result> addresslist, Boolean navigateFlag) {
         this.context = context;
         this.addresslist = addresslist;
         this.navigateFlag = navigateFlag;
         this.localityId = localityId;
-        this.StoreId = StoreId;
         layoutInflater = (LayoutInflater.from(context));
         roboto_light = FontManager.getFontTypefaceMaterialDesignIcons(context, "fonts/roboto.light.ttf");
         this.medium = FontManager.getFontTypeface(context, "fonts/roboto.medium.ttf");
@@ -67,11 +66,10 @@ public class UserAddressListAdapter extends RecyclerView.Adapter<UserAddressList
     public void onBindViewHolder(ViewHolder holder, final int position) {
         holder.completeaddress.setText(addresslist.get(position).getCompleteAddress() + "," + addresslist.get(position).getZipCode());
         holder.phonenumber.setText(addresslist.get(position).getPhoneNumber());
-        holder.locality_name.setText(addresslist.get(position).getLocalityName());
+        holder.locality_name.setText(addresslist.get(position).getCityName());
         holder.tv_edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 AddNewAddressFragment fragment = AddNewAddressFragment.newInstance(addresslist.get(position).getAddressId(), true);//AddressId and true for edit address
                 moveFragment(fragment);
             }
@@ -85,9 +83,8 @@ public class UserAddressListAdapter extends RecyclerView.Adapter<UserAddressList
         holder.mainLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DbHelper dbHelper = new DbHelper(context);
                 if (navigateFlag) {
-                    YourOrderFragment fragment = YourOrderFragment.newInstance(addresslist.get(position).getAddressId(), StoreId);
+                    YourOrderFragment fragment = YourOrderFragment.newInstance(addresslist.get(position).getCompleteAddress(), addresslist.get(position).getPhoneNumber(), addresslist.get(position).getZipCode());
                     moveFragment(fragment);
                 } else {
 
@@ -160,7 +157,7 @@ public class UserAddressListAdapter extends RecyclerView.Adapter<UserAddressList
                 public void onDone(String workName, boolean isComplete) {
                     if (isComplete) {
                         DbHelper dbHelper = new DbHelper(context);
-                        dbHelper.deleteAddressData(addresslist.get(position).getAddressId());
+//                        dbHelper.deleteAddressData(addresslist.get(position).getAddressId());
                         addresslist.remove(position);
                         Intent intent = new Intent("data");
                         intent.putExtra("flag", "true");

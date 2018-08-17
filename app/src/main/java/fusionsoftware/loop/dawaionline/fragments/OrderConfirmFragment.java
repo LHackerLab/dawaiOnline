@@ -164,6 +164,7 @@ public class OrderConfirmFragment extends Fragment implements View.OnClickListen
         rootActivity.setScreencart(false);
         rootActivity.setScreenSave(false);
         rootActivity.setScreenCartDot(false);
+        rootActivity.setItemCart();
         font_cash = (TextView) view.findViewById(R.id.font_cash);
         payonline = (TextView) view.findViewById(R.id.arrow_icon);
         your_order = (TextView) view.findViewById(R.id.your_order);
@@ -219,16 +220,16 @@ public class OrderConfirmFragment extends Fragment implements View.OnClickListen
         DbHelper dbHelper = new DbHelper(context);
         Data userData = dbHelper.getUserData();
         loginID = userData.getLoginID();
-        Addresses addresses = dbHelper.getAllAddressesData(addressId);
+//        Addresses addresses = dbHelper.getAllAddressesData(addressId);
         List<MyBasket> orderList = dbHelper.GetAllBasketOrderDataBasedOnCategoryId(storeId);
         if (orderList != null && orderList.size() > 0) {
             adapter = new OrderConfirmAdapter(context, orderList, storeId);
             recyclerView.setAdapter(adapter);
 //            tv_specialDiscount_charges.setText(String.valueOf(0));
         }
-        if (addresses != null) {
-            tv_deliveryAddress.setText(addresses.getCompleteAddress() + "," + addresses.getZipCode() + "," + addresses.getPhoneNumber());
-        }
+//        if (addresses != null) {
+//            tv_deliveryAddress.setText(addresses.getCompleteAddress() + "," + addresses.getZipCode() + "," + addresses.getPhoneNumber());
+//        }
     }
 
     //get all details and set values

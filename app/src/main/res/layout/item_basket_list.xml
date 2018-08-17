@@ -10,7 +10,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.3"
+        android:layout_weight=".3"
         android:orientation="horizontal">
 
         <TextView
@@ -26,25 +26,15 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="@dimen/size_30px"
-            android:layout_weight="0.5"
+            android:layout_weight=".5"
             android:orientation="horizontal">
 
-
-            <!--<TextView-->
-            <!--android:id="@+id/edit"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:layout_weight=".3"-->
-            <!--android:background="@drawable/border_layout_green"-->
-            <!--android:gravity="center"-->
-            <!--android:text="Edit"-->
-            <!--android:textColor="@color/green"-->
-            <!--android:textSize="@dimen/dimTextSize_16" />-->
 
             <LinearLayout
                 android:id="@+id/checkoutLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:visibility="gone"
                 android:background="@color/Header_bg"
                 android:gravity="center"
                 android:orientation="horizontal">
@@ -52,7 +42,8 @@
                 <TextView
                     android:id="@+id/checkOut"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
                     android:text="Checkout"
                     android:textColor="@color/icons"
                     android:textSize="@dimen/dimTextSize_16" />
@@ -60,7 +51,8 @@
                 <TextView
                     android:id="@+id/checkOutIcon"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
                     android:textColor="@color/icons"
                     android:textSize="@dimen/dimTextSize_18" />
 
@@ -73,7 +65,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/dimValue_10"
-        android:layout_weight="0.7"
+        android:layout_weight=".7"
         android:scrollbars="none">
 
     </android.support.v7.widget.RecyclerView>

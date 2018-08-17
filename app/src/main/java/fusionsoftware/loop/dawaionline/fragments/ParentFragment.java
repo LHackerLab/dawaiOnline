@@ -112,6 +112,11 @@ public class ParentFragment extends Fragment implements View.OnClickListener {
 
     //set data in reycle view
     private void init() {
+        DashboardActivity rootActivity = (DashboardActivity) getActivity();
+        rootActivity.setScreencart(true);
+        rootActivity.setScreenSave(false);
+        rootActivity.setScreenCartDot(true);
+        rootActivity.setItemCart();
         ImagesArray = new ArrayList<String>();
         ImagesArrayTwo = new ArrayList<String>();
         search = view.findViewById(R.id.tv_search);
@@ -207,7 +212,7 @@ public class ParentFragment extends Fragment implements View.OnClickListener {
                                         public void run() {
                                             handler.post(Update);
                                         }
-                                    }, 2000, 2000);
+                                    }, 3000, 3000);
 
         // Pager listener over indicator
         circlePageIndicator.setOnPageChangeListener(new ViewPager.OnPageChangeListener()

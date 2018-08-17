@@ -21,6 +21,10 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import fusionsoftware.loop.dawaionline.R;
@@ -32,7 +36,9 @@ import fusionsoftware.loop.dawaionline.database.DbHelper;
 import fusionsoftware.loop.dawaionline.framework.IAsyncWorkCompletedCallback;
 import fusionsoftware.loop.dawaionline.framework.ServiceCaller;
 import fusionsoftware.loop.dawaionline.model.Addresses;
+import fusionsoftware.loop.dawaionline.model.ContentDataAsArray;
 import fusionsoftware.loop.dawaionline.model.Data;
+import fusionsoftware.loop.dawaionline.model.Result;
 import fusionsoftware.loop.dawaionline.utilities.CompatibilityUtility;
 import fusionsoftware.loop.dawaionline.utilities.Contants;
 import fusionsoftware.loop.dawaionline.utilities.FontManager;
@@ -42,7 +48,7 @@ import fusionsoftware.loop.dawaionline.utilities.Utility;
 /**
  * Created by LALIT on 8/13/2017.
  */
-public class UserAddressListFragment extends Fragment implements View.OnClickListener{
+public class UserAddressListFragment extends Fragment implements View.OnClickListener {
     private Boolean navigateFlag;
     private int storeId;
 
@@ -72,7 +78,6 @@ public class UserAddressListFragment extends Fragment implements View.OnClickLis
     TextView addNewAddress, addressIcon;
     Typeface materialdesignicons_font, medium, regular;
     LinearLayout linearLayout;
-    int localityId;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -92,18 +97,11 @@ public class UserAddressListFragment extends Fragment implements View.OnClickLis
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
         reycyle_view.setLayoutManager(linearLayoutManager);
         init();
-        getLocality();
         getAllAddress();//get all address.........
 
         return view;
     }
 
-    private void getLocality() {
-        SharedPreferences locationPrefs = context.getSharedPreferences("LocationPreferences", Context.MODE_PRIVATE);
-        if (locationPrefs != null) {
-            localityId = locationPrefs.getInt("LocalityId", 0);
-        }
-    }
 
     private void init() {
         addNewAddress = (TextView) view.findViewById(R.id.tv_add_new_address);
@@ -118,35 +116,39 @@ public class UserAddressListFragment extends Fragment implements View.OnClickLis
         addNewAddress.setOnClickListener(this);
     }
 
-  private void addNewAddress(){
-      AddNewAddressFragment fragment = AddNewAddressFragment.newInstance(0, false);//0, and false for add new address
-      FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-      fragmentManager.beginTransaction()
-              .replace(R.id.container, fragment)
-              .addToBackStack(null)
-              .commit();
-  }
+    private void addNewAddress() {
+        AddNewAddressFragment fragment = AddNewAddressFragment.newInstance(0, false);//0, and false for add new address
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.container, fragment)
+                .addToBackStack(null)
+                .commit();
+    }
 
     //get all address.........
     public void getAllAddress() {
-
+        final List<Result> clientlist = new ArrayList<>();
         if (Utility.isOnline(context)) {
             final BallTriangleDialog dotDialog = new BallTriangleDialog(context);
             dotDialog.show();
             DbHelper dbHelper = new DbHelper(context);
             Data data = dbHelper.getUserData();
-            if (data != null) {
-                int loginId = data.getLoginID();
+//            if (data != null) {
+//                int loginId = data.getLoginID();
+                int loginId = 1;
                 if (loginId != 0) {
                     ServiceCaller serviceCaller = new ServiceCaller(getActivity());
                     serviceCaller.callGetAllAddressService(loginId, new IAsyncWorkCompletedCallback() {
                         @Override
                         public void onDone(String workName, boolean isComplete) {
                             if (isComplete) {
-                                DbHelper dbHelper = new DbHelper(getActivity());
-                                List<Addresses> clientlist = dbHelper.GetAllAddressesData();
+                                ContentDataAsArray contentDataAsArray = new Gson().fromJson(workName, ContentDataAsArray.class);
+                                for (Result result : contentDataAsArray.getResults()) {
+                                    clientlist.addAll(Arrays.asList(result));
+                                }
+
                                 if (clientlist != null && clientlist.size() != 0) {
-                                    UserAddressListAdapter itemAdapter = new UserAddressListAdapter(context, clientlist, navigateFlag, localityId, storeId);
+                                    UserAddressListAdapter itemAdapter = new UserAddressListAdapter(context, clientlist, navigateFlag);
                                     reycyle_view.setAdapter(itemAdapter);
                                     itemAdapter.notifyDataSetChanged();
                                 } else {
@@ -165,7 +167,7 @@ public class UserAddressListFragment extends Fragment implements View.OnClickLis
                         }
 
                     });
-                }
+//                }
             } else {
                 if (dotDialog.isShowing() && dotDialog != null) {
                     dotDialog.dismiss();
@@ -175,10 +177,10 @@ public class UserAddressListFragment extends Fragment implements View.OnClickLis
                 startActivity(intent);
             }
         } else {
-          //  Utility.alertForErrorMessage(Contants.OFFLINE_MESSAGE, getActivity());//off line msg....
+            //  Utility.alertForErrorMessage(Contants.OFFLINE_MESSAGE, getActivity());//off line msg....
             LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View view = inflater.inflate(R.layout.no_data_found, null);
-            TextView nodata= (TextView) view.findViewById(R.id.nodata);
+            TextView nodata = (TextView) view.findViewById(R.id.nodata);
             nodata.setText("No internet connection found");
             linearLayout.setGravity(Gravity.CENTER);
             linearLayout.removeAllViews();
@@ -230,7 +232,7 @@ public class UserAddressListFragment extends Fragment implements View.OnClickLis
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.tv_add_new_address:
                 addNewAddress();
                 break;

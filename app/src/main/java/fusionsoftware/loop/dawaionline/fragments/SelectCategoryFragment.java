@@ -90,6 +90,7 @@ public class SelectCategoryFragment extends Fragment {
         DashboardActivity rootActivity = (DashboardActivity) getActivity();
         rootActivity.setScreencart(true);
         rootActivity.setScreenSave(false);
+        rootActivity.setItemCart();
         regular = FontManager.getFontTypeface(context, "fonts/roboto.regular.ttf");
         materialDesignIcons = FontManager.getFontTypefaceMaterialDesignIcons(context, "fonts/materialdesignicons-webfont.otf");
         init();

@@ -2,6 +2,7 @@ package fusionsoftware.loop.dawaionline.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -22,6 +23,7 @@ import java.util.List;
 
 import fusionsoftware.loop.dawaionline.R;
 import fusionsoftware.loop.dawaionline.database.DbHelper;
+import fusionsoftware.loop.dawaionline.fragments.MyBasketFragment;
 import fusionsoftware.loop.dawaionline.model.Data;
 import fusionsoftware.loop.dawaionline.model.MyBasket;
 import fusionsoftware.loop.dawaionline.utilities.FontManager;
@@ -34,14 +36,17 @@ public class BasketInnerAdapter extends RecyclerView.Adapter<BasketInnerAdapter.
     private List<MyBasket> basketItemdata, categoryData;
     private Context context;
     private Typeface materialDesignIcons, medium, regular, bold;
-    private int categoryPosition,categoryId;
+    private int categoryPosition, categoryId;
+    double total, grandTotal=0.0;
+    MyBasketFragment myBasketFragment;
 
-    public BasketInnerAdapter(Context context, List<MyBasket> basketItemdata, List<MyBasket> categoryData, int categoryPosition,int categoryId) {
+    public BasketInnerAdapter(Context context, List<MyBasket> basketItemdata, List<MyBasket> categoryData, int categoryPosition, int categoryId, MyBasketFragment myBasketFragment) {
         this.context = context;
         this.basketItemdata = basketItemdata;
         this.categoryData = categoryData;
         this.categoryPosition = categoryPosition;
         this.categoryId = categoryId;
+        this.myBasketFragment = myBasketFragment;
         this.medium = FontManager.getFontTypeface(context, "fonts/roboto.medium.ttf");
         this.regular = FontManager.getFontTypeface(context, "fonts/roboto.regular.ttf");
         this.bold = FontManager.getFontTypeface(context, "fonts/roboto.bold.ttf");
@@ -57,11 +62,19 @@ public class BasketInnerAdapter extends RecyclerView.Adapter<BasketInnerAdapter.
 
     @Override
     public void onBindViewHolder(final ViewHolder viewHolder, final int i) {
-        if (basketItemdata.get(i).getQuantity() != 0) {
-            DecimalFormat df = new DecimalFormat("0");
-            String value = df.format(basketItemdata.get(i).getQuantity());
-            viewHolder.Quantity.setText(value);
-        }
+        DecimalFormat df = new DecimalFormat("0.0");
+        String qty = df.format(basketItemdata.get(i).getQuantity());
+        viewHolder.Quantity.setText(qty);
+        //calculate discounts & total....
+        String price = df.format(basketItemdata.get(i).getPrice());
+        total = Double.parseDouble(price) * Double.parseDouble(qty);
+        viewHolder.total.setText("\u20B9" + df.format(total));//total price
+        float dis = basketItemdata.get(i).getDiscount();
+        double discount = (total / 100.0f) * dis;//calculate discount value
+        viewHolder.discount.setText("\u20B9" + df.format(discount));
+        viewHolder.grand_total.setText(df.format(total - discount));//grand total.
+        grandTotal = grandTotal + (total - discount);// all categorygrand total....
+        myBasketFragment.setMostTotal(grandTotal);
 
         viewHolder.item_name.setText(basketItemdata.get(i).getProductName());
         viewHolder.itemPrice.setText(String.valueOf(basketItemdata.get(i).getPrice()));
@@ -95,18 +108,18 @@ public class BasketInnerAdapter extends RecyclerView.Adapter<BasketInnerAdapter.
                 DbHelper dbHelper = new DbHelper(context);
                 dbHelper.deleteBasketOrderDataByProductId(basketItemdata.get(i).getProductId());
                 basketItemdata.remove(i);
-                if (basketItemdata.size() == 0) {//delete store data if all item deleted from this store
+                if (basketItemdata.size() == 0) {//delete category data if all item deleted from this ctegory
                     dbHelper.deleteBasketOrderDataByCategoryId(categoryId);
                     categoryData.remove(categoryPosition);
                     if (categoryData.size() == 0) {
-                        ((FragmentActivity) context).getSupportFragmentManager().popBackStack();//back to profile screen
+                        ((FragmentActivity) context).getSupportFragmentManager().popBackStack();//back to previes screen
                     } else {
                         Intent myIntent = new Intent("basketItem");
                         myIntent.putExtra("basketFlag", true);
                         LocalBroadcastManager.getInstance(context).sendBroadcast(myIntent);
                     }
-                    }
-                    notifyDataSetChanged();
+                }
+                notifyDataSetChanged();
             }
         });
     }
@@ -139,7 +152,8 @@ public class BasketInnerAdapter extends RecyclerView.Adapter<BasketInnerAdapter.
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView quantity_tv, Item_tv, price_tv, Quantity, item_name, itemPrice, icon_delete, icon_rupees, decrement_Product, increase_Product;
+        TextView quantity_tv, Item_tv, price_tv, Quantity, item_name, itemPrice, total, discount, icon_rupeesgrandtotal, grand_total,
+                icon_delete, icon_rupees, decrement_Product, increase_Product, tv_Total, tv_discount, tv_grandTotal;
 
         public ViewHolder(View view) {
             super(view);
@@ -153,20 +167,35 @@ public class BasketInnerAdapter extends RecyclerView.Adapter<BasketInnerAdapter.
             icon_rupees = (TextView) view.findViewById(R.id.icon_rupees);
             increase_Product = (TextView) view.findViewById(R.id.increase_Product);
             decrement_Product = (TextView) view.findViewById(R.id.decrement_Product);
+            icon_rupeesgrandtotal = (TextView) view.findViewById(R.id.icon_rupeesgrandtotal);
+            grand_total = (TextView) view.findViewById(R.id.grand_total);
+            total = (TextView) view.findViewById(R.id.total);
+            discount = (TextView) view.findViewById(R.id.discount);
+            tv_Total = (TextView) view.findViewById(R.id.tv_Total);
+            tv_discount = (TextView) view.findViewById(R.id.tv_discount);
+            tv_grandTotal = (TextView) view.findViewById(R.id.tv_grandTotal);
             increase_Product.setTypeface(materialDesignIcons);
             decrement_Product.setTypeface(materialDesignIcons);
             increase_Product.setText(Html.fromHtml("&#xf419;"));
             decrement_Product.setText(Html.fromHtml("&#xf377;"));
             icon_delete.setTypeface(materialDesignIcons);
             icon_rupees.setTypeface(materialDesignIcons);
+            icon_rupeesgrandtotal.setTypeface(materialDesignIcons);
             icon_delete.setText(Html.fromHtml("&#xf15a;"));
             icon_rupees.setText(Html.fromHtml("&#xf1af;"));
+            icon_rupeesgrandtotal.setText(Html.fromHtml("&#xf1af;"));
             quantity_tv.setTypeface(medium);
             Item_tv.setTypeface(medium);
             Quantity.setTypeface(regular);
             item_name.setTypeface(regular);
             itemPrice.setTypeface(regular);
+            total.setTypeface(regular);
+            discount.setTypeface(regular);
+            grand_total.setTypeface(regular);
             price_tv.setTypeface(medium);
+            tv_Total.setTypeface(medium);
+            tv_discount.setTypeface(medium);
+            tv_grandTotal.setTypeface(bold);
         }
     }
 }

@@ -36,8 +36,6 @@ public class DbHelper extends SQLiteOpenHelper {
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS userData");
-        db.execSQL("DROP TABLE IF EXISTS GetAllAddressEntity");
-        db.execSQL("DROP TABLE IF EXISTS ProductListDataEntity");
         db.execSQL("DROP TABLE IF EXISTS MyOrderDataEntity");
         db.execSQL("DROP TABLE IF EXISTS MyOrderHistoryDataEntity");
         db.execSQL("DROP TABLE IF EXISTS TrackOrderDataEntity");
@@ -54,12 +52,6 @@ public class DbHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String CREATE_user_TABLE = "CREATE TABLE userData(LoginID INTEGER,PhoneNumber TEXT,Name TEXT,Otp INTEGER,EmailID TEXT,Role INTEGER,ProfilePictureUrl TEXT)";
         db.execSQL(CREATE_user_TABLE);
-        String CREATE_getAllAddress_TABLE = "CREATE TABLE GetAllAddressEntity(AddressId INTEGER,CompleteAddress TEXT,CityId INTEGER,ZipCode TEXT,LoginID INTEGER,PhoneNumber TEXT,LandMark TEXT,LocalityId INTEGER,LocalityName TEXT)";//
-        db.execSQL(CREATE_getAllAddress_TABLE);
-        String CREATE_ProductList_TABLE = "CREATE TABLE ProductListDataEntity(ProductId INTEGER, ProductName TEXT,CategoryId INTEGER,UnitPrice REAL,Discount REAL,GST REAL,TaxType TEXT,UOM TEXT,ProductDetails TEXT,ImageUrl TEXT)";
-        //ProductId,ProductName,CategoryId,UnitPrice,Discount,GST,TaxType,ProductDetails ProductListDataEntity
-        db.execSQL(CREATE_ProductList_TABLE);
-
         String CREATE_MyOrder_TABLE = "CREATE TABLE MyOrderDataEntity(ProductId INTEGER,ProductName TEXT,Quantity REAL,Price REAL, OrderTime TEXT,CategoryId INTEGER,discount REAL,CategoryName TEXT)";
         //ProductId,ProductName,StoreId,Quantity,Price,OrderTime,CategoryId,discount  MyOrderDataEntity
         db.execSQL(CREATE_MyOrder_TABLE);
@@ -202,259 +194,6 @@ public class DbHelper extends SQLiteOpenHelper {
         return result;
     }
 
-    //--------------------------GetAllAddress---------------
-    public boolean upsertGetAllAddress(Addresses ob) {
-        boolean done = false;
-        Addresses data = null;
-        if (ob.getAddressId() != 0) {
-            data = getAllAddressesData(ob.getAddressId());
-            if (data == null) {
-                done = insertGetAddressData(ob);
-            } else {
-                done = updateGetAddressData(ob);
-            }
-        }
-        return done;
-    }
-
-    //GetAll Address
-    private void populateGetAddressData(Cursor cursor, Addresses ob) {
-        ob.setAddressId(cursor.getInt(0));
-        ob.setCompleteAddress(cursor.getString(1));
-        ob.setCityId(cursor.getInt(2));
-        ob.setZipCode(cursor.getString(3));
-        ob.setLoginID(cursor.getInt(4));
-        ob.setPhoneNumber(cursor.getString(5));
-        ob.setLandMark(cursor.getString(6));
-        ob.setLocalityId(cursor.getInt(7));
-        ob.setLocalityName(cursor.getString(8));
-
-    }
-
-    //show  Addresses list data
-    public List<Addresses> GetAllAddressesData() {
-        ArrayList list = new ArrayList<>();
-        String query = "Select * FROM GetAllAddressEntity";
-
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        Cursor cursor = db.rawQuery(query, null);
-        if (cursor.moveToFirst()) {
-
-            while (cursor.isAfterLast() == false) {
-                Addresses ob = new Addresses();
-                populateGetAddressData(cursor, ob);
-                list.add(ob);
-                cursor.moveToNext();
-            }
-        }
-        db.close();
-        return list;
-    }
-
-    //AddressId,CompleteAddress,CityId,ZipCode,LoginID,PhoneNumber,LandMark GetAllAddressEntity
-    //insert GetAllAddress data
-    public boolean insertGetAddressData(Addresses ob) {
-        ContentValues values = new ContentValues();
-
-        values.put("AddressId", ob.getAddressId());
-        values.put("CompleteAddress", ob.getCompleteAddress());
-        values.put("CityId", ob.getCityId());
-        values.put("ZipCode", ob.getZipCode());
-        values.put("LoginID", ob.getLoginID());
-        values.put("PhoneNumber", ob.getPhoneNumber());
-        values.put("LandMark", ob.getLandMark());
-        values.put("LocalityId", ob.getLocalityId());
-        values.put("LocalityName", ob.getLocalityName());
-
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        long i = db.insert("GetAllAddressEntity", null, values);
-        db.close();
-        return i > 0;
-    }
-
-
-    //GetAllAddress data by id
-    public Addresses getAllAddressesData(int addressId) {
-
-        String query = "Select * FROM GetAllAddressEntity WHERE AddressId= " + addressId + " ";
-
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(query, null);
-        Addresses data = new Addresses();
-
-        if (cursor.moveToFirst()) {
-            cursor.moveToFirst();
-            populateGetAddressData(cursor, data);
-
-            cursor.close();
-        } else {
-            data = null;
-        }
-        db.close();
-        return data;
-    }
-
-
-    //update GetAddAddress data
-    public boolean updateGetAddressData(Addresses ob) {
-        ContentValues values = new ContentValues();
-
-        values.put("AddressId", ob.getAddressId());
-        values.put("CompleteAddress", ob.getCompleteAddress());
-        values.put("CityId", ob.getCityId());
-        values.put("ZipCode", ob.getZipCode());
-        values.put("LoginID", ob.getLoginID());
-        values.put("PhoneNumber", ob.getPhoneNumber());
-        values.put("LandMark", ob.getLandMark());
-        values.put("LocalityId", ob.getLocalityId());
-        values.put("LocalityName", ob.getLocalityName());
-
-        SQLiteDatabase db = this.getWritableDatabase();
-        long i = 0;
-        i = db.update("GetAllAddressEntity", values, "AddressId = " + ob.getAddressId() + " ", null);
-
-        db.close();
-        return i > 0;
-    }
-
-    // delete Address Data from addressId
-    public boolean deleteAddressData(int addressId) {
-        boolean result = false;
-        SQLiteDatabase db = this.getWritableDatabase();
-        String query = "addressId = '" + addressId + "' ";
-        db.delete("GetAllAddressEntity", query, null);
-        db.close();
-        return result;
-    }
-
-    // delete all Address Data
-    public boolean deleteAllAddressData() {
-        boolean result = false;
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.delete("GetAllAddressEntity", null, null);
-        db.close();
-        return result;
-    }
-
-
-    //----------------product data-----------
-    public boolean upsertAllProduct(Data ob) {
-        boolean done = false;
-        Data data = null;
-        if (ob.getProductId() != 0) {
-            data = getProductData(ob.getProductId());
-            if (data == null) {
-                done = insertProductData(ob);
-            } else {
-                done = updateProductData(ob);
-            }
-        }
-        return done;
-    }
-
-    //GetAll Product
-    private void populateProductData(Cursor cursor, Data ob) {
-        ob.setProductId(cursor.getInt(0));
-        ob.setProductName(cursor.getString(1));
-        ob.setCategoryId(cursor.getInt(2));
-        ob.setUnitPrice(cursor.getFloat(3));
-        ob.setDiscount(cursor.getFloat(4));
-        ob.setGST(cursor.getFloat(5));
-        ob.setTaxType(cursor.getString(6));
-        ob.setUOM(cursor.getString(7));
-        ob.setProductDetails(cursor.getString(8));
-        ob.setProductPicturesUrl(cursor.getString(9));
-    }
-
-    //ProductId,ProductName,CategoryId,UnitPrice,Discount,GST,TaxType ProductListDataEntity
-    //show Product list data
-    public List<Data> GetAllProductBasedOnCategoryIdData(int categoryId) {
-        ArrayList<Data> list = new ArrayList<Data>();
-        String query = "Select * FROM ProductListDataEntity WHERE CategoryId= " + categoryId + "";
-
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        Cursor cursor = db.rawQuery(query, null);
-        if (cursor.moveToFirst()) {
-
-            while (cursor.isAfterLast() == false) {
-                Data ob = new Data();
-                populateProductData(cursor, ob);
-                list.add(ob);
-                cursor.moveToNext();
-            }
-        }
-        db.close();
-        return list;
-    }
-
-    //insert Product data
-    public boolean insertProductData(Data ob) {
-        ContentValues values = new ContentValues();
-        populateProductValue(ob, values);
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        long i = db.insert("ProductListDataEntity", null, values);
-        db.close();
-        return i > 0;
-    }
-
-    //Product data by id
-    public Data getProductData(int productId) {
-
-        String query = "Select * FROM ProductListDataEntity WHERE ProductId= " + productId + "";
-
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(query, null);
-        Data data = new Data();
-
-        if (cursor.moveToFirst()) {
-            cursor.moveToFirst();
-            populateProductData(cursor, data);
-
-            cursor.close();
-        } else {
-            data = null;
-        }
-        db.close();
-        return data;
-    }
-
-    private void populateProductValue(Data ob, ContentValues values) {
-        values.put("ProductId", ob.getProductId());
-        values.put("ProductName", ob.getProductName());
-        values.put("CategoryId", ob.getCategoryId());
-        values.put("UnitPrice", ob.getUnitPrice());
-        values.put("Discount", ob.getDiscount());
-        values.put("GST", ob.getGST());
-        values.put("TaxType", ob.getTaxType());
-        values.put("UOM", ob.getUOM());
-        values.put("ProductDetails", ob.getProductDetails());
-        values.put("ImageUrl", ob.getProductPicturesUrl());
-    }
-
-    //update Product data
-    public boolean updateProductData(Data ob) {
-        ContentValues values = new ContentValues();
-        populateProductValue(ob, values);
-
-        SQLiteDatabase db = this.getWritableDatabase();
-        long i = 0;
-        i = db.update("ProductListDataEntity", values, "ProductId = " + ob.getProductId() + "", null);
-
-        db.close();
-        return i > 0;
-    }
-
-    public boolean deleteAllProductData() {
-        boolean result = false;
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.delete("ProductListDataEntity", null, null);
-        db.close();
-        return result;
-    }
 
     //------------basket Order data----------------
     public boolean upsertBasketOrderData(MyBasket ob) {
@@ -589,6 +328,7 @@ public class DbHelper extends SQLiteOpenHelper {
         db.close();
         return result;
     }
+
     // delete Basket Order Data By category Id ...........
     public boolean deleteBasketOrderDataByCategoryId(int category) {
         boolean result = false;

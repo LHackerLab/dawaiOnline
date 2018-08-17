@@ -34,12 +34,10 @@ public class YourOrderAdpater extends RecyclerView.Adapter<YourOrderAdpater.View
     private List<MyBasket> orderDataList;
     private Context context;
     private boolean isEditDeleteRequired;
-    private int storeId;
 
-    public YourOrderAdpater(Context context, List<MyBasket> categoriesItemsDatas, int storeId) {
+    public YourOrderAdpater(Context context, List<MyBasket> categoriesItemsDatas) {
         this.context = context;
         this.orderDataList = categoriesItemsDatas;
-        this.storeId = storeId;
     }
 
     @Override
@@ -51,15 +49,10 @@ public class YourOrderAdpater extends RecyclerView.Adapter<YourOrderAdpater.View
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int i) {
-       // holder.quality_item.setText(String.valueOf(orderDataList.get(i).getQuantity()) + " " + orderDataList.get(i).getUOM());
-        if (orderDataList.get(i).getUOM()!=null && orderDataList.get(i).getUOM().equals("kg")) {
-            holder.quality_item.setText(String.valueOf(orderDataList.get(i).getQuantity())+orderDataList.get(i).getUOM());
-        } else {
-            DecimalFormat df = new DecimalFormat("0");
-            String value = df.format(orderDataList.get(i).getQuantity());
-            holder.quality_item.setText(value+orderDataList.get(i).getUOM());
-        }
-
+        // holder.quality_item.setText(String.valueOf(orderDataList.get(i).getQuantity()) + " " + orderDataList.get(i).getUOM());
+        DecimalFormat df = new DecimalFormat("0");
+        String value = df.format(orderDataList.get(i).getQuantity());
+        holder.quality_item.setText(value);
         holder.nameofdish_item.setText(orderDataList.get(i).getProductName());
         holder.price_item.setText(orderDataList.get(i).getPrice() + "");
 //        holder.edit_icon.setOnClickListener(new View.OnClickListener() {

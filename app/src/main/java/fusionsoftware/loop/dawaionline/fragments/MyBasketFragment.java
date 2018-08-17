@@ -26,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.lang.reflect.Method;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,8 +69,8 @@ public class MyBasketFragment extends Fragment implements View.OnClickListener {
     }
 
     private Typeface materialDesignIcons, medium, regular, bold;
-    TextView arrow_icon, tv_continue, tv_yourOrder;
-    LinearLayout layout_basket, continuelayout;
+    TextView arrow_icon, tv_continue, tv_yourOrder, grand_total,checkOutallIcon;
+    LinearLayout layout_basket, continuelayout, layoutcheck,allcheckoutLayout;
     private Context context;
     View view;
     private double totalPrice = 0;
@@ -97,7 +98,9 @@ public class MyBasketFragment extends Fragment implements View.OnClickListener {
     //set the icons
     private void setIcon() {
         arrow_icon.setTypeface(materialDesignIcons);
+        checkOutallIcon.setTypeface(materialDesignIcons);
         arrow_icon.setText(Html.fromHtml("&#xf054;"));
+        checkOutallIcon.setText(Html.fromHtml("&#xf054;"));
         tv_continue.setTypeface(medium);
         tv_yourOrder.setTypeface(bold);
     }
@@ -113,12 +116,19 @@ public class MyBasketFragment extends Fragment implements View.OnClickListener {
         rootActivity.setScreencart(false);
         rootActivity.setScreenSave(false);
         rootActivity.setScreenCartDot(false);
+//        rootActivity.setItemCart();
         arrow_icon = (TextView) view.findViewById(R.id.arrow_icon);
         tv_continue = (TextView) view.findViewById(R.id.tv_continue);
         tv_yourOrder = (TextView) view.findViewById(R.id.tv_yourOrder);
+        grand_total = (TextView) view.findViewById(R.id.grand_total);
         continuelayout = (LinearLayout) view.findViewById(R.id.continuelayout);
+        layoutcheck = (LinearLayout) view.findViewById(R.id.layoutcheck);
         layout_basket = (LinearLayout) view.findViewById(R.id.layout_basket);
+        allcheckoutLayout = (LinearLayout) view.findViewById(R.id.allcheckoutLayout);
+        checkOutallIcon = view.findViewById(R.id.checkOutallIcon);
         continuelayout.setOnClickListener(this);
+        allcheckoutLayout.setOnClickListener(this);
+        grand_total.setTypeface(bold);
         setIcon();//set the icons
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
@@ -140,6 +150,7 @@ public class MyBasketFragment extends Fragment implements View.OnClickListener {
             layout_basket.removeAllViews();
             layout_basket.addView(view);
             continuelayout.setVisibility(View.VISIBLE);
+            layoutcheck.setVisibility(View.GONE);
         }
     }
 
@@ -151,8 +162,13 @@ public class MyBasketFragment extends Fragment implements View.OnClickListener {
                 newList.add(c);
             }
         }
-        adapter = new BasketAdapter(context, newList);
+        adapter = new BasketAdapter(context, newList, MyBasketFragment.this);
         recyclerView.setAdapter(adapter);
+    }
+
+    public void setMostTotal(double mostTotal) {
+        DecimalFormat df = new DecimalFormat("0.0");
+        grand_total.setText("\u20B9" + df.format(mostTotal));
     }
 
     private boolean categoryDataExist(List<MyBasket> newList, String name) {
@@ -203,6 +219,10 @@ public class MyBasketFragment extends Fragment implements View.OnClickListener {
         switch (view.getId()) {
             case R.id.continuelayout:
                 setUpHomeFragment();
+                break;
+            case R.id.allcheckoutLayout:
+                UserAddressListFragment fragment = UserAddressListFragment.newInstance(true, 0);
+                moveFragment(fragment);
                 break;
         }
     }

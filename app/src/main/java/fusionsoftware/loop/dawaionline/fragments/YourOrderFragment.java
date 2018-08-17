@@ -54,14 +54,14 @@ import fusionsoftware.loop.dawaionline.utilities.Utility;
  * Created by LALIT on 8/14/2017.
  */
 public class YourOrderFragment extends Fragment implements View.OnClickListener {
-    private int addressId;
-    private int StoreId;
+    private String completeAddress, phone,zipcode;
 
-    public static YourOrderFragment newInstance(int addressId, int StoreId) {
+    public static YourOrderFragment newInstance(String completeAddress, String phone,String zipcode) {
         YourOrderFragment fragment = new YourOrderFragment();
         Bundle args = new Bundle();
-        args.putInt("AddressId", addressId);
-        args.putInt("StoreId", StoreId);
+        args.putString("completeAddress", completeAddress);
+        args.putString("phone", phone);
+        args.putString("zipcode", zipcode);
         fragment.setArguments(args);
         return fragment;
     }
@@ -70,8 +70,9 @@ public class YourOrderFragment extends Fragment implements View.OnClickListener 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            addressId = getArguments().getInt("AddressId");
-            StoreId = getArguments().getInt("StoreId");
+            completeAddress = getArguments().getString("completeAddress");
+            phone = getArguments().getString("phone");
+            zipcode = getArguments().getString("zipcode");
         }
     }
 
@@ -152,9 +153,6 @@ public class YourOrderFragment extends Fragment implements View.OnClickListener 
         edt_promoCode.setTypeface(regular);
         tv_promoCode.setTypeface(regular);
         tv_apply.setTypeface(medium);
-        //  tv_off.setTypeface(medium);
-
-        //  tv_off.setTypeface(italic);
     }
 
     //initlization..............
@@ -163,76 +161,64 @@ public class YourOrderFragment extends Fragment implements View.OnClickListener 
         rootActivity.setScreencart(false);
         rootActivity.setScreenSave(false);
         rootActivity.setScreenCartDot(false);
-        edt_promoCode = (EditText) view.findViewById(R.id.edt_promoCode);
-        // tv_off = (TextView) view.findViewById(R.id.tv_off);
-        tv_promoCode = (TextView) view.findViewById(R.id.tv_promoCode);
-        tv_apply = (TextView) view.findViewById(R.id.tv_apply);
+        edt_promoCode = view.findViewById(R.id.edt_promoCode);
+        tv_promoCode = view.findViewById(R.id.tv_promoCode);
+        tv_apply = view.findViewById(R.id.tv_apply);
         tv_apply.setOnClickListener(this);
-        tv_continue = (TextView) view.findViewById(R.id.tv_continue);
-        arrow_icon = (TextView) view.findViewById(R.id.arrow_icon);
-        your_order = (TextView) view.findViewById(R.id.your_order);
-        //tv_editOrder = (TextView) view.findViewById(R.id.tv_editOrder);
-        rupee_icon = (TextView) view.findViewById(R.id.rupee_icon);
-        icon_rupees = (TextView) view.findViewById(R.id.icon_rupees);
-        rupees_icon = (TextView) view.findViewById(R.id.rupees_icon);
-        quantity = (TextView) view.findViewById(R.id.quantity);
-        dish_name = (TextView) view.findViewById(R.id.dish_name);
-        action = (TextView) view.findViewById(R.id.action);
-        price = (TextView) view.findViewById(R.id.price);
-        total = (TextView) view.findViewById(R.id.total);
-        total_amount = (TextView) view.findViewById(R.id.total_amount);
-        shipping = (TextView) view.findViewById(R.id.shipping);
-        tv_specialDiscount = (TextView) view.findViewById(R.id.tv_specialDiscount);
-        shipping_charges = (TextView) view.findViewById(R.id.shipping_charges);
-        tv_specialDiscount_charges = (TextView) view.findViewById(R.id.tv_specialDiscount_charges);
-        grand_amount = (TextView) view.findViewById(R.id.grant_amount);
-        grand_total = (TextView) view.findViewById(R.id.grand_total);
-        tv_payOnline = (TextView) view.findViewById(R.id.tv_continue);
-        tv_rupees_icon = (TextView) view.findViewById(R.id.tv_rupees_icon);
-        tv_deliverTo = (TextView) view.findViewById(R.id.tv_deliverTo);
-        tv_deliveryAddress = (TextView) view.findViewById(R.id.tv_deliveryAddress);
-        tv_edit_Icon = (TextView) view.findViewById(R.id.tv_edit_icon);
-        tv_cancel = (TextView) view.findViewById(R.id.tv_cancel);
-        tv_done = (TextView) view.findViewById(R.id.tv_done);
+        tv_continue = view.findViewById(R.id.tv_continue);
+        arrow_icon = view.findViewById(R.id.arrow_icon);
+        your_order = view.findViewById(R.id.your_order);
+        rupee_icon = view.findViewById(R.id.rupee_icon);
+        icon_rupees = view.findViewById(R.id.icon_rupees);
+        rupees_icon = view.findViewById(R.id.rupees_icon);
+        quantity = view.findViewById(R.id.quantity);
+        dish_name = view.findViewById(R.id.dish_name);
+        action = view.findViewById(R.id.action);
+        price = view.findViewById(R.id.price);
+        total = view.findViewById(R.id.total);
+        total_amount = view.findViewById(R.id.total_amount);
+        shipping = view.findViewById(R.id.shipping);
+        tv_specialDiscount = view.findViewById(R.id.tv_specialDiscount);
+        shipping_charges = view.findViewById(R.id.shipping_charges);
+        tv_specialDiscount_charges = view.findViewById(R.id.tv_specialDiscount_charges);
+        grand_amount = view.findViewById(R.id.grant_amount);
+        grand_total = view.findViewById(R.id.grand_total);
+        tv_payOnline = view.findViewById(R.id.tv_continue);
+        tv_rupees_icon = view.findViewById(R.id.tv_rupees_icon);
+        tv_deliverTo = view.findViewById(R.id.tv_deliverTo);
+        tv_deliveryAddress = view.findViewById(R.id.tv_deliveryAddress);
+        tv_edit_Icon = view.findViewById(R.id.tv_edit_icon);
+        tv_cancel = view.findViewById(R.id.tv_cancel);
+        tv_done = view.findViewById(R.id.tv_done);
 
-        layout_promoCode = (LinearLayout) view.findViewById(R.id.layout_promoCode);
-        layout_done = (LinearLayout) view.findViewById(R.id.layout_done);
-        tv_continueLayout = (LinearLayout) view.findViewById(R.id.tv_continueLayout);
+        layout_promoCode = view.findViewById(R.id.layout_promoCode);
+        layout_done = view.findViewById(R.id.layout_done);
+        tv_continueLayout = view.findViewById(R.id.tv_continueLayout);
         tv_continueLayout.setOnClickListener(this);
         tv_edit_Icon.setOnClickListener(this);
         tv_cancel.setOnClickListener(this);
         //tv_editOrder.setOnClickListener(this);
         layout_done.setOnClickListener(this);
         setIcons();
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.listrecycler);
+        RecyclerView recyclerView = view.findViewById(R.id.listrecycler);
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
-        getStoreIdFromPreferences();
         orderDetailsesList = new ArrayList<CreateOrderDetails>();
         DbHelper dbHelper = new DbHelper(context);
-        Data userData = dbHelper.getUserData();
-        Addresses addresses = dbHelper.getAllAddressesData(addressId);
-        loginID = userData.getLoginID();
-        List<MyBasket> orderList = dbHelper.GetAllBasketOrderDataBasedOnCategoryId(StoreId);
+//        Data userData = dbHelper.getUserData();
+//        Addresses addresses = dbHelper.getAllAddressesData(addressId);
+//        loginID = userData.getLoginID();
+        List<MyBasket> orderList = dbHelper.GetAllBasketOrderData();
         if (orderList != null && orderList.size() > 0) {
-            adapter = new YourOrderAdpater(context, orderList, storeId);
+            adapter = new YourOrderAdpater(context, orderList);
             recyclerView.setAdapter(adapter);
-            orderDetails(orderList);
+//            orderDetails(orderList);
         }
-        if (addresses != null) {
-            tv_deliveryAddress.setText(addresses.getCompleteAddress() + "," + addresses.getZipCode() + "," + addresses.getPhoneNumber());
-        }
+        tv_deliveryAddress.setText(completeAddress + "," + phone + "," + zipcode);
 
     }
 
-    //get selected store id
-    private void getStoreIdFromPreferences() {
-        SharedPreferences prefs = context.getSharedPreferences("StoreIdPreferences", Context.MODE_PRIVATE);
-        if (prefs != null) {
-            storeId = prefs.getInt("StoreId", 0);
-        }
-    }
 
     private void orderDetails(List<MyBasket> orderList) {
         for (MyBasket order : orderList) {
@@ -295,7 +281,7 @@ public class YourOrderFragment extends Fragment implements View.OnClickListener 
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_continueLayout:
-                createNewOrder();
+//                createNewOrder();
                 break;
             case R.id.tv_cancel:
                 edt_promoCode.setText("");
@@ -310,39 +296,39 @@ public class YourOrderFragment extends Fragment implements View.OnClickListener 
 
     //create new Order
 
-    public void createNewOrder() {
-        if (Utility.isOnline(context)) {
-            final BallTriangleDialog dotDialog = new BallTriangleDialog(context);
-            dotDialog.show();
-            final DbHelper dbHelper = new DbHelper(context);
-            Data data = dbHelper.getUserData();
-            int loginId = data.getLoginID();
-            ServiceCaller serviceCaller = new ServiceCaller(context);
-            serviceCaller.createOrderService(storeId, addressId, loginId, promoCodeId, orderDetailsesList, new IAsyncWorkCompletedCallback() {
-                @Override
-                public void onDone(String result, boolean isComplete) {
-                    if (isComplete) {
-                        if (result != null) {
-                            OrderConfirmFragment fragment = OrderConfirmFragment.newInstance(addressId, result);
-                            moveFragmentWithTag(fragment, "OrderPlacedFragment");
-                        } else {
-                            Utility.alertForErrorMessage("Order not Placed Successfully", context);
-                        }
-                    } else {
-                        Utility.alertForErrorMessage("Order not Placed Successfully", context);
-                    }
-                    if (dotDialog.isShowing()) {
-                        dotDialog.dismiss();
-                    }
-                }
-            });
-
-
-        } else {
-            Utility.alertForErrorMessage(Contants.OFFLINE_MESSAGE, context);
-        }
-    }
-
+//    public void createNewOrder() {
+//        if (Utility.isOnline(context)) {
+//            final BallTriangleDialog dotDialog = new BallTriangleDialog(context);
+//            dotDialog.show();
+//            final DbHelper dbHelper = new DbHelper(context);
+//            Data data = dbHelper.getUserData();
+//            int loginId = data.getLoginID();
+//            ServiceCaller serviceCaller = new ServiceCaller(context);
+//            serviceCaller.createOrderService(storeId, addressId, loginId, promoCodeId, orderDetailsesList, new IAsyncWorkCompletedCallback() {
+//                @Override
+//                public void onDone(String result, boolean isComplete) {
+//                    if (isComplete) {
+//                        if (result != null) {
+//                            OrderConfirmFragment fragment = OrderConfirmFragment.newInstance(addressId, result);
+//                            moveFragmentWithTag(fragment, "OrderPlacedFragment");
+//                        } else {
+//                            Utility.alertForErrorMessage("Order not Placed Successfully", context);
+//                        }
+//                    } else {
+//                        Utility.alertForErrorMessage("Order not Placed Successfully", context);
+//                    }
+//                    if (dotDialog.isShowing()) {
+//                        dotDialog.dismiss();
+//                    }
+//                }
+//            });
+//
+//
+//        } else {
+//            Utility.alertForErrorMessage(Contants.OFFLINE_MESSAGE, context);
+//        }
+//    }
+//
     private void moveFragmentWithTag(Fragment fragment, String tag) {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         fragmentManager.beginTransaction()

@@ -42,7 +42,7 @@ import fusionsoftware.loop.dawaionline.utilities.Utility;
 
 public class OrderHistoryDetailFragment extends Fragment {
 
-    private int OrderId,StoreId;
+    private int OrderId, StoreId;
     private String OrderNumber;
     private String StoreName;
 
@@ -52,7 +52,7 @@ public class OrderHistoryDetailFragment extends Fragment {
     }
 
     // TODO: Rename and change types and number of parameters
-    public static OrderHistoryDetailFragment newInstance(int OrderId, String OrderNumber, String StoreName,int StoreId) {
+    public static OrderHistoryDetailFragment newInstance(int OrderId, String OrderNumber, String StoreName, int StoreId) {
         OrderHistoryDetailFragment fragment = new OrderHistoryDetailFragment();
         Bundle args = new Bundle();
         args.putInt("OrderId", OrderId);
@@ -224,51 +224,53 @@ public class OrderHistoryDetailFragment extends Fragment {
         rootActivity.setScreencart(false);
         rootActivity.setScreenSave(false);
         rootActivity.setScreenCartDot(false);
-        tv_cancelOrder = (TextView) view.findViewById(R.id.tv_cancel_order);
-        rupee_icon = (TextView) view.findViewById(R.id.rupee_icon);
-        icon_rupees = (TextView) view.findViewById(R.id.icon_rupees);
-        rupees_icon = (TextView) view.findViewById(R.id.rupees_icon);
-        quantity = (TextView) view.findViewById(R.id.quantity);
-        dish_name = (TextView) view.findViewById(R.id.dish_name);
-        grandTotal = (TextView) view.findViewById(R.id.grand_total);
-        total = (TextView) view.findViewById(R.id.total);
-        price = (TextView) view.findViewById(R.id.price);
-        tv_storeName = (TextView) view.findViewById(R.id.tv_storeName);
-        tv_placed = (TextView) view.findViewById(R.id.tv_placed);
-        tv_status = (TextView) view.findViewById(R.id.tv_status);
-        tv_ex_delivery = (TextView) view.findViewById(R.id.tv_ex_delivery);
-        total_amount = (TextView) view.findViewById(R.id.total_amount);
-        shipping = (TextView) view.findViewById(R.id.shipping);
-        grandAmount = (TextView) view.findViewById(R.id.grand_amount);
-        shippingCharges = (TextView) view.findViewById(R.id.shipping_charges);
-        tv_title = (TextView) view.findViewById(R.id.tv_title);
-        tv_orderNumber = (TextView) view.findViewById(R.id.tv_orderNumber);
-        cancleOrder = (LinearLayout) view.findViewById(R.id.cancel_order);
-        layout_orderDetails = (LinearLayout) view.findViewById(R.id.layout_orderDetails);
-        recyclerView = (RecyclerView) view.findViewById(R.id.listrecycler);
+        rootActivity.setItemCart();
+        tv_cancelOrder = view.findViewById(R.id.tv_cancel_order);
+        rupee_icon = view.findViewById(R.id.rupee_icon);
+        icon_rupees = view.findViewById(R.id.icon_rupees);
+        rupees_icon = view.findViewById(R.id.rupees_icon);
+        quantity = view.findViewById(R.id.quantity);
+        dish_name = view.findViewById(R.id.dish_name);
+        grandTotal = view.findViewById(R.id.grand_total);
+        total = view.findViewById(R.id.total);
+        price = view.findViewById(R.id.price);
+        tv_storeName = view.findViewById(R.id.tv_storeName);
+        tv_placed = view.findViewById(R.id.tv_placed);
+        tv_status = view.findViewById(R.id.tv_status);
+        tv_ex_delivery = view.findViewById(R.id.tv_ex_delivery);
+        total_amount = view.findViewById(R.id.total_amount);
+        shipping = view.findViewById(R.id.shipping);
+        grandAmount = view.findViewById(R.id.grand_amount);
+        shippingCharges = view.findViewById(R.id.shipping_charges);
+        tv_title = view.findViewById(R.id.tv_title);
+        tv_orderNumber = view.findViewById(R.id.tv_orderNumber);
+        cancleOrder = view.findViewById(R.id.cancel_order);
+        layout_orderDetails = view.findViewById(R.id.layout_orderDetails);
+        recyclerView = view.findViewById(R.id.listrecycler);
 
-        icon_rupees_promo = (TextView) view.findViewById(R.id.icon_rupees_promo);
-        tv_promocode = (TextView) view.findViewById(R.id.tv_promocode);
-        tv_promocode_value = (TextView) view.findViewById(R.id.tv_promocode_value);
+        icon_rupees_promo = view.findViewById(R.id.icon_rupees_promo);
+        tv_promocode = view.findViewById(R.id.tv_promocode);
+        tv_promocode_value = view.findViewById(R.id.tv_promocode_value);
 
-        tv_gst = (TextView) view.findViewById(R.id.tv_gst);
-        total_gst = (TextView) view.findViewById(R.id.total_gst);
-        tv_rupees_icon_gst = (TextView) view.findViewById(R.id.tv_rupees_icon_gst);
+        tv_gst = view.findViewById(R.id.tv_gst);
+        total_gst = view.findViewById(R.id.total_gst);
+        tv_rupees_icon_gst = view.findViewById(R.id.tv_rupees_icon_gst);
 
-        sub_total = (TextView) view.findViewById(R.id.sub_total);
-        icon_rupees_sub = (TextView) view.findViewById(R.id.icon_rupees_sub);
-        sub_amount = (TextView) view.findViewById(R.id.sub_amount);
+        sub_total = view.findViewById(R.id.sub_total);
+        icon_rupees_sub = view.findViewById(R.id.icon_rupees_sub);
+        sub_amount = view.findViewById(R.id.sub_amount);
 
-        tv_discount = (TextView) view.findViewById(R.id.tv_discount);
-        tv_Discount_charges = (TextView) view.findViewById(R.id.tv_Discount_charges);
-        tv_discount_rupees_icon = (TextView) view.findViewById(R.id.tv_discount_rupees_icon);
+        tv_discount = view.findViewById(R.id.tv_discount);
+        tv_Discount_charges = view.findViewById(R.id.tv_Discount_charges);
+        tv_discount_rupees_icon = view.findViewById(R.id.tv_discount_rupees_icon);
 
-        tv_net_price = (TextView) view.findViewById(R.id.tv_net_price);
-        net_price_amount = (TextView) view.findViewById(R.id.net_price_amount);
-        net_price_rupees_icon = (TextView) view.findViewById(R.id.net_price_rupees_icon);
+        tv_net_price = view.findViewById(R.id.tv_net_price);
+        net_price_amount = view.findViewById(R.id.net_price_amount);
+        net_price_rupees_icon = view.findViewById(R.id.net_price_rupees_icon);
         LinearLayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
     }
+
     //GetOrderByOrderNumber api method....
     private void GetOrderByOrderNumber() {
         if (Utility.isOnline(context)) {
@@ -295,10 +297,10 @@ public class OrderHistoryDetailFragment extends Fragment {
                 }
             });
         } else {
-           // Utility.alertForErrorMessage(Contants.OFFLINE_MESSAGE, context);
+            // Utility.alertForErrorMessage(Contants.OFFLINE_MESSAGE, context);
             LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View view = inflater.inflate(R.layout.no_data_found, null);
-            TextView nodata= (TextView) view.findViewById(R.id.nodata);
+            TextView nodata = (TextView) view.findViewById(R.id.nodata);
             nodata.setText("No internet connection found");
             layout_orderDetails.setGravity(Gravity.CENTER);
             layout_orderDetails.removeAllViews();
