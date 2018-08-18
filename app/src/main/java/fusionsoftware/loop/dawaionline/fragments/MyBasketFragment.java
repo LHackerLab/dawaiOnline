@@ -69,8 +69,8 @@ public class MyBasketFragment extends Fragment implements View.OnClickListener {
     }
 
     private Typeface materialDesignIcons, medium, regular, bold;
-    TextView arrow_icon, tv_continue, tv_yourOrder, grand_total,checkOutallIcon;
-    LinearLayout layout_basket, continuelayout, layoutcheck,allcheckoutLayout;
+    TextView arrow_icon, tv_continue, tv_yourOrder, grand_total, checkOutallIcon;
+    LinearLayout layout_basket, continuelayout, layoutcheck, allcheckoutLayout;
     private Context context;
     View view;
     private double totalPrice = 0;
@@ -221,10 +221,19 @@ public class MyBasketFragment extends Fragment implements View.OnClickListener {
                 setUpHomeFragment();
                 break;
             case R.id.allcheckoutLayout:
+               // addPricedis();// add price and dicsount in shareprefernces..
                 UserAddressListFragment fragment = UserAddressListFragment.newInstance(true, 0);
                 moveFragment(fragment);
                 break;
         }
+    }
+
+    private void addPricedis() {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("pricePres", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("total", "");
+        editor.putString("dis", "");
+        editor.apply();
     }
 
     //open home fragement

@@ -17,6 +17,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -24,9 +26,11 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -42,9 +46,11 @@ import fusionsoftware.loop.dawaionline.framework.IAsyncWorkCompletedCallback;
 import fusionsoftware.loop.dawaionline.framework.ServiceCaller;
 import fusionsoftware.loop.dawaionline.model.Addresses;
 import fusionsoftware.loop.dawaionline.model.ContentData;
+import fusionsoftware.loop.dawaionline.model.ContentDataAsArray;
 import fusionsoftware.loop.dawaionline.model.CreateOrderDetails;
 import fusionsoftware.loop.dawaionline.model.Data;
 import fusionsoftware.loop.dawaionline.model.MyBasket;
+import fusionsoftware.loop.dawaionline.model.Result;
 import fusionsoftware.loop.dawaionline.utilities.CompatibilityUtility;
 import fusionsoftware.loop.dawaionline.utilities.Contants;
 import fusionsoftware.loop.dawaionline.utilities.FontManager;
@@ -54,9 +60,9 @@ import fusionsoftware.loop.dawaionline.utilities.Utility;
  * Created by LALIT on 8/14/2017.
  */
 public class YourOrderFragment extends Fragment implements View.OnClickListener {
-    private String completeAddress, phone,zipcode;
+    private String completeAddress, phone, zipcode;
 
-    public static YourOrderFragment newInstance(String completeAddress, String phone,String zipcode) {
+    public static YourOrderFragment newInstance(String completeAddress, String phone, String zipcode) {
         YourOrderFragment fragment = new YourOrderFragment();
         Bundle args = new Bundle();
         args.putString("completeAddress", completeAddress);
@@ -80,21 +86,19 @@ public class YourOrderFragment extends Fragment implements View.OnClickListener 
     YourOrderAdpater adapter;
     EditText edt_promoCode;
     View view;
-    TextView arrow_icon, tv_continue, your_order, tv_editOrder, tv_off, tv_promoCode, tv_apply, tv_specialDiscount_charges, tv_specialDiscount,
+    TextView arrow_icon, tv_continue, your_order, tv_editOrder, tv_promoCode, tv_apply, tv_specialDiscount_charges, tv_specialDiscount,
             rupee_icon, icon_rupees, tv_rupees_icon, rupees_icon, tv_cancel, tv_done,
             tv_deliverTo, tv_edit_Icon, tv_deliveryAddress, quantity, dish_name, price, action, total, total_amount, shipping, shipping_charges, grand_amount, grand_total, tv_payOnline;
     private Context context;
     private int loginID;
-    private float promoCodeDiscount;
     private LinearLayout layout_promoCode, tv_continueLayout, layout_done;
-    private ArrayList<CreateOrderDetails> orderDetailsesList;
-    private double totalPrice = 0;
-    private int storeId;
-    int opTime, endTime;
     private Boolean editFlag = false;
     private double SubTotalPrice = 0;
-    //private double totalDiscountPrice = 0;
-    private int promoCodeId;
+    double totalPrice = 0.0, dis = 0.0;
+    DbHelper dbHelper;
+    DashboardActivity rootActivity;
+    float shippingChareges = 0;
+    String cityName;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -157,7 +161,7 @@ public class YourOrderFragment extends Fragment implements View.OnClickListener 
 
     //initlization..............
     private void init() {
-        DashboardActivity rootActivity = (DashboardActivity) getActivity();
+        rootActivity = (DashboardActivity) getActivity();
         rootActivity.setScreencart(false);
         rootActivity.setScreenSave(false);
         rootActivity.setScreenCartDot(false);
@@ -183,51 +187,76 @@ public class YourOrderFragment extends Fragment implements View.OnClickListener 
         tv_specialDiscount_charges = view.findViewById(R.id.tv_specialDiscount_charges);
         grand_amount = view.findViewById(R.id.grant_amount);
         grand_total = view.findViewById(R.id.grand_total);
-        tv_payOnline = view.findViewById(R.id.tv_continue);
         tv_rupees_icon = view.findViewById(R.id.tv_rupees_icon);
         tv_deliverTo = view.findViewById(R.id.tv_deliverTo);
         tv_deliveryAddress = view.findViewById(R.id.tv_deliveryAddress);
         tv_edit_Icon = view.findViewById(R.id.tv_edit_icon);
         tv_cancel = view.findViewById(R.id.tv_cancel);
         tv_done = view.findViewById(R.id.tv_done);
-
         layout_promoCode = view.findViewById(R.id.layout_promoCode);
         layout_done = view.findViewById(R.id.layout_done);
         tv_continueLayout = view.findViewById(R.id.tv_continueLayout);
         tv_continueLayout.setOnClickListener(this);
         tv_edit_Icon.setOnClickListener(this);
         tv_cancel.setOnClickListener(this);
-        //tv_editOrder.setOnClickListener(this);
         layout_done.setOnClickListener(this);
         setIcons();
         RecyclerView recyclerView = view.findViewById(R.id.listrecycler);
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
-        orderDetailsesList = new ArrayList<CreateOrderDetails>();
-        DbHelper dbHelper = new DbHelper(context);
+        dbHelper = new DbHelper(context);
 //        Data userData = dbHelper.getUserData();
-//        Addresses addresses = dbHelper.getAllAddressesData(addressId);
 //        loginID = userData.getLoginID();
+        getShippingData();
         List<MyBasket> orderList = dbHelper.GetAllBasketOrderData();
         if (orderList != null && orderList.size() > 0) {
             adapter = new YourOrderAdpater(context, orderList);
             recyclerView.setAdapter(adapter);
-//            orderDetails(orderList);
+            getCalculation(orderList);
         }
         tv_deliveryAddress.setText(completeAddress + "," + phone + "," + zipcode);
-
     }
 
+    private void getShippingData() {
+        rootActivity.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                cityName = adapterView.getSelectedItem().toString();
+                DbHelper dbHelper = new DbHelper(context);
+                Result resultList = dbHelper.getCityDataByCityName(cityName);
+                if (resultList != null) {
+                    shippingChareges = resultList.getShippingCharge();
+                }
+                getShippingData();
+            }
 
-    private void orderDetails(List<MyBasket> orderList) {
-        for (MyBasket order : orderList) {
-            CreateOrderDetails orderDetails = new CreateOrderDetails();
-            orderDetails.setProductId(order.getProductId());
-            orderDetails.setQuantity(order.getQuantity());
-            orderDetailsesList.add(orderDetails);
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+    }
+
+    private void getCalculation(List<MyBasket> orderList) {
+
+        for (MyBasket myBasket : orderList) {
+            int productId = myBasket.getProductId();
+            MyBasket myBaskets = dbHelper.getBasketOrderData(productId);
+            double discount = myBaskets.getDiscount();
+            double total = myBaskets.getPrice();
+            double qty = myBaskets.getQuantity();
+            SubTotalPrice = (total * qty);
+            totalPrice = totalPrice + SubTotalPrice;
+            dis = dis + ((SubTotalPrice / 100.0f) * discount);
         }
+        DecimalFormat format = new DecimalFormat("0.0");
+        total_amount.setText(format.format(totalPrice));
+        tv_specialDiscount_charges.setText(format.format(dis));
+        grand_amount.setText(format.format((totalPrice - dis) + shippingChareges));
+        shipping_charges.setText(format.format(shippingChareges));
     }
+
     //.....................calculate total price with all discount.................//
 //    private double calculateTotalQuantityPrice(float Quantity, float itemPrice, float Discount) {
 //        double totalPrice = 0;
@@ -296,7 +325,7 @@ public class YourOrderFragment extends Fragment implements View.OnClickListener 
 
     //create new Order
 
-//    public void createNewOrder() {
+        public void createNewOrder() {
 //        if (Utility.isOnline(context)) {
 //            final BallTriangleDialog dotDialog = new BallTriangleDialog(context);
 //            dotDialog.show();
@@ -304,13 +333,13 @@ public class YourOrderFragment extends Fragment implements View.OnClickListener 
 //            Data data = dbHelper.getUserData();
 //            int loginId = data.getLoginID();
 //            ServiceCaller serviceCaller = new ServiceCaller(context);
-//            serviceCaller.createOrderService(storeId, addressId, loginId, promoCodeId, orderDetailsesList, new IAsyncWorkCompletedCallback() {
+//            serviceCaller.createOrderService(addressId, loginId, orderDetailsesList, new IAsyncWorkCompletedCallback() {
 //                @Override
 //                public void onDone(String result, boolean isComplete) {
 //                    if (isComplete) {
 //                        if (result != null) {
-//                            OrderConfirmFragment fragment = OrderConfirmFragment.newInstance(addressId, result);
-//                            moveFragmentWithTag(fragment, "OrderPlacedFragment");
+                            OrderConfirmFragment fragment = OrderConfirmFragment.newInstance(0, "");
+                            moveFragmentWithTag(fragment, "OrderPlacedFragment");
 //                        } else {
 //                            Utility.alertForErrorMessage("Order not Placed Successfully", context);
 //                        }
@@ -327,7 +356,7 @@ public class YourOrderFragment extends Fragment implements View.OnClickListener 
 //        } else {
 //            Utility.alertForErrorMessage(Contants.OFFLINE_MESSAGE, context);
 //        }
-//    }
+    }
 //
     private void moveFragmentWithTag(Fragment fragment, String tag) {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();

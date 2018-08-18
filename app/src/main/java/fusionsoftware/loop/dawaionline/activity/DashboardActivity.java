@@ -69,7 +69,7 @@ public class DashboardActivity extends AppCompatActivity
     DrawerLayout drawer;
     ImageView image_logo, profileImage;
     private LinearLayout logoutLayout;
-    Spinner spinner;
+    public Spinner spinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,12 +117,13 @@ public class DashboardActivity extends AppCompatActivity
                 @Override
                 public void onDone(String workName, boolean isComplete) {
                     if (isComplete) {
-                        ContentDataAsArray contentDataAsArray = new Gson().fromJson(workName, ContentDataAsArray.class);
-                        for (Result result : contentDataAsArray.getResults()) {
+                        DbHelper dbHelper = new DbHelper(DashboardActivity.this);
+                        List<Result> resultList = dbHelper.GetAllCityData();
+                        for (Result result : resultList) {
                             stringList.addAll(Arrays.asList(result.getCityName()));
                         }
                         ArrayAdapter<String> stringArrayAdapter = new ArrayAdapter<String>(DashboardActivity.this, android.R.layout.simple_spinner_dropdown_item, stringList);
-                       stringArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        stringArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         spinner.setAdapter(stringArrayAdapter);
                         if (dotDialog.isShowing()) {
                             dotDialog.dismiss();

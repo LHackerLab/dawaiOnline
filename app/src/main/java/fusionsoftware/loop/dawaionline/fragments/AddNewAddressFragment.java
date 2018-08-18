@@ -176,41 +176,25 @@ public class AddNewAddressFragment extends Fragment implements View.OnClickListe
 
     private void getCityList() {
         final List<String> stringList = new ArrayList<>();
-        if (Utility.isOnline(context)) {
-            final BallTriangleDialog dotDialog = new BallTriangleDialog(context);
-            dotDialog.show();
-            ServiceCaller serviceCaller = new ServiceCaller(context);
-            serviceCaller.callCityService(new IAsyncWorkCompletedCallback() {
-                @Override
-                public void onDone(String workName, boolean isComplete) {
-                    if (isComplete) {
-                        ContentDataAsArray contentDataAsArray = new Gson().fromJson(workName, ContentDataAsArray.class);
-                        for (Result result : contentDataAsArray.getResults()) {
-                            stringList.addAll(Arrays.asList(result.getCityName()));
-                        }
-                        ArrayAdapter<String> stringArrayAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, stringList);
-                        stringArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        spinner.setAdapter(stringArrayAdapter);
-                        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                            @Override
-                            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                                city = adapterView.getSelectedItem().toString();
-                            }
-
-                            @Override
-                            public void onNothingSelected(AdapterView<?> adapterView) {
-
-                            }
-                        });
-                        if (dotDialog.isShowing()) {
-                            dotDialog.dismiss();
-                        }
-                    }
-                }
-            });
-        } else {
-            Utility.alertForErrorMessage(Contants.OFFLINE_MESSAGE, context);
+        DbHelper dbHelper = new DbHelper(context);
+        List<Result> resultList = dbHelper.GetAllCityData();
+        for (Result result : resultList) {
+            stringList.addAll(Arrays.asList(result.getCityName()));
         }
+        ArrayAdapter<String> stringArrayAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, stringList);
+        stringArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(stringArrayAdapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                city = adapterView.getSelectedItem().toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
 
 

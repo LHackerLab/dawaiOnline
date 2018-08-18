@@ -27,6 +27,7 @@ import fusionsoftware.loop.dawaionline.model.ContentData;
 import fusionsoftware.loop.dawaionline.model.ContentDataAsArray;
 import fusionsoftware.loop.dawaionline.model.CreateOrderDetails;
 import fusionsoftware.loop.dawaionline.model.Data;
+import fusionsoftware.loop.dawaionline.model.Result;
 import fusionsoftware.loop.dawaionline.utilities.Contants;
 import fusionsoftware.loop.dawaionline.utilities.Utility;
 
@@ -418,12 +419,48 @@ public class ServiceCaller {
             @Override
             public void onDone(String doneWhatCode, String result, String error) {
                 if (result != null) {
-                    workCompletedCallback.onDone(result, true);
+//                    workCompletedCallback.onDone(result, true);
+                    parseAndSaveCityData(result, workCompletedCallback);
                 } else {
                     workCompletedCallback.onDone("city data done", false);
                 }
             }
         });
+    }
+
+    //parse and save city  data
+    public void parseAndSaveCityData(final String result, final IAsyncWorkCompletedCallback workCompletedCallback) {
+        new AsyncTask<Void, Void, Boolean>() {
+
+
+            @Override
+            protected Boolean doInBackground(Void... voids) {
+                Boolean flag = false;
+                ContentDataAsArray data = new Gson().fromJson(result, ContentDataAsArray.class);
+                if (data != null) {
+                    DbHelper dbHelper = new DbHelper(context);
+                    for (Result objData : data.getResults()) {
+                        if (objData != null) {
+                            dbHelper.upsertCityData(objData);
+                        }
+                    }
+                    flag = true;
+
+                }
+
+                return flag;
+            }
+
+            @Override
+            protected void onPostExecute(Boolean flag) {
+                super.onPostExecute(flag);
+                if (flag) {
+                    workCompletedCallback.onDone("city done", true);
+                } else {
+                    workCompletedCallback.onDone("city done", false);
+                }
+            }
+        }.execute();
     }
 
     public void callProductData(final int categoryId, final IAsyncWorkCompletedCallback workCompletedCallback) {

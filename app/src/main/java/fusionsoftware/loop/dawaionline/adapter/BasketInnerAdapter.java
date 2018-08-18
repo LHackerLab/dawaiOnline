@@ -37,7 +37,7 @@ public class BasketInnerAdapter extends RecyclerView.Adapter<BasketInnerAdapter.
     private Context context;
     private Typeface materialDesignIcons, medium, regular, bold;
     private int categoryPosition, categoryId;
-    double total, grandTotal=0.0;
+    double total, grandTotal = 0.0;
     MyBasketFragment myBasketFragment;
 
     public BasketInnerAdapter(Context context, List<MyBasket> basketItemdata, List<MyBasket> categoryData, int categoryPosition, int categoryId, MyBasketFragment myBasketFragment) {
@@ -119,6 +119,7 @@ public class BasketInnerAdapter extends RecyclerView.Adapter<BasketInnerAdapter.
                         LocalBroadcastManager.getInstance(context).sendBroadcast(myIntent);
                     }
                 }
+                grandTotal = 0;
                 notifyDataSetChanged();
             }
         });
@@ -142,6 +143,7 @@ public class BasketInnerAdapter extends RecyclerView.Adapter<BasketInnerAdapter.
 //        if (Quantity == 0) {//if quantity 0 then delete order in data base
 //            dbHelper.deleteBasketOrderDataByProductId(basketItemdata.get(position).getProductId());//delete item
 //        }
+        grandTotal = 0;
         notifyDataSetChanged();
     }
 

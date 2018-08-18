@@ -16,6 +16,7 @@ import fusionsoftware.loop.dawaionline.model.Addresses;
 import fusionsoftware.loop.dawaionline.model.Data;
 import fusionsoftware.loop.dawaionline.model.MyBasket;
 import fusionsoftware.loop.dawaionline.model.OrderDetails;
+import fusionsoftware.loop.dawaionline.model.Result;
 import fusionsoftware.loop.dawaionline.utilities.Contants;
 
 
@@ -26,7 +27,7 @@ import fusionsoftware.loop.dawaionline.utilities.Contants;
 public class DbHelper extends SQLiteOpenHelper {
 
     // If you change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION = 2;
+    public static final int DATABASE_VERSION = 3;
     public static final String DATABASE_NAME = Contants.DATABASE_NAME;
 
     public DbHelper(Context context) {
@@ -36,6 +37,7 @@ public class DbHelper extends SQLiteOpenHelper {
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS userData");
+        db.execSQL("DROP TABLE IF EXISTS cityData");
         db.execSQL("DROP TABLE IF EXISTS MyOrderDataEntity");
         db.execSQL("DROP TABLE IF EXISTS MyOrderHistoryDataEntity");
         db.execSQL("DROP TABLE IF EXISTS TrackOrderDataEntity");
@@ -52,6 +54,8 @@ public class DbHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String CREATE_user_TABLE = "CREATE TABLE userData(LoginID INTEGER,PhoneNumber TEXT,Name TEXT,Otp INTEGER,EmailID TEXT,Role INTEGER,ProfilePictureUrl TEXT)";
         db.execSQL(CREATE_user_TABLE);
+        String CREATE_city_TABLE = "CREATE TABLE cityData(cityId INTEGER,cityName TEXT,shippingCharge REAL)";
+        db.execSQL(CREATE_city_TABLE);
         String CREATE_MyOrder_TABLE = "CREATE TABLE MyOrderDataEntity(ProductId INTEGER,ProductName TEXT,Quantity REAL,Price REAL, OrderTime TEXT,CategoryId INTEGER,discount REAL,CategoryName TEXT)";
         //ProductId,ProductName,StoreId,Quantity,Price,OrderTime,CategoryId,discount  MyOrderDataEntity
         db.execSQL(CREATE_MyOrder_TABLE);
@@ -190,6 +194,136 @@ public class DbHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "LoginId = " + LoginId + " ";
         db.delete("userData", query, null);
+        db.close();
+        return result;
+    }
+
+    //.......................city data...............................
+
+
+    //--------------------------cityDataData---------------
+    public boolean upsertCityData(Result ob) {
+        boolean done = false;
+        Result data = null;
+        if (ob.getCityId() != 0) {
+            data = getCityDataByCityName(ob.getCityName());
+            if (data == null) {
+                done = insertCityData(ob);
+            } else {
+                done = updateCityData(ob);
+            }
+        }
+        return done;
+    }
+
+
+    //insert city data.............
+    public boolean insertCityData(Result ob) {
+        ContentValues values = new ContentValues();
+
+        values.put("cityId", ob.getCityId());
+        values.put("cityName", ob.getCityName());
+        values.put("shippingCharge", ob.getShippingCharge());
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        long i = db.insert("cityData", null, values);
+        db.close();
+        return i > 0;
+    }
+
+    // for city data.............
+    private void populateCityformation(Cursor cursor, Result ob) {
+        ob.setCityId(cursor.getInt(0));
+        ob.setCityName(cursor.getString(1));
+        ob.setShippingCharge(cursor.getFloat(2));
+    }
+
+    //city data
+    public Result getCityData() {
+
+        String query = "Select * FROM cityData";
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        Result data = new Result();
+
+        if (cursor.moveToFirst()) {
+            cursor.moveToFirst();
+            populateCityformation(cursor, data);
+
+            cursor.close();
+        } else {
+            data = null;
+        }
+        db.close();
+        return data;
+    }
+
+    //city data
+    public Result getCityDataByCityName(String name) {
+        Result ob = new Result();
+        String query = "Select * FROM cityData WHERE  cityName= '" + name + "'";
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.moveToFirst()) {
+
+            while (cursor.isAfterLast() == false) {
+
+                populateCityformation(cursor, ob);
+                cursor.moveToNext();
+                cursor.close();
+            }
+        }
+        db.close();
+        return ob;
+    }
+
+    // city list data
+    public List<Result> GetAllCityData() {
+        ArrayList<Result> list = new ArrayList<Result>();
+        String query = "Select * FROM cityData ";
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.moveToFirst()) {
+
+            while (cursor.isAfterLast() == false) {
+                Result ob = new Result();
+                populateCityformation(cursor, ob);
+                list.add(ob);
+                cursor.moveToNext();
+            }
+        }
+        db.close();
+        return list;
+    }
+
+    //update city data
+    public boolean updateCityData(Result ob) {
+        ContentValues values = new ContentValues();
+
+        values.put("cityId", ob.getCityId());
+        values.put("cityName", ob.getCityName());
+        values.put("shippingCharge", ob.getShippingCharge());
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        long i = 0;
+        i = db.update("cityData", values, "cityId = '" + ob.getCityId() + "' ", null);
+
+        db.close();
+        return i > 0;
+    }
+
+    // delete city data
+    public boolean deleteCityData(int cityId) {
+        boolean result = false;
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "cityId = " + cityId + " ";
+        db.delete("cityData", query, null);
         db.close();
         return result;
     }

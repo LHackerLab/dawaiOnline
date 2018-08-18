@@ -14,7 +14,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight=".9"
+            android:layout_weight=".92"
             android:orientation="vertical">
 
             <android.support.v4.widget.NestedScrollView
@@ -62,14 +62,15 @@
                                 android:visibility="gone" />
 
                             <!--<TextView-->
-                                <!--android:id="@+id/tv_editOrder"-->
-                                <!--android:layout_width="wrap_content"-->
-                                <!--android:layout_height="match_parent"-->
-                                <!--android:text="@string/Done"-->
-                                <!--android:textColor="@color/green"-->
-                                <!--android:textSize="@dimen/dimTextSize_14" />-->
+                            <!--android:id="@+id/tv_editOrder"-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="match_parent"-->
+                            <!--android:text="@string/Done"-->
+                            <!--android:textColor="@color/green"-->
+                            <!--android:textSize="@dimen/dimTextSize_14" />-->
                         </LinearLayout>
                     </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -84,8 +85,8 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="@dimen/dimValue_10"
-                                android:layout_marginTop="@dimen/dimValue_10"
                                 android:layout_marginRight="@dimen/dimValue_10"
+                                android:layout_marginTop="@dimen/dimValue_10"
                                 android:orientation="horizontal">
 
                                 <TextView
@@ -216,7 +217,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dimValue_5"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:visibility="gone">
 
                         <android.support.v7.widget.CardView
                             android:layout_width="match_parent"
@@ -232,12 +234,12 @@
                                 android:orientation="vertical">
 
                                 <!--<TextView-->
-                                    <!--android:id="@+id/tv_off"-->
-                                    <!--android:layout_width="match_parent"-->
-                                    <!--android:layout_height="wrap_content"-->
-                                    <!--android:text="@string/flat_off"-->
-                                    <!--android:textColor="@color/green"-->
-                                    <!--android:textSize="@dimen/dimTextSize_14" />-->
+                                <!--android:id="@+id/tv_off"-->
+                                <!--android:layout_width="match_parent"-->
+                                <!--android:layout_height="wrap_content"-->
+                                <!--android:text="@string/flat_off"-->
+                                <!--android:textColor="@color/green"-->
+                                <!--android:textSize="@dimen/dimTextSize_14" />-->
 
                                 <TextView
                                     android:id="@+id/tv_promoCode"
@@ -293,7 +295,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dimValue_5"
-                        android:visibility="gone"
                         android:orientation="vertical">
 
                         <android.support.v7.widget.CardView
@@ -319,30 +320,36 @@
                                         android:id="@+id/total"
                                         android:layout_width="0dp"
                                         android:layout_height="match_parent"
-                                        android:layout_weight=".8"
+                                        android:layout_weight=".5"
                                         android:text="@string/Total"
                                         android:textColor="@color/primary_text"
                                         android:textSize="@dimen/dimTextSize_14" />
 
-                                    <TextView
-                                        android:id="@+id/rupee_icon"
+                                    <LinearLayout
                                         android:layout_width="0dp"
-                                        android:layout_height="match_parent"
-                                        android:layout_weight="0.05"
-                                        android:gravity="center|right"
-                                        android:textColor="@color/primary_text"
-                                        android:textSize="@dimen/dimTextSize_16" />
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight=".5"
+                                        android:gravity="right"
+                                        android:orientation="horizontal">
 
-                                    <TextView
-                                        android:id="@+id/total_amount"
-                                        android:layout_width="0dp"
-                                        android:layout_height="match_parent"
-                                        android:layout_weight="0.15"
-                                        android:gravity="end|center"
-                                        android:text="1234"
-                                        android:textColor="@color/primary_text"
-                                        android:textSize="@dimen/dimTextSize_14" />
+                                        <TextView
+                                            android:id="@+id/rupee_icon"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="match_parent"
+                                            android:gravity="center|right"
+                                            android:textColor="@color/primary_text"
+                                            android:textSize="@dimen/dimTextSize_16" />
 
+                                        <TextView
+                                            android:id="@+id/total_amount"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="match_parent"
+                                            android:gravity="end|center"
+                                            android:text="1234"
+                                            android:textColor="@color/primary_text"
+                                            android:textSize="@dimen/dimTextSize_14" />
+
+                                    </LinearLayout>
                                 </LinearLayout>
 
                                 <LinearLayout
@@ -356,30 +363,36 @@
                                         android:id="@+id/shipping"
                                         android:layout_width="0dp"
                                         android:layout_height="match_parent"
-                                        android:layout_weight=".8"
+                                        android:layout_weight=".5"
                                         android:text="@string/Shippingcharges"
                                         android:textColor="@color/primary_text"
                                         android:textSize="@dimen/dimTextSize_14" />
 
-                                    <TextView
-                                        android:id="@+id/rupees_icon"
+                                    <LinearLayout
                                         android:layout_width="0dp"
-                                        android:layout_height="match_parent"
-                                        android:layout_weight="0.05"
-                                        android:gravity="center|right"
-                                        android:textColor="@color/primary_text"
-                                        android:textSize="@dimen/dimTextSize_16" />
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight=".5"
+                                        android:gravity="right"
+                                        android:orientation="horizontal">
 
-                                    <TextView
-                                        android:id="@+id/shipping_charges"
-                                        android:layout_width="0dp"
-                                        android:layout_height="match_parent"
-                                        android:layout_weight="0.15"
-                                        android:gravity="end|center"
-                                        android:text="0"
-                                        android:textColor="@color/primary_text"
-                                        android:textSize="@dimen/dimTextSize_14" />
+                                        <TextView
+                                            android:id="@+id/rupees_icon"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="match_parent"
+                                            android:gravity="center|right"
+                                            android:textColor="@color/primary_text"
+                                            android:textSize="@dimen/dimTextSize_16" />
 
+                                        <TextView
+                                            android:id="@+id/shipping_charges"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="match_parent"
+                                            android:gravity="end|center"
+                                            android:text="0"
+                                            android:textColor="@color/primary_text"
+                                            android:textSize="@dimen/dimTextSize_14" />
+
+                                    </LinearLayout>
                                 </LinearLayout>
 
                                 <LinearLayout
@@ -393,29 +406,36 @@
                                         android:id="@+id/tv_specialDiscount"
                                         android:layout_width="0dp"
                                         android:layout_height="match_parent"
-                                        android:layout_weight=".8"
-                                        android:text="@string/special_discount"
+                                        android:layout_weight=".5"
+                                        android:text="@string/txt_Discount"
                                         android:textColor="@color/primary_text"
                                         android:textSize="@dimen/dimTextSize_14" />
 
-                                    <TextView
-                                        android:id="@+id/tv_rupees_icon"
+                                    <LinearLayout
                                         android:layout_width="0dp"
-                                        android:layout_height="match_parent"
-                                        android:layout_weight="0.05"
-                                        android:gravity="center|right"
-                                        android:textColor="@color/primary_text"
-                                        android:textSize="@dimen/dimTextSize_16" />
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight=".5"
+                                        android:gravity="right"
+                                        android:orientation="horizontal">
 
-                                    <TextView
-                                        android:id="@+id/tv_specialDiscount_charges"
-                                        android:layout_width="0dp"
-                                        android:layout_height="match_parent"
-                                        android:layout_weight="0.15"
-                                        android:gravity="end|center"
-                                        android:text="0"
-                                        android:textColor="@color/primary_text"
-                                        android:textSize="@dimen/dimTextSize_14" />
+
+                                        <TextView
+                                            android:id="@+id/tv_rupees_icon"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="match_parent"
+                                            android:gravity="center|right"
+                                            android:textColor="@color/primary_text"
+                                            android:textSize="@dimen/dimTextSize_16" />
+
+                                        <TextView
+                                            android:id="@+id/tv_specialDiscount_charges"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="match_parent"
+                                            android:gravity="end|center"
+                                            android:text="0"
+                                            android:textColor="@color/primary_text"
+                                            android:textSize="@dimen/dimTextSize_14" />
+                                    </LinearLayout>
 
                                 </LinearLayout>
 
@@ -437,30 +457,36 @@
                                         android:id="@+id/grand_total"
                                         android:layout_width="0dp"
                                         android:layout_height="match_parent"
-                                        android:layout_weight=".8"
+                                        android:layout_weight=".5"
                                         android:text="@string/GrandTotal"
                                         android:textColor="@color/primary_text"
                                         android:textSize="@dimen/dimTextSize_18" />
 
-                                    <TextView
-                                        android:id="@+id/icon_rupees"
+                                    <LinearLayout
                                         android:layout_width="0dp"
-                                        android:layout_height="match_parent"
-                                        android:layout_weight="0.05"
-                                        android:gravity="center|right"
-                                        android:textColor="@color/primary_text"
-                                        android:textSize="@dimen/dimTextSize_18" />
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight=".5"
+                                        android:gravity="right"
+                                        android:orientation="horizontal">
 
-                                    <TextView
-                                        android:id="@+id/grant_amount"
-                                        android:layout_width="0dp"
-                                        android:layout_height="match_parent"
-                                        android:layout_weight="0.15"
-                                        android:gravity="end"
-                                        android:text=""
-                                        android:textColor="@color/primary_text"
-                                        android:textSize="@dimen/dimTextSize_18" />
+                                        <TextView
+                                            android:id="@+id/icon_rupees"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="match_parent"
+                                            android:gravity="center|right"
+                                            android:textColor="@color/primary_text"
+                                            android:textSize="@dimen/dimTextSize_18" />
 
+                                        <TextView
+                                            android:id="@+id/grant_amount"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="match_parent"
+                                            android:gravity="end"
+                                            android:text=""
+                                            android:textColor="@color/primary_text"
+                                            android:textSize="@dimen/dimTextSize_18" />
+
+                                    </LinearLayout>
                                 </LinearLayout>
                             </LinearLayout>
                         </android.support.v7.widget.CardView>
@@ -468,12 +494,14 @@
                 </LinearLayout>
             </android.support.v4.widget.NestedScrollView>
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight=".1"
             android:layout_margin="@dimen/dimValue_10"
+            android:layout_weight=".08"
             android:orientation="vertical">
+
             <LinearLayout
                 android:id="@+id/tv_continueLayout"
                 android:layout_width="match_parent"
@@ -489,7 +517,7 @@
                     android:gravity="end|center"
                     android:text="Order Placed"
                     android:textColor="@color/text_color_white"
-                    android:textSize="@dimen/dimTextSize_20" />
+                    android:textSize="@dimen/dimTextSize_16" />
 
                 <TextView
                     android:id="@+id/arrow_icon"
@@ -498,7 +526,7 @@
                     android:layout_weight=".38"
                     android:background="@color/dark_green"
                     android:gravity="center|left"
-                    android:paddingLeft="@dimen/dimValue_10"
+                    android:paddingLeft="@dimen/dimValue_5"
                     android:paddingTop="@dimen/dimValue_5"
                     android:textColor="@color/text_color_white"
                     android:textSize="@dimen/dimTextSize_24" />

@@ -9,7 +9,6 @@ public class Result {
 
     private int AddressId;
 
-    private String CityId;
 
     private String CompleteAddress;
 
@@ -35,9 +34,6 @@ public class Result {
     }
 
 
-    public void setCityId(String CityId) {
-        this.CityId = CityId;
-    }
 
     public String getCompleteAddress() {
         return CompleteAddress;
@@ -83,11 +79,13 @@ public class Result {
     }
 
     private int CategoryId;
+
+    public int getCityId() {
+        return cityId;
+    }
+
     private int cityId;
 
-    public String getCityId() {
-        return CityId;
-    }
 
     public void setCityId(int cityId) {
         this.cityId = cityId;
