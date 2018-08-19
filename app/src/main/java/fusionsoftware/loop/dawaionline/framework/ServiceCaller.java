@@ -612,36 +612,31 @@ public class ServiceCaller {
     }
 
     //create order service
-    public void createOrderService(int StoreId, int addressId, int LoginId, int PromoCodeId, ArrayList<CreateOrderDetails> orderDetailsesList, final IAsyncWorkCompletedCallback workCompletedCallback) {
+    public void createOrderService(final int addressId, final int LoginId, ArrayList<CreateOrderDetails> orderDetailsesList, double totalPrice, double dis, float shippingChareges, double grandTotal, final IAsyncWorkCompletedCallback workCompletedCallback) {
 
         final String url = Contants.SERVICE_BASE_URL + Contants.CreateOrder;
-        JSONObject obj = new JSONObject();
-        try {
-            obj.put("StoreId", StoreId);
-            obj.put("AddressId", addressId);
-            obj.put("LoginID", LoginId);
-            obj.put("PromoCodeId", PromoCodeId);
-            String orderListStr = new Gson().toJson(orderDetailsesList);
-            JSONArray orderjsArray = new JSONArray(orderListStr);
-            if (orderjsArray != null) {
-                obj.put("orderDetails", orderjsArray);
-            }
-
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        Log.d(Contants.LOG_TAG, "Payload*****" + obj);
-        new ServiceHelper().callService(url, obj, new IServiceSuccessCallback() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
-            public void onDone(String doneWhatCode, String result, String error) {
-                if (result != null) {
-                    workCompletedCallback.onDone(result, true);
-                } else {
-                    workCompletedCallback.onDone("createOrderService done", false);
-                }
+            public void onResponse(String response) {
+                workCompletedCallback.onDone(response, true);
             }
-        });
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                workCompletedCallback.onDone(error.toString(), false);
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("AddressId", String.valueOf(addressId));
+                params.put("LoginID", String.valueOf(LoginId));
+                return params;
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        requestQueue.add(stringRequest);
     }
 
     //GetOrderByOrderNumber
@@ -835,12 +830,11 @@ public class ServiceCaller {
     }
 
     //get payment url
-    public void getPaymentUrlService(String orderNo, int loginId, int storeId, final IAsyncWorkCompletedCallback workCompletedCallback) {
+    public void getPaymentUrlService(String orderNo, int loginId, final IAsyncWorkCompletedCallback workCompletedCallback) {
 
         final String url = Contants.SERVICE_BASE_URL + Contants.CreatePaymentOrder;
         JSONObject obj = new JSONObject();
         try {
-            obj.put("StoreId", storeId);
             obj.put("OrderNumber", orderNo);
             obj.put("LoginID", loginId);
         } catch (JSONException e) {
@@ -933,11 +927,10 @@ public class ServiceCaller {
     }
 
 
-    public void getCODService(String orderNo, int loginId, int storeId, String PaymentMode, final IAsyncWorkCompletedCallback workCompletedCallback) {
+    public void getCODService(String orderNo, int loginId, String PaymentMode, final IAsyncWorkCompletedCallback workCompletedCallback) {
         final String url = Contants.SERVICE_BASE_URL + Contants.PaymentConfirmforCOD;
         JSONObject obj = new JSONObject();
         try {
-            obj.put("StoreId", storeId);
             obj.put("OrderNumber", orderNo);
             obj.put("LoginId", loginId);
             obj.put("PaymentMode", PaymentMode);

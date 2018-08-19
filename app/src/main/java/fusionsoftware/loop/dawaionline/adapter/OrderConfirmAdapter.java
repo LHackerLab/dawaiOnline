@@ -32,7 +32,7 @@ public class OrderConfirmAdapter extends RecyclerView.Adapter<OrderConfirmAdapte
     private boolean isEditDeleteRequired;
     private int storeId;
 
-    public OrderConfirmAdapter(Context context, List<MyBasket> categoriesItemsDatas, int storeId) {
+    public OrderConfirmAdapter(Context context, List<MyBasket> categoriesItemsDatas) {
         this.context = context;
         this.orderDataList = categoriesItemsDatas;
         this.storeId = storeId;
@@ -47,14 +47,9 @@ public class OrderConfirmAdapter extends RecyclerView.Adapter<OrderConfirmAdapte
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int i) {
-        if (orderDataList.get(i).getUOM() != null && orderDataList.get(i).getUOM().equalsIgnoreCase("kg")) {
-            holder.quality_item.setText(String.valueOf(orderDataList.get(i).getQuantity()) + " " + orderDataList.get(i).getUOM());
-        } else {
-
-            DecimalFormat df = new DecimalFormat("0");
-            String value = df.format(orderDataList.get(i).getQuantity());
-            holder.quality_item.setText(value + " " + orderDataList.get(i).getUOM());
-        }
+        DecimalFormat df = new DecimalFormat("0");
+        String value = df.format(orderDataList.get(i).getQuantity());
+        holder.quality_item.setText(value + "");
         holder.nameofdish_item.setText(orderDataList.get(i).getProductName());
         holder.price_item.setText(orderDataList.get(i).getPrice() + "");
     }

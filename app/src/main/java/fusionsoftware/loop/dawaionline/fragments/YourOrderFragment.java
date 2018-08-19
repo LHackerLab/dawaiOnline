@@ -94,11 +94,12 @@ public class YourOrderFragment extends Fragment implements View.OnClickListener 
     private LinearLayout layout_promoCode, tv_continueLayout, layout_done;
     private Boolean editFlag = false;
     private double SubTotalPrice = 0;
-    double totalPrice = 0.0, dis = 0.0;
+    double totalPrice = 0.0, dis = 0.0, grandTotal = 0.0;
     DbHelper dbHelper;
     DashboardActivity rootActivity;
     float shippingChareges = 0;
     String cityName;
+    private ArrayList<CreateOrderDetails> orderDetailsesList = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -214,8 +215,18 @@ public class YourOrderFragment extends Fragment implements View.OnClickListener 
             adapter = new YourOrderAdpater(context, orderList);
             recyclerView.setAdapter(adapter);
             getCalculation(orderList);
+            orderDetails(orderList);
         }
         tv_deliveryAddress.setText(completeAddress + "," + phone + "," + zipcode);
+    }
+
+    private void orderDetails(List<MyBasket> orderList) {
+        for (MyBasket order : orderList) {
+            CreateOrderDetails orderDetails = new CreateOrderDetails();
+            orderDetails.setProductId(order.getProductId());
+            orderDetails.setQuantity(order.getQuantity());
+            orderDetailsesList.add(orderDetails);
+        }
     }
 
     private void getShippingData() {
@@ -223,12 +234,8 @@ public class YourOrderFragment extends Fragment implements View.OnClickListener 
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 cityName = adapterView.getSelectedItem().toString();
-                DbHelper dbHelper = new DbHelper(context);
-                Result resultList = dbHelper.getCityDataByCityName(cityName);
-                if (resultList != null) {
-                    shippingChareges = resultList.getShippingCharge();
-                }
-                getShippingData();
+                rootActivity.updateCityPres(cityName);
+                setValues();
             }
 
             @Override
@@ -249,68 +256,32 @@ public class YourOrderFragment extends Fragment implements View.OnClickListener 
             SubTotalPrice = (total * qty);
             totalPrice = totalPrice + SubTotalPrice;
             dis = dis + ((SubTotalPrice / 100.0f) * discount);
+            setValues();
+        }
+    }
+
+    void setValues() {
+        //shareredpres city get..
+        SharedPreferences sharedPreferences = context.getSharedPreferences("Data", Context.MODE_PRIVATE);
+        String cityname = sharedPreferences.getString("city", null);
+        DbHelper dbHelper = new DbHelper(context);
+        Result resultList = dbHelper.getCityDataByCityName(cityname);
+        if (resultList != null) {
+            shippingChareges = resultList.getShippingCharge();
         }
         DecimalFormat format = new DecimalFormat("0.0");
         total_amount.setText(format.format(totalPrice));
         tv_specialDiscount_charges.setText(format.format(dis));
-        grand_amount.setText(format.format((totalPrice - dis) + shippingChareges));
+        grandTotal = grandTotal + (totalPrice - dis) + shippingChareges;
+        grand_amount.setText(format.format(grandTotal));
         shipping_charges.setText(format.format(shippingChareges));
     }
-
-    //.....................calculate total price with all discount.................//
-//    private double calculateTotalQuantityPrice(float Quantity, float itemPrice, float Discount) {
-//        double totalPrice = 0;
-//        double priceAfterDiscount = 0;
-//        double totalPriceAfterDiscount = 0;
-//        double totalPriceWithQuantity = Quantity * itemPrice;
-//        if (Discount != 0) {
-//            priceAfterDiscount = (totalPriceWithQuantity / 100.0f) * Discount;// discount in total Quantity with price
-//            totalPriceAfterDiscount = totalPriceWithQuantity - priceAfterDiscount;//get total price after discount amount
-//            totalDiscountPrice = totalDiscountPrice + priceAfterDiscount;//get total discount amount
-//            totalPrice = totalPriceAfterDiscount;//total price after discount
-//        } else {
-//            totalPrice = totalPriceWithQuantity;//total price with Quantity
-//        }
-//        return totalPrice;
-//    }
-
-//
-//    private void calculateTotalPrice(List<MyBasket> orderList) {
-//
-//        for (MyBasket order : orderList) {
-//            //  double totalProductPrice = calculateTotalQuantityPrice(order.getQuantity(), order.getPrice(), order.getDiscount());
-//            //    totalPrice = totalPrice + totalProductPrice;
-////            SubTotalPrice = SubTotalPrice + order.getPrice();
-//            // SubTotalPrice = SubTotalPrice + order.getQuantity() * order.getPrice();
-//            CreateOrderDetails orderDetails = new CreateOrderDetails();
-//            orderDetails.setProductId(order.getProductId());
-//            orderDetails.setQuantity(order.getQuantity());
-////            orderDetails.setTotalPrice(totalProductPrice);
-//            orderDetailsesList.add(orderDetails);
-//        }
-//        if (promoCodeDiscount != 0) {
-//            totalDiscountPrice = totalDiscountPrice + promoCodeDiscount;
-//            tv_specialDiscount_charges.setText(String.valueOf(totalDiscountPrice));//show discount
-////            totalPrice = calculatePromoCodeDiscount(totalPrice);
-//        }
-////        total_amount.setText(String.valueOf(SubTotalPrice));
-////        grand_amount.setText(String.valueOf(totalPrice));
-////        tv_specialDiscount_charges.setText(String.valueOf(totalDiscountPrice));
-//    }
-
-    //calculate promo code discount on total amount
-//    private double calculatePromoCodeDiscount(double totalPrice) {
-////        double priceAfterPromoCodeDiscount = 0;
-////        //priceAfterPromoCodeDiscount = (totalPrice / 100.0f) * promoCodeDiscount;// promo code discount in total priceAfterDiscount
-////        priceAfterPromoCodeDiscount = totalPrice - promoCodeDiscount;
-////        return priceAfterPromoCodeDiscount;
-//    }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_continueLayout:
-//                createNewOrder();
+                createNewOrder();
                 break;
             case R.id.tv_cancel:
                 edt_promoCode.setText("");
@@ -325,39 +296,43 @@ public class YourOrderFragment extends Fragment implements View.OnClickListener 
 
     //create new Order
 
-        public void createNewOrder() {
-//        if (Utility.isOnline(context)) {
-//            final BallTriangleDialog dotDialog = new BallTriangleDialog(context);
-//            dotDialog.show();
+    public void createNewOrder() {
+        if (Utility.isOnline(context)) {
+            final BallTriangleDialog dotDialog = new BallTriangleDialog(context);
+            dotDialog.show();
 //            final DbHelper dbHelper = new DbHelper(context);
 //            Data data = dbHelper.getUserData();
 //            int loginId = data.getLoginID();
-//            ServiceCaller serviceCaller = new ServiceCaller(context);
-//            serviceCaller.createOrderService(addressId, loginId, orderDetailsesList, new IAsyncWorkCompletedCallback() {
-//                @Override
-//                public void onDone(String result, boolean isComplete) {
-//                    if (isComplete) {
-//                        if (result != null) {
-                            OrderConfirmFragment fragment = OrderConfirmFragment.newInstance(0, "");
-                            moveFragmentWithTag(fragment, "OrderPlacedFragment");
-//                        } else {
-//                            Utility.alertForErrorMessage("Order not Placed Successfully", context);
-//                        }
-//                    } else {
-//                        Utility.alertForErrorMessage("Order not Placed Successfully", context);
-//                    }
-//                    if (dotDialog.isShowing()) {
-//                        dotDialog.dismiss();
-//                    }
-//                }
-//            });
-//
-//
-//        } else {
-//            Utility.alertForErrorMessage(Contants.OFFLINE_MESSAGE, context);
-//        }
+            ServiceCaller serviceCaller = new ServiceCaller(context);
+            serviceCaller.createOrderService(1, 1, orderDetailsesList, totalPrice, dis, shippingChareges, grandTotal,
+                    new IAsyncWorkCompletedCallback() {
+                        @Override
+                        public void onDone(String result, boolean isComplete) {
+                            Toast.makeText(context, result, Toast.LENGTH_SHORT).show();
+                            if (isComplete) {
+
+//                                if (result != null) {
+                                OrderConfirmFragment fragment = OrderConfirmFragment.newInstance(completeAddress,zipcode,phone, result);
+                                moveFragmentWithTag(fragment, "OrderPlacedFragment");
+//                                } else {
+//                                    Utility.alertForErrorMessage("Order not Placed Successfully", context);
+//                                }
+//                            } else {
+//                                Utility.alertForErrorMessage("Order not Placed Successfully", context);
+                            }
+                            if (dotDialog.isShowing()) {
+                                dotDialog.dismiss();
+                            }
+                        }
+                    });
+
+
+        } else {
+            Utility.alertForErrorMessage(Contants.OFFLINE_MESSAGE, context);
+        }
     }
-//
+
+    //
     private void moveFragmentWithTag(Fragment fragment, String tag) {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         fragmentManager.beginTransaction()
@@ -366,31 +341,6 @@ public class YourOrderFragment extends Fragment implements View.OnClickListener 
                 .commit();
     }
 
-    //check edit or not
-    private void checkEditOrNot() {
-        if (editFlag) {
-            action.setVisibility(View.VISIBLE);
-            your_order.setText("Edit Your Order");
-            tv_done.setVisibility(View.VISIBLE);
-            tv_editOrder.setText("DONE");
-            tv_edit_Icon.setVisibility(View.VISIBLE);
-            layout_promoCode.setVisibility(View.GONE);
-            adapter.setEditDeleteRequired(true);
-            editFlag = false;
-        } else {
-            layout_promoCode.setVisibility(View.VISIBLE);
-            action.setVisibility(View.GONE);
-            your_order.setText("Your Order");
-            tv_editOrder.setText("EDIT ORDER");
-            tv_done.setVisibility(View.GONE);
-            tv_edit_Icon.setVisibility(View.INVISIBLE);
-            if (adapter != null) {
-                adapter.setEditDeleteRequired(false);
-            }
-            editFlag = true;
-        }
-        adapter.notifyDataSetChanged();
-    }
 
     private void moveFragment(Fragment fragment) {
         FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();

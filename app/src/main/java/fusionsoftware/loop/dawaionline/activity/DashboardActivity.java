@@ -22,6 +22,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -70,6 +71,7 @@ public class DashboardActivity extends AppCompatActivity
     ImageView image_logo, profileImage;
     private LinearLayout logoutLayout;
     public Spinner spinner;
+    String cityName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,6 +127,20 @@ public class DashboardActivity extends AppCompatActivity
                         ArrayAdapter<String> stringArrayAdapter = new ArrayAdapter<String>(DashboardActivity.this, android.R.layout.simple_spinner_dropdown_item, stringList);
                         stringArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         spinner.setAdapter(stringArrayAdapter);
+                        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                                cityName = adapterView.getSelectedItem().toString();
+                                updateCityPres(cityName);
+
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> adapterView) {
+
+                            }
+                        });
+
                         if (dotDialog.isShowing()) {
                             dotDialog.dismiss();
                         }
@@ -136,6 +152,12 @@ public class DashboardActivity extends AppCompatActivity
         }
     }
 
+    public void updateCityPres(String s) {
+        SharedPreferences sharedPreferences = getSharedPreferences("Data", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("city", s);
+        editor.apply();
+    }
 
     public void setUserDetail() {
         DbHelper dbHelper = new DbHelper(DashboardActivity.this);

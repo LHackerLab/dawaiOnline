@@ -269,13 +269,12 @@ public class DbHelper extends SQLiteOpenHelper {
 
         Cursor cursor = db.rawQuery(query, null);
         if (cursor.moveToFirst()) {
+            cursor.moveToFirst();
+            populateCityformation(cursor, ob);
 
-            while (cursor.isAfterLast() == false) {
-
-                populateCityformation(cursor, ob);
-                cursor.moveToNext();
-                cursor.close();
-            }
+            cursor.close();
+        } else {
+            ob = null;
         }
         db.close();
         return ob;

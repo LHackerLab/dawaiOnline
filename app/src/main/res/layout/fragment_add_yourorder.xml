@@ -17,482 +17,479 @@
             android:layout_weight=".92"
             android:orientation="vertical">
 
-            <android.support.v4.widget.NestedScrollView
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fillViewport="false"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/dimValue_10"
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="@dimen/dimValue_10"
-                    android:orientation="vertical">
+                    android:layout_height="0dp"
+                    android:layout_weight=".05"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/your_order"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".7"
+                        android:gravity="center|left"
+                        android:text="@string/your_order"
+                        android:textColor="@color/primary_text"
+                        android:textSize="@dimen/dimTextSize_16" />
 
                     <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:id="@+id/layout_done"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".3"
+                        android:gravity="end|center"
                         android:orientation="horizontal">
 
                         <TextView
-                            android:id="@+id/your_order"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight=".7"
-                            android:gravity="center|left"
-                            android:text="@string/your_order"
-                            android:textColor="@color/primary_text"
-                            android:textSize="@dimen/dimTextSize_16" />
+                            android:id="@+id/tv_done"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginRight="@dimen/dimValue_2"
+                            android:textColor="@color/green"
+                            android:textSize="@dimen/dimTextSize_18"
+                            android:visibility="gone" />
+
+                        <!--<TextView-->
+                        <!--android:id="@+id/tv_editOrder"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="match_parent"-->
+                        <!--android:text="@string/Done"-->
+                        <!--android:textColor="@color/green"-->
+                        <!--android:textSize="@dimen/dimTextSize_14" />-->
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="@dimen/dimValue_5"
+                    android:layout_weight=".65"
+                    android:orientation="vertical">
+
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
                         <LinearLayout
-                            android:id="@+id/layout_done"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight=".3"
-                            android:gravity="end|center"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/dimValue_10"
+                            android:layout_marginRight="@dimen/dimValue_10"
+                            android:layout_marginTop="@dimen/dimValue_10"
                             android:orientation="horizontal">
 
                             <TextView
-                                android:id="@+id/tv_done"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:layout_marginRight="@dimen/dimValue_2"
-                                android:textColor="@color/green"
-                                android:textSize="@dimen/dimTextSize_18"
+                                android:id="@+id/quantity"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".3"
+                                android:gravity="center|left"
+                                android:text="@string/Quality"
+                                android:textColor="@color/secondary_text"
+                                android:textSize="@dimen/dimTextSize_14" />
+
+                            <TextView
+                                android:id="@+id/dish_name"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".4"
+                                android:gravity="center"
+                                android:text="@string/NameofDish"
+                                android:textColor="@color/secondary_text"
+                                android:textSize="@dimen/dimTextSize_14" />
+
+
+                            <TextView
+                                android:id="@+id/price"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".3"
+                                android:gravity="center|end"
+                                android:text="@string/Price"
+                                android:textColor="@color/secondary_text"
+                                android:textSize="@dimen/dimTextSize_14" />
+
+                            <TextView
+                                android:id="@+id/action"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".2"
+                                android:gravity="center"
+                                android:text="@string/Action"
+                                android:textColor="@color/secondary_text"
+                                android:textSize="@dimen/dimTextSize_14"
                                 android:visibility="gone" />
 
-                            <!--<TextView-->
-                            <!--android:id="@+id/tv_editOrder"-->
-                            <!--android:layout_width="wrap_content"-->
-                            <!--android:layout_height="match_parent"-->
-                            <!--android:text="@string/Done"-->
-                            <!--android:textColor="@color/green"-->
-                            <!--android:textSize="@dimen/dimTextSize_14" />-->
+
                         </LinearLayout>
-                    </LinearLayout>
+
+
+                    </android.support.v7.widget.CardView>
+
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:elevation="@dimen/dimValue_5">
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/listrecycler"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+
+                        </android.support.v7.widget.RecyclerView>
+                    </android.support.v7.widget.CardView>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dimValue_5"
+                        android:layout_marginTop="@dimen/dimValue_10"
                         android:orientation="vertical">
 
                         <android.support.v7.widget.CardView
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/dimValue_5"
+                            app:cardCornerRadius="@dimen/dimValue_5"
+                            app:elevation="@dimen/dimValue_5">
 
                             <LinearLayout
+
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="@dimen/dimValue_10"
-                                android:layout_marginRight="@dimen/dimValue_10"
-                                android:layout_marginTop="@dimen/dimValue_10"
-                                android:orientation="horizontal">
+                                android:layout_height="match_parent"
+                                android:layout_margin="@dimen/dimValue_5"
+                                android:orientation="vertical">
 
-                                <TextView
-                                    android:id="@+id/quantity"
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight=".3"
-                                    android:gravity="center|left"
-                                    android:text="@string/Quality"
-                                    android:textColor="@color/secondary_text"
-                                    android:textSize="@dimen/dimTextSize_14" />
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginLeft="@dimen/dimValue_5"
+                                    android:orientation="horizontal">
 
-                                <TextView
-                                    android:id="@+id/dish_name"
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight=".4"
-                                    android:gravity="center"
-                                    android:text="@string/NameofDish"
-                                    android:textColor="@color/secondary_text"
-                                    android:textSize="@dimen/dimTextSize_14" />
+                                    <TextView
+                                        android:id="@+id/tv_deliverTo"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="@dimen/dimValue_5"
+                                        android:text="@string/DeliverTo"
+                                        android:textSize="@dimen/dimTextSize_14" />
 
+                                    <TextView
+                                        android:id="@+id/tv_deliveryAddress"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="@dimen/dimValue_10"
+                                        android:layout_marginTop="@dimen/dimValue_5"
+                                        android:textSize="@dimen/dimTextSize_14" />
 
-                                <TextView
-                                    android:id="@+id/price"
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight=".3"
-                                    android:gravity="center|end"
-                                    android:text="@string/Price"
-                                    android:textColor="@color/secondary_text"
-                                    android:textSize="@dimen/dimTextSize_14" />
-
-                                <TextView
-                                    android:id="@+id/action"
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight=".2"
-                                    android:gravity="center"
-                                    android:text="@string/Action"
-                                    android:textColor="@color/secondary_text"
-                                    android:textSize="@dimen/dimTextSize_14"
-                                    android:visibility="gone" />
+                                    <TextView
+                                        android:id="@+id/tv_edit_icon"
+                                        android:layout_width="0dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_marginTop="@dimen/dimValue_5"
+                                        android:layout_weight=".5"
+                                        android:gravity="end"
+                                        android:textColor="@color/green_light"
+                                        android:textSize="@dimen/dimTextSize_20"
+                                        android:visibility="gone" />
+                                </LinearLayout>
 
 
                             </LinearLayout>
 
-
                         </android.support.v7.widget.CardView>
+                    </LinearLayout>
+                </LinearLayout>
 
-                        <android.support.v7.widget.CardView
+                <LinearLayout
+                    android:id="@+id/layout_promoCode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimValue_5"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/dimValue_5"
+                        app:cardCornerRadius="@dimen/dimValue_5"
+                        app:elevation="@dimen/dimValue_5">
+
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            app:elevation="@dimen/dimValue_5">
+                            android:layout_margin="@dimen/dimValue_10"
+                            android:orientation="vertical">
 
-                            <android.support.v7.widget.RecyclerView
-                                android:id="@+id/listrecycler"
+                            <!--<TextView-->
+                            <!--android:id="@+id/tv_off"-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:text="@string/flat_off"-->
+                            <!--android:textColor="@color/green"-->
+                            <!--android:textSize="@dimen/dimTextSize_14" />-->
+
+                            <TextView
+                                android:id="@+id/tv_promoCode"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content">
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/dimValue_7"
+                                android:text="@string/promo_code"
+                                android:textSize="@dimen/dimTextSize_12" />
 
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/dimValue_5"
+                                android:orientation="horizontal">
 
-                            </android.support.v7.widget.RecyclerView>
-                        </android.support.v7.widget.CardView>
+                                <EditText
+                                    android:id="@+id/edt_promoCode"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight=".75"
+                                    android:background="@android:color/transparent"
+                                    android:hint="Enter Promo Code Here"
+                                    android:singleLine="true"
+                                    android:textSize="@dimen/dimTextSize_14" />
+
+                                <TextView
+                                    android:id="@+id/tv_apply"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight=".2"
+                                    android:background="@color/dark_green"
+                                    android:gravity="center"
+                                    android:padding="@dimen/dimValue_5"
+                                    android:text="Apply"
+                                    android:textColor="@color/text_color_white"
+                                    android:textSize="@dimen/dimTextSize_14" />
+
+                                <TextView
+                                    android:id="@+id/tv_cancel"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight=".05"
+                                    android:gravity="center"
+                                    android:textColor="@color/red"
+                                    android:textSize="@dimen/dimTextSize_18"
+                                    android:visibility="gone" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </android.support.v7.widget.CardView>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="@dimen/dimValue_5"
+                    android:layout_weight=".3"
+                    android:orientation="vertical">
+
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/dimValue_5"
+                        android:background="@color/text_color_white"
+                        app:cardCornerRadius="@dimen/dimValue_5"
+                        app:elevation="@dimen/dimValue_5">
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/dimValue_10"
+                            android:layout_margin="@dimen/dimValue_10"
                             android:orientation="vertical">
 
-                            <android.support.v7.widget.CardView
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/total"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight=".5"
+                                    android:text="@string/Total"
+                                    android:textColor="@color/primary_text"
+                                    android:textSize="@dimen/dimTextSize_14" />
+
+                                <LinearLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".5"
+                                    android:gravity="right"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/rupee_icon"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="match_parent"
+                                        android:gravity="center|right"
+                                        android:textColor="@color/primary_text"
+                                        android:textSize="@dimen/dimTextSize_16" />
+
+                                    <TextView
+                                        android:id="@+id/total_amount"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="match_parent"
+                                        android:gravity="end|center"
+                                        android:text="1234"
+                                        android:textColor="@color/primary_text"
+                                        android:textSize="@dimen/dimTextSize_14" />
+
+                                </LinearLayout>
+                            </LinearLayout>
+
+                            <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="@dimen/dimValue_5"
-                                app:cardCornerRadius="@dimen/dimValue_5"
-                                app:elevation="@dimen/dimValue_5">
-
-                                <LinearLayout
-
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_margin="@dimen/dimValue_5"
-                                    android:orientation="vertical">
-
-                                    <LinearLayout
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent"
-                                        android:layout_marginLeft="@dimen/dimValue_5"
-                                        android:orientation="horizontal">
-
-                                        <TextView
-                                            android:id="@+id/tv_deliverTo"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_marginTop="@dimen/dimValue_5"
-                                            android:text="@string/DeliverTo"
-                                            android:textSize="@dimen/dimTextSize_14" />
-
-                                        <TextView
-                                            android:id="@+id/tv_deliveryAddress"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_marginLeft="@dimen/dimValue_10"
-                                            android:layout_marginTop="@dimen/dimValue_5"
-                                            android:textSize="@dimen/dimTextSize_14" />
-
-                                        <TextView
-                                            android:id="@+id/tv_edit_icon"
-                                            android:layout_width="0dp"
-                                            android:layout_height="match_parent"
-                                            android:layout_marginTop="@dimen/dimValue_5"
-                                            android:layout_weight=".5"
-                                            android:gravity="end"
-                                            android:textColor="@color/green_light"
-                                            android:textSize="@dimen/dimTextSize_20"
-                                            android:visibility="gone" />
-                                    </LinearLayout>
-
-
-                                </LinearLayout>
-
-                            </android.support.v7.widget.CardView>
-                        </LinearLayout>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/layout_promoCode"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dimValue_5"
-                        android:orientation="vertical"
-                        android:visibility="gone">
-
-                        <android.support.v7.widget.CardView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/dimValue_5"
-                            app:cardCornerRadius="@dimen/dimValue_5"
-                            app:elevation="@dimen/dimValue_5">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_margin="@dimen/dimValue_10"
-                                android:orientation="vertical">
-
-                                <!--<TextView-->
-                                <!--android:id="@+id/tv_off"-->
-                                <!--android:layout_width="match_parent"-->
-                                <!--android:layout_height="wrap_content"-->
-                                <!--android:text="@string/flat_off"-->
-                                <!--android:textColor="@color/green"-->
-                                <!--android:textSize="@dimen/dimTextSize_14" />-->
+                                android:layout_marginTop="@dimen/dimValue_5"
+                                android:orientation="horizontal">
 
                                 <TextView
-                                    android:id="@+id/tv_promoCode"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="@dimen/dimValue_7"
-                                    android:text="@string/promo_code"
-                                    android:textSize="@dimen/dimTextSize_12" />
+                                    android:id="@+id/shipping"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight=".5"
+                                    android:text="@string/Shippingcharges"
+                                    android:textColor="@color/primary_text"
+                                    android:textSize="@dimen/dimTextSize_14" />
 
                                 <LinearLayout
-                                    android:layout_width="match_parent"
+                                    android:layout_width="0dp"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="@dimen/dimValue_5"
+                                    android:layout_weight=".5"
+                                    android:gravity="right"
                                     android:orientation="horizontal">
 
-                                    <EditText
-                                        android:id="@+id/edt_promoCode"
-                                        android:layout_width="0dp"
+                                    <TextView
+                                        android:id="@+id/rupees_icon"
+                                        android:layout_width="wrap_content"
                                         android:layout_height="match_parent"
-                                        android:layout_weight=".75"
-                                        android:background="@android:color/transparent"
-                                        android:hint="Enter Promo Code Here"
-                                        android:singleLine="true"
-                                        android:textSize="@dimen/dimTextSize_14" />
+                                        android:gravity="center|right"
+                                        android:textColor="@color/primary_text"
+                                        android:textSize="@dimen/dimTextSize_16" />
 
                                     <TextView
-                                        android:id="@+id/tv_apply"
-                                        android:layout_width="0dp"
+                                        android:id="@+id/shipping_charges"
+                                        android:layout_width="wrap_content"
                                         android:layout_height="match_parent"
-                                        android:layout_weight=".2"
-                                        android:background="@color/dark_green"
-                                        android:gravity="center"
-                                        android:padding="@dimen/dimValue_5"
-                                        android:text="Apply"
-                                        android:textColor="@color/text_color_white"
+                                        android:gravity="end|center"
+                                        android:text="0"
+                                        android:textColor="@color/primary_text"
                                         android:textSize="@dimen/dimTextSize_14" />
 
-                                    <TextView
-                                        android:id="@+id/tv_cancel"
-                                        android:layout_width="0dp"
-                                        android:layout_height="match_parent"
-                                        android:layout_weight=".05"
-                                        android:gravity="center"
-                                        android:textColor="@color/red"
-                                        android:textSize="@dimen/dimTextSize_18"
-                                        android:visibility="gone" />
                                 </LinearLayout>
                             </LinearLayout>
-                        </android.support.v7.widget.CardView>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dimValue_5"
-                        android:orientation="vertical">
-
-                        <android.support.v7.widget.CardView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/dimValue_5"
-                            android:background="@color/text_color_white"
-                            app:cardCornerRadius="@dimen/dimValue_5"
-                            app:elevation="@dimen/dimValue_5">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_margin="@dimen/dimValue_10"
-                                android:orientation="vertical">
+                                android:layout_marginBottom="@dimen/dimValue_5"
+                                android:layout_marginTop="@dimen/dimValue_5"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/tv_specialDiscount"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight=".5"
+                                    android:text="@string/txt_Discount"
+                                    android:textColor="@color/primary_text"
+                                    android:textSize="@dimen/dimTextSize_14" />
 
                                 <LinearLayout
-                                    android:layout_width="match_parent"
+                                    android:layout_width="0dp"
                                     android:layout_height="wrap_content"
+                                    android:layout_weight=".5"
+                                    android:gravity="right"
                                     android:orientation="horizontal">
 
+
                                     <TextView
-                                        android:id="@+id/total"
-                                        android:layout_width="0dp"
+                                        android:id="@+id/tv_rupees_icon"
+                                        android:layout_width="wrap_content"
                                         android:layout_height="match_parent"
-                                        android:layout_weight=".5"
-                                        android:text="@string/Total"
+                                        android:gravity="center|right"
+                                        android:textColor="@color/primary_text"
+                                        android:textSize="@dimen/dimTextSize_16" />
+
+                                    <TextView
+                                        android:id="@+id/tv_specialDiscount_charges"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="match_parent"
+                                        android:gravity="end|center"
+                                        android:text="0"
                                         android:textColor="@color/primary_text"
                                         android:textSize="@dimen/dimTextSize_14" />
-
-                                    <LinearLayout
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight=".5"
-                                        android:gravity="right"
-                                        android:orientation="horizontal">
-
-                                        <TextView
-                                            android:id="@+id/rupee_icon"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="match_parent"
-                                            android:gravity="center|right"
-                                            android:textColor="@color/primary_text"
-                                            android:textSize="@dimen/dimTextSize_16" />
-
-                                        <TextView
-                                            android:id="@+id/total_amount"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="match_parent"
-                                            android:gravity="end|center"
-                                            android:text="1234"
-                                            android:textColor="@color/primary_text"
-                                            android:textSize="@dimen/dimTextSize_14" />
-
-                                    </LinearLayout>
                                 </LinearLayout>
 
+                            </LinearLayout>
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/dimValue_1"
+                                android:background="@color/divider">
+
+                            </View>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="@dimen/dimValue_5"
+                                android:layout_marginTop="@dimen/dimValue_5"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/grand_total"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight=".5"
+                                    android:text="@string/GrandTotal"
+                                    android:textColor="@color/primary_text"
+                                    android:textSize="@dimen/dimTextSize_18" />
+
                                 <LinearLayout
-                                    android:layout_width="match_parent"
+                                    android:layout_width="0dp"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginBottom="@dimen/dimValue_5"
-                                    android:layout_marginTop="@dimen/dimValue_5"
+                                    android:layout_weight=".5"
+                                    android:gravity="right"
                                     android:orientation="horizontal">
 
                                     <TextView
-                                        android:id="@+id/shipping"
-                                        android:layout_width="0dp"
+                                        android:id="@+id/icon_rupees"
+                                        android:layout_width="wrap_content"
                                         android:layout_height="match_parent"
-                                        android:layout_weight=".5"
-                                        android:text="@string/Shippingcharges"
-                                        android:textColor="@color/primary_text"
-                                        android:textSize="@dimen/dimTextSize_14" />
-
-                                    <LinearLayout
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight=".5"
-                                        android:gravity="right"
-                                        android:orientation="horizontal">
-
-                                        <TextView
-                                            android:id="@+id/rupees_icon"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="match_parent"
-                                            android:gravity="center|right"
-                                            android:textColor="@color/primary_text"
-                                            android:textSize="@dimen/dimTextSize_16" />
-
-                                        <TextView
-                                            android:id="@+id/shipping_charges"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="match_parent"
-                                            android:gravity="end|center"
-                                            android:text="0"
-                                            android:textColor="@color/primary_text"
-                                            android:textSize="@dimen/dimTextSize_14" />
-
-                                    </LinearLayout>
-                                </LinearLayout>
-
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginBottom="@dimen/dimValue_5"
-                                    android:layout_marginTop="@dimen/dimValue_5"
-                                    android:orientation="horizontal">
-
-                                    <TextView
-                                        android:id="@+id/tv_specialDiscount"
-                                        android:layout_width="0dp"
-                                        android:layout_height="match_parent"
-                                        android:layout_weight=".5"
-                                        android:text="@string/txt_Discount"
-                                        android:textColor="@color/primary_text"
-                                        android:textSize="@dimen/dimTextSize_14" />
-
-                                    <LinearLayout
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight=".5"
-                                        android:gravity="right"
-                                        android:orientation="horizontal">
-
-
-                                        <TextView
-                                            android:id="@+id/tv_rupees_icon"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="match_parent"
-                                            android:gravity="center|right"
-                                            android:textColor="@color/primary_text"
-                                            android:textSize="@dimen/dimTextSize_16" />
-
-                                        <TextView
-                                            android:id="@+id/tv_specialDiscount_charges"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="match_parent"
-                                            android:gravity="end|center"
-                                            android:text="0"
-                                            android:textColor="@color/primary_text"
-                                            android:textSize="@dimen/dimTextSize_14" />
-                                    </LinearLayout>
-
-                                </LinearLayout>
-
-                                <View
-                                    android:layout_width="match_parent"
-                                    android:layout_height="@dimen/dimValue_1"
-                                    android:background="@color/divider">
-
-                                </View>
-
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginBottom="@dimen/dimValue_5"
-                                    android:layout_marginTop="@dimen/dimValue_5"
-                                    android:orientation="horizontal">
-
-                                    <TextView
-                                        android:id="@+id/grand_total"
-                                        android:layout_width="0dp"
-                                        android:layout_height="match_parent"
-                                        android:layout_weight=".5"
-                                        android:text="@string/GrandTotal"
+                                        android:gravity="center|right"
                                         android:textColor="@color/primary_text"
                                         android:textSize="@dimen/dimTextSize_18" />
 
-                                    <LinearLayout
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight=".5"
-                                        android:gravity="right"
-                                        android:orientation="horizontal">
+                                    <TextView
+                                        android:id="@+id/grant_amount"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="match_parent"
+                                        android:gravity="end"
+                                        android:text=""
+                                        android:textColor="@color/primary_text"
+                                        android:textSize="@dimen/dimTextSize_18" />
 
-                                        <TextView
-                                            android:id="@+id/icon_rupees"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="match_parent"
-                                            android:gravity="center|right"
-                                            android:textColor="@color/primary_text"
-                                            android:textSize="@dimen/dimTextSize_18" />
-
-                                        <TextView
-                                            android:id="@+id/grant_amount"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="match_parent"
-                                            android:gravity="end"
-                                            android:text=""
-                                            android:textColor="@color/primary_text"
-                                            android:textSize="@dimen/dimTextSize_18" />
-
-                                    </LinearLayout>
                                 </LinearLayout>
                             </LinearLayout>
-                        </android.support.v7.widget.CardView>
-                    </LinearLayout>
+                        </LinearLayout>
+                    </android.support.v7.widget.CardView>
                 </LinearLayout>
-            </android.support.v4.widget.NestedScrollView>
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout

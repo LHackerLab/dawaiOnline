@@ -53,7 +53,7 @@ public class Contants {
     public static final String GetAllStoreByLocality = "Store/GetAllStoreByLocality";
     public static final String GetStoreDetailsById = "Store/GetStoreDetailsById";
     public static final String ApplyPromoCode = "PromoCode/ApplyPromoCode";
-    public static final String CreateOrder = "Order/CreateOrder";
+    public static final String CreateOrder = "CreateOrder.php";
     public static final String GetOrderByOrderNumber = "Order/GetOrderByOrderNumber";
     public static final String TrackOrderStatus = "Order/TrackOrderStatus";
     public static final String GetFavouriteStoreByUser = "Store/GetFavouriteStoreByUser";

@@ -121,7 +121,7 @@ public class TrackOrderFragment extends Fragment {
                         @Override
                         public void onDone(String workName, boolean isComplete) {
                             if (isComplete) {
-                                manipulateData();
+//                                manipulateData();
                             } else {
                                 // for empty data .............
                                 noDataFound();
