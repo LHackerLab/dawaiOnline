@@ -451,6 +451,70 @@ public class ServiceCaller {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         requestQueue.add(stringRequest);
     }
+
+    //get allsearch product data...........
+    public void callSearchProductService(final IAsyncWorkCompletedCallback workCompletedCallback) {
+
+        final String url = Contants.SERVICE_BASE_URL + Contants.productSearch;
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                parseAndSaveSearchData(response, workCompletedCallback);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                workCompletedCallback.onDone("no", false);
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+//                params.put("query", "Ce");
+                return params;
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        requestQueue.add(stringRequest);
+    }
+
+    //parse and save city  data
+    public void parseAndSaveSearchData(final String result, final IAsyncWorkCompletedCallback workCompletedCallback) {
+        new AsyncTask<Void, Void, Boolean>() {
+
+
+            @Override
+            protected Boolean doInBackground(Void... voids) {
+                Boolean flag = false;
+                ContentDataAsArray data = new Gson().fromJson(result, ContentDataAsArray.class);
+                if (data != null) {
+                    DbHelper dbHelper = new DbHelper(context);
+                    for (Result objData : data.getResults()) {
+                        if (objData != null) {
+                            dbHelper.upsertSearchProductData(objData);
+                        }
+                    }
+                    flag = true;
+
+                }
+
+                return flag;
+            }
+
+            @Override
+            protected void onPostExecute(Boolean flag) {
+                super.onPostExecute(flag);
+                if (flag) {
+                    workCompletedCallback.onDone("city done", true);
+                } else {
+                    workCompletedCallback.onDone("city done", false);
+                }
+            }
+        }.execute();
+    }
+
+
     //call  viewpager  data
     public void callViewPagerService(final IAsyncWorkCompletedCallback workCompletedCallback) {
 

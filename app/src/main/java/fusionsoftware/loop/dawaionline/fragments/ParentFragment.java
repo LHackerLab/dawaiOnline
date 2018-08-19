@@ -1,7 +1,10 @@
 package fusionsoftware.loop.dawaionline.fragments;
 
+import android.animation.Animator;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
+import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,12 +17,19 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.text.Editable;
 import android.text.Html;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -35,10 +45,13 @@ import java.util.TimerTask;
 
 import fusionsoftware.loop.dawaionline.R;
 import fusionsoftware.loop.dawaionline.activity.DashboardActivity;
+import fusionsoftware.loop.dawaionline.adapter.ProductListAdapter;
 import fusionsoftware.loop.dawaionline.adapter.SelectCatagoryAdapter;
 import fusionsoftware.loop.dawaionline.adapter.SlidingImageSecondAdapter;
 import fusionsoftware.loop.dawaionline.adapter.SlidingImage_Adapter;
 import fusionsoftware.loop.dawaionline.balltrianglecustomprogress.BallTriangleDialog;
+import fusionsoftware.loop.dawaionline.cartanimation.CircleAnimationUtil;
+import fusionsoftware.loop.dawaionline.database.DbHelper;
 import fusionsoftware.loop.dawaionline.framework.IAsyncWorkCompletedCallback;
 import fusionsoftware.loop.dawaionline.framework.ServiceCaller;
 import fusionsoftware.loop.dawaionline.model.ContentDataAsArray;
@@ -89,7 +102,9 @@ public class ParentFragment extends Fragment implements View.OnClickListener {
     private static int currentPage = 0, currentPageTwo = 0;
     private static int NUM_PAGES = 0, NUM_PAGESTwo = 0;
     private ArrayList<String> ImagesArray, ImagesArrayTwo;
-
+    LinearLayout linearLayout;
+    RecyclerView recyclerView;
+    ProductListAdapter adapter;
 
     @Nullable
     @Override
@@ -136,6 +151,7 @@ public class ParentFragment extends Fragment implements View.OnClickListener {
         layout_otc.setOnClickListener(this);
         btn_orderPre.setOnClickListener(this);
         getViewPagerData();
+        getAllProductList();
 //        viewPagerSetUp();
     }
 
@@ -262,7 +278,8 @@ public class ParentFragment extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_search:
-                Toast.makeText(context, "Search Fragment Here", Toast.LENGTH_SHORT).show();
+                showSearchDialog();
+//                Toast.makeText(context, "Search Fragment Here", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.layout_medicin:
                 SelectCategoryFragment fragment = SelectCategoryFragment.newInstance(0, 0);
@@ -289,6 +306,113 @@ public class ParentFragment extends Fragment implements View.OnClickListener {
             case R.id.btn_orderPre:
                 Toast.makeText(context, "Order Preciption Here", Toast.LENGTH_SHORT).show();
                 break;
+        }
+    }
+
+    private void showSearchDialog() {
+        Dialog dialog = new Dialog(context);
+        dialog.setCancelable(true);
+        dialog.setContentView(R.layout.custom_search);
+        recyclerView = dialog.findViewById(R.id.recycler_view);
+        linearLayout = dialog.findViewById(R.id.linearLayout);
+        EditText edt_search = dialog.findViewById(R.id.edt_search);
+        TextView tv_close = dialog.findViewById(R.id.tv_close);
+        tv_close.setOnClickListener(v -> {
+            dialog.cancel();
+        });
+        recyclerView.setHasFixedSize(true);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        List<Result> productList = new ArrayList<>();
+        DbHelper dbHelper = new DbHelper(context);
+        productList = dbHelper.GetAllSearchProductData();
+        if (productList != null && productList.size() > 0) {
+            adapter = new ProductListAdapter(context, productList);
+            recyclerView.setAdapter(adapter);
+            adapter.setActionListener(new ProductListAdapter.ProductItemActionListener() {
+                @Override
+                public void onItemTap(ImageView imageView) {
+                    DashboardActivity rootActivity = (DashboardActivity) context;
+                    if (rootActivity != null) {
+                        TextView textView = (TextView) rootActivity.cart.findViewById(R.id.cart);
+                        CircleAnimationUtil circleAnimationUtil = new CircleAnimationUtil();
+                        circleAnimationUtil.attachActivity(getActivity()).setTargetView(imageView).setMoveDuration(200).setDestView(textView).setAnimationListener(new Animator.AnimatorListener() {
+                            @Override
+                            public void onAnimationStart(Animator animation) {
+                                Toast.makeText(context, "Add To Cart", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                //addItemToCart();
+                            }
+
+                            @Override
+                            public void onAnimationCancel(Animator animation) {
+
+                            }
+
+                            @Override
+                            public void onAnimationRepeat(Animator animation) {
+
+                            }
+                        }).startAnimation();
+                        //  circleAnimationUtil.setOriginRect(133,50);
+                    }
+                }
+            });
+        }
+        edt_search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                adapter.getFilter().filter(charSequence);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        dialog.show();
+        Window window = dialog.getWindow();
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+    }
+
+    //get all Product list data
+    private void getAllProductList() {
+        if (Utility.isOnline(context)) {
+            final BallTriangleDialog dotDialog = new BallTriangleDialog(context);
+            dotDialog.show();
+            ServiceCaller serviceCaller = new ServiceCaller(context);
+            serviceCaller.callSearchProductService(new IAsyncWorkCompletedCallback() {
+                @Override
+                public void onDone(String workName, boolean isComplete) {
+//                    if (isComplete) {
+//                        if (productList != null && productList.size() > 0) {
+//                            ProductListAdapter adapter = new ProductListAdapter(context, productList);
+//                            recyclerView.setAdapter(adapter);
+//                        }
+//                    }
+//                    Toast.makeText(context, workName, Toast.LENGTH_SHORT).show();
+                    if (dotDialog.isShowing()) {
+                        dotDialog.dismiss();
+                    }
+                }
+            });
+        } else {
+            // Utility.alertForErrorMessage(Contants.OFFLINE_MESSAGE, context);//off line msg....
+            LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View view = inflater.inflate(R.layout.no_data_found, null);
+            TextView nodata = (TextView) view.findViewById(R.id.nodata);
+            nodata.setText("No internet connection found");
+            linearLayout.setGravity(Gravity.CENTER);
+            linearLayout.removeAllViews();
+            linearLayout.addView(view);
         }
     }
 

@@ -27,7 +27,7 @@ import fusionsoftware.loop.dawaionline.utilities.Contants;
 public class DbHelper extends SQLiteOpenHelper {
 
     // If you change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION = 3;
+    public static final int DATABASE_VERSION = 4;
     public static final String DATABASE_NAME = Contants.DATABASE_NAME;
 
     public DbHelper(Context context) {
@@ -39,6 +39,7 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS userData");
         db.execSQL("DROP TABLE IF EXISTS cityData");
         db.execSQL("DROP TABLE IF EXISTS MyOrderDataEntity");
+        db.execSQL("DROP TABLE IF EXISTS searchProductEntity");
         db.execSQL("DROP TABLE IF EXISTS MyOrderHistoryDataEntity");
         db.execSQL("DROP TABLE IF EXISTS TrackOrderDataEntity");
         db.execSQL("DROP TABLE IF EXISTS MenuListDataEntity");
@@ -57,8 +58,9 @@ public class DbHelper extends SQLiteOpenHelper {
         String CREATE_city_TABLE = "CREATE TABLE cityData(cityId INTEGER,cityName TEXT,shippingCharge REAL)";
         db.execSQL(CREATE_city_TABLE);
         String CREATE_MyOrder_TABLE = "CREATE TABLE MyOrderDataEntity(ProductId INTEGER,ProductName TEXT,Quantity REAL,Price REAL, OrderTime TEXT,CategoryId INTEGER,discount REAL,CategoryName TEXT)";
-        //ProductId,ProductName,StoreId,Quantity,Price,OrderTime,CategoryId,discount  MyOrderDataEntity
         db.execSQL(CREATE_MyOrder_TABLE);
+        String searchProductEntity = "CREATE TABLE searchProductEntity(ProductId INTEGER,ProductName TEXT,UnitPrice REAL,Discount REAL,ProductDetails TEXT,CategoryId INTEGER,ProductPicturesUrl TEXT,ProductSubTitle TEXT)";
+        db.execSQL(searchProductEntity);
         String CREATE_MyOrderHistory_TABLE = "CREATE TABLE MyOrderHistoryDataEntity(OrderId INTEGER,OrderNumber TEXT,StoreId INTEGER,ProductId INTEGER,LoginId INTEGER,Quantity REAL,OrderTime TEXT,TotalPrice REAL,NetPrice REAL,SpecialDiscount REAL,SubTotal REAL,TotalGST REAL,GrandTotal REAL,shippingCharge REAL,PromoDiscount REAL,OrderStatus TEXT,UOM TEXT,OrderDetails TEXT,StoreName TEXT)";//NetPrice REAL,SpecialDiscount REAL,SubTotal REAL,TotalGST REAL,GrandTotal REAL,shippingCharge REAL,PromoDiscount REAL,
         db.execSQL(CREATE_MyOrderHistory_TABLE);
         String CREATE_TrackOrder_TABLE = "CREATE TABLE TrackOrderDataEntity(OrderId INTEGER,OrderNumber TEXT,StoreId INTEGER,ProductId INTEGER,LoginId INTEGER,Quantity REAL,OrderTime TEXT,TotalPrice REAL,NetPrice REAL,SpecialDiscount REAL,SubTotal REAL,TotalGST REAL,GrandTotal REAL,shippingCharge REAL,PromoDiscount REAL,OrderStatus TEXT,UOM TEXT,OrderDetails TEXT,StoreName TEXT)";//UOM TEXT,
@@ -502,6 +504,110 @@ public class DbHelper extends SQLiteOpenHelper {
         db.close();
         return data;
     }
+
+
+    //------------SearchProduct data----------------
+    public boolean upsertSearchProductData(Result ob) {
+        boolean done = false;
+        Result data = null;
+        if (ob.getProductId() != 0) {
+            data = getSearchProductData(ob.getProductId());
+            if (data == null) {
+                done = insertSearchProductData(ob);
+            } else {
+                done = updateSearchProductData(ob);
+            }
+        }
+        return done;
+    }
+
+    //GetAll SearchProduct Order
+    private void populateSearchProductData(Cursor cursor, Result ob) {
+        ob.setProductId(cursor.getInt(0));
+        ob.setProductName(cursor.getString(1));
+        ob.setUnitPrice(cursor.getFloat(2));
+        ob.setDiscount(cursor.getFloat(3));
+        ob.setProductDetails(cursor.getString(4));
+        ob.setCategoryId(cursor.getInt(5));
+        ob.setProductPicturesUrl(cursor.getString(6));
+        ob.setProductSubTitle(cursor.getString(7));
+    }
+
+    //show  SearchProduct  list data
+    public List<Result> GetAllSearchProductData() {
+        ArrayList<Result> list = new ArrayList<Result>();
+        String query = "Select * FROM searchProductEntity ";
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.moveToFirst()) {
+
+            while (cursor.isAfterLast() == false) {
+                Result ob = new Result();
+                populateSearchProductData(cursor, ob);
+                list.add(ob);
+                cursor.moveToNext();
+            }
+        }
+        db.close();
+        return list;
+    }
+
+    //insert SearchProduct data
+    public boolean insertSearchProductData(Result ob) {
+        ContentValues values = new ContentValues();
+        populateSearchProductValue(ob, values);
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        long i = db.insert("searchProductEntity", null, values);
+        db.close();
+        return i > 0;
+    }
+
+    //SearchProduct by id
+    public Result getSearchProductData(int id) {
+        String query = "Select * FROM searchProductEntity WHERE ProductId= " + id + "";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        Result data = new Result();
+
+        if (cursor.moveToFirst()) {
+            cursor.moveToFirst();
+            populateSearchProductData(cursor, data);
+
+            cursor.close();
+        } else {
+            data = null;
+        }
+        db.close();
+        return data;
+    }
+
+    private void populateSearchProductValue(Result ob, ContentValues values) {
+        values.put("ProductId", ob.getProductId());
+        values.put("ProductName", ob.getProductName());
+        values.put("UnitPrice", ob.getUnitPrice());
+        values.put("Discount", ob.getDiscount());
+        values.put("ProductDetails", ob.getProductDetails());
+        values.put("CategoryId", ob.getCategoryId());
+        values.put("ProductPicturesUrl", ob.getProductPicturesUrl());
+        values.put("ProductSubTitle", ob.getProductSubTitle());
+
+    }
+
+    //update SearchProduct
+    public boolean updateSearchProductData(Result ob) {
+        ContentValues values = new ContentValues();
+        populateSearchProductValue(ob, values);
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        long i = 0;
+        i = db.update("searchProductEntity", values, "ProductId = " + ob.getProductId() + "", null);
+        db.close();
+        return i > 0;
+    }
+
 
     //----------------My order history Data-----------......................
 

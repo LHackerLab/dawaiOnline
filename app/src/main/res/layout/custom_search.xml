@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/linearLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/edt_search"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_margin="@dimen/dimValue_10"
+            android:background="@drawable/search_bar"
+            android:drawableLeft="@drawable/ic_search_black_24dp"
+            android:drawablePadding="@dimen/dimValue_10"
+            android:hint="Enter Search here.."
+            android:paddingLeft="@dimen/dimValue_10" />
+
+        <TextView
+            android:id="@+id/tv_close"
+            android:layout_width="@dimen/dimValue_35"
+            android:layout_height="@dimen/dimValue_35"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/dimValue_10"
+            android:layout_marginTop="@dimen/dimValue_10"
+            android:background="@drawable/ic_cancel_black_24dp" />
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </android.support.v7.widget.RecyclerView>
+</LinearLayout>

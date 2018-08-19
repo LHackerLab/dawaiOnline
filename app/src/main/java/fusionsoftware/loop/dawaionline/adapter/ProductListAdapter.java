@@ -14,6 +14,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -23,6 +25,7 @@ import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
@@ -43,14 +46,24 @@ import fusionsoftware.loop.dawaionline.utilities.Utility;
  * Created by user on 8/9/2017.
  */
 
-public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.ViewHolder> {
+public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.ViewHolder> implements Filterable {
 
-    private List<Result> productData;
+    private List<Result> productData, FilteruserList;
     private Context context;
     //HashSet<Integer> selectedPosition = new HashSet<>();
     private Typeface materialDesignIcons, medium, italic, regular;
     private ProductItemActionListener actionListener;
     String categoryName;
+
+    public ProductListAdapter(Context context, List<Result> productList) {
+        this.context = context;
+        this.productData = productList;
+        this.FilteruserList = productList;
+        this.medium = FontManager.getFontTypeface(context, "fonts/roboto.medium.ttf");
+        this.regular = FontManager.getFontTypeface(context, "fonts/roboto.regular.ttf");
+        this.italic = FontManager.getFontTypeface(context, "fonts/roboto.italic.ttf");
+        this.materialDesignIcons = FontManager.getFontTypefaceMaterialDesignIcons(context, "fonts/materialdesignicons-webfont.otf");
+    }
 
     public void setActionListener(ProductItemActionListener actionListener) {
         this.actionListener = actionListener;
@@ -59,6 +72,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     public ProductListAdapter(Context context, List<Result> productData, String categoryName) {
         this.context = context;
         this.productData = productData;
+        this.FilteruserList = productData;
         this.categoryName = categoryName;
         this.medium = FontManager.getFontTypeface(context, "fonts/roboto.medium.ttf");
         this.regular = FontManager.getFontTypeface(context, "fonts/roboto.regular.ttf");
@@ -74,24 +88,24 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
 
     @Override
     public void onBindViewHolder(final ViewHolder viewHolder, final int position) {
-        Picasso.with(context).load(productData.get(position).getProductPicturesUrl()).resize(800, 800).placeholder(R.drawable.logo).into(viewHolder.productImage);
-        Picasso.with(context).load(productData.get(position).getProductPicturesUrl()).resize(800, 800).placeholder(R.drawable.logo).into(viewHolder.productImageCopy);
-        viewHolder.productTitle.setText(productData.get(position).getProductName());
-        viewHolder.productSubTitle.setText(productData.get(position).getProductSubTitle());
-        viewHolder.productPrice.setText(String.valueOf(productData.get(position).getUnitPrice()));
-        viewHolder.productDetails.setText(productData.get(position).getProductDetails());
-        viewHolder.tv_discount.setText(String.valueOf(productData.get(position).getDiscount()) + "% off");
-        if (productData.get(position).getCountValue() != 0) {
+        Picasso.with(context).load(FilteruserList.get(position).getProductPicturesUrl()).resize(800, 800).placeholder(R.drawable.logo).into(viewHolder.productImage);
+        Picasso.with(context).load(FilteruserList.get(position).getProductPicturesUrl()).resize(800, 800).placeholder(R.drawable.logo).into(viewHolder.productImageCopy);
+        viewHolder.productTitle.setText(FilteruserList.get(position).getProductName());
+        viewHolder.productSubTitle.setText(FilteruserList.get(position).getProductSubTitle());
+        viewHolder.productPrice.setText(String.valueOf(FilteruserList.get(position).getUnitPrice()));
+        viewHolder.productDetails.setText(FilteruserList.get(position).getProductDetails());
+        viewHolder.tv_discount.setText(String.valueOf(FilteruserList.get(position).getDiscount()) + "% off");
+        if (FilteruserList.get(position).getCountValue() != 0) {
             DecimalFormat df = new DecimalFormat("0");
-            String value = df.format(productData.get(position).getCountValue());
+            String value = df.format(FilteruserList.get(position).getCountValue());
             viewHolder.textView_nos.setText(value);
         }
 
         viewHolder.increase_Product.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int count1 = (int) productData.get(position).getCountValue();
-                productData.get(position).setCountValue(count1 + 1);
+                int count1 = (int) FilteruserList.get(position).getCountValue();
+                FilteruserList.get(position).setCountValue(count1 + 1);
                 //   addProduct(count1 + 1, position, true);
                 notifyDataSetChanged();
             }
@@ -99,9 +113,9 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         viewHolder.decrement_Product.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int count1 = (int) productData.get(position).getCountValue();
+                int count1 = (int) FilteruserList.get(position).getCountValue();
                 if (count1 > 1) {
-                    productData.get(position).setCountValue(count1 - 1);
+                    FilteruserList.get(position).setCountValue(count1 - 1);
                     // addProduct(count1 - 1, position, true);
                 }
                 notifyDataSetChanged();
@@ -117,6 +131,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
                         actionListener.onItemTap(viewHolder.productImageCopy);
                     addItemToCart(position);
                     Vibrator vb = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+                    assert vb != null;
                     vb.vibrate(20);
                     rootActivity.setItemCart();
                 }
@@ -130,13 +145,13 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     public void addItemToCart(int position) {
         DbHelper dbHelper = new DbHelper(context);
         MyBasket myBasket = new MyBasket();
-        myBasket.setProductId(productData.get(position).getProductId());
-        String productName = productData.get(position).getProductName();
+        myBasket.setProductId(FilteruserList.get(position).getProductId());
+        String productName = FilteruserList.get(position).getProductName();
         myBasket.setProductName(productName);
-        myBasket.setCategoryId(productData.get(position).getCategoryId());
-        myBasket.setQuantity(productData.get(position).getCountValue());
-        myBasket.setPrice(productData.get(position).getUnitPrice());
-        myBasket.setDiscount(productData.get(position).getDiscount());
+        myBasket.setCategoryId(FilteruserList.get(position).getCategoryId());
+        myBasket.setQuantity(FilteruserList.get(position).getCountValue());
+        myBasket.setPrice(FilteruserList.get(position).getUnitPrice());
+        myBasket.setDiscount(FilteruserList.get(position).getDiscount());
         myBasket.setOrderTime(getCurrentDateTime());
         myBasket.setCategoryName(categoryName);
         dbHelper.upsertBasketOrderData(myBasket);
@@ -154,9 +169,51 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         return dateTimeStr;
     }
 
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                String charString = charSequence.toString().trim();
+                // name match condition. this might differ depending on your requirement
+                // here we are looking for name or phone number match
+                if (charString.isEmpty()) {
+                    FilteruserList = productData;
+                } else {
+                    List<Result> filteredList = new ArrayList<>();
+                    for (Result row : productData) {
+
+                        // name match condition. this might differ depending on your requirement
+                        // here we are looking for name or phone number match
+                        if (row.getProductName().toLowerCase().trim().contains(charString.toLowerCase()) | row.getProductSubTitle().toLowerCase().trim().contains(charString.toLowerCase())) {
+                            filteredList.add(row);
+                        }
+                    }
+
+
+                    FilteruserList = filteredList;
+                }
+
+
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = FilteruserList;
+                return filterResults;
+            }
+
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                FilteruserList = (ArrayList<Result>) filterResults.values;
+                notifyDataSetChanged();
+            }
+        };
+    }
+
+
     @Override
     public int getItemCount() {
-        return productData.size();
+        return FilteruserList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
