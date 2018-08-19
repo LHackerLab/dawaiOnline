@@ -153,7 +153,12 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         myBasket.setPrice(FilteruserList.get(position).getUnitPrice());
         myBasket.setDiscount(FilteruserList.get(position).getDiscount());
         myBasket.setOrderTime(getCurrentDateTime());
-        myBasket.setCategoryName(categoryName);
+        if (categoryName != null && !categoryName.equals("")) {
+            myBasket.setCategoryName(categoryName);
+        } else {
+            Result result = dbHelper.getCategoryData(FilteruserList.get(position).getCategoryId());
+            myBasket.setCategoryName(result.getCategoryName());
+        }
         dbHelper.upsertBasketOrderData(myBasket);
         notifyDataSetChanged();
     }

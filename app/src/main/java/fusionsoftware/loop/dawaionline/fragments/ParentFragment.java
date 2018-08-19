@@ -157,8 +157,8 @@ public class ParentFragment extends Fragment implements View.OnClickListener {
 
     private void getViewPagerData() {
         if (Utility.isOnline(context)) {
-            final BallTriangleDialog dotDialog = new BallTriangleDialog(context);
-            dotDialog.show();
+//            final BallTriangleDialog dotDialog = new BallTriangleDialog(context);
+//            dotDialog.show();
             ServiceCaller serviceCaller = new ServiceCaller(context);
             serviceCaller.callViewPagerService(new IAsyncWorkCompletedCallback() {
                 @Override
@@ -169,9 +169,9 @@ public class ParentFragment extends Fragment implements View.OnClickListener {
                             ImagesArray.addAll(Arrays.asList(result.getFirstViewPager()));
                             ImagesArrayTwo.addAll(Arrays.asList(result.getSecondViewPager()));
                         }
-                        if (dotDialog.isShowing()) {
-                            dotDialog.dismiss();
-                        }
+//                        if (dotDialog.isShowing()) {
+//                            dotDialog.dismiss();
+//                        }
                         viewPagerSetUp();
                     }
                 }
@@ -304,7 +304,8 @@ public class ParentFragment extends Fragment implements View.OnClickListener {
             case R.id.layout_earn:
                 break;
             case R.id.btn_orderPre:
-                Toast.makeText(context, "Order Preciption Here", Toast.LENGTH_SHORT).show();
+                AddDoctorPrescriptionFragment addDoctorPrescriptionFragment = AddDoctorPrescriptionFragment.newInstance("", "");
+                moveFragment(addDoctorPrescriptionFragment);
                 break;
         }
     }
@@ -386,8 +387,8 @@ public class ParentFragment extends Fragment implements View.OnClickListener {
     //get all Product list data
     private void getAllProductList() {
         if (Utility.isOnline(context)) {
-            final BallTriangleDialog dotDialog = new BallTriangleDialog(context);
-            dotDialog.show();
+//            final BallTriangleDialog dotDialog = new BallTriangleDialog(context);
+//            dotDialog.show();
             ServiceCaller serviceCaller = new ServiceCaller(context);
             serviceCaller.callSearchProductService(new IAsyncWorkCompletedCallback() {
                 @Override
@@ -399,9 +400,9 @@ public class ParentFragment extends Fragment implements View.OnClickListener {
 //                        }
 //                    }
 //                    Toast.makeText(context, workName, Toast.LENGTH_SHORT).show();
-                    if (dotDialog.isShowing()) {
-                        dotDialog.dismiss();
-                    }
+//                    if (dotDialog.isShowing()) {
+//                        dotDialog.dismiss();
+//                    }
                 }
             });
         } else {

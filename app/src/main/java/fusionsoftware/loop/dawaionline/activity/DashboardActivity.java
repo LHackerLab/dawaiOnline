@@ -107,13 +107,14 @@ public class DashboardActivity extends AppCompatActivity
         setItemCart();// add item in cart...........
         Listmenu();//list menu
         setUserDetail();
+        getAllCategoryList();
     }
 
     private void getCityList() {
         final List<String> stringList = new ArrayList<>();
         if (Utility.isOnline(this)) {
-            final BallTriangleDialog dotDialog = new BallTriangleDialog(this);
-            dotDialog.show();
+//            final BallTriangleDialog dotDialog = new BallTriangleDialog(this);
+//            dotDialog.show();
             ServiceCaller serviceCaller = new ServiceCaller(this);
             serviceCaller.callCityService(new IAsyncWorkCompletedCallback() {
                 @Override
@@ -141,14 +142,29 @@ public class DashboardActivity extends AppCompatActivity
                             }
                         });
 
-                        if (dotDialog.isShowing()) {
-                            dotDialog.dismiss();
-                        }
+//                        if (dotDialog.isShowing()) {
+//                            dotDialog.dismiss();
+//                        }
                     }
                 }
             });
         } else {
             Toast.makeText(this, "No internet connection found", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    //get all category list data
+    private void getAllCategoryList() {
+        if (Utility.isOnline(this)) {
+            ServiceCaller serviceCaller = new ServiceCaller(this);
+            serviceCaller.callAllCategoryListService(new IAsyncWorkCompletedCallback() {
+                @Override
+                public void onDone(String workName, boolean isComplete) {
+                    if (isComplete) {
+
+                    }
+                }
+            });
         }
     }
 

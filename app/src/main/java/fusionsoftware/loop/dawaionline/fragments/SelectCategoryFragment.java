@@ -94,7 +94,6 @@ public class SelectCategoryFragment extends Fragment {
         regular = FontManager.getFontTypeface(context, "fonts/roboto.regular.ttf");
         materialDesignIcons = FontManager.getFontTypefaceMaterialDesignIcons(context, "fonts/materialdesignicons-webfont.otf");
         init();
-        getAllCategoryList();
         return view;
     }
 
@@ -110,13 +109,16 @@ public class SelectCategoryFragment extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
 //        recyclerView.setLayoutManager(new GridLayoutManager(context, 2));
         recyclerView.setHasFixedSize(false);
-//        if (CompatibilityUtility.isTablet(context)) {
-//            gaggeredGridLayoutManager = new StaggeredGridLayoutManager(3, LinearLayoutManager.VERTICAL);
-//        } else {
         gaggeredGridLayoutManager = new StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL);
-//        }
         recyclerView.setLayoutManager(gaggeredGridLayoutManager);
-
+        DbHelper dbHelper = new DbHelper(context);
+        categoryList = dbHelper.GetAllCategoryData();
+        if (categoryList != null && categoryList.size() > 0) {
+            adapter = new SelectCatagoryAdapter(context, categoryList);
+            recyclerView.setAdapter(adapter);
+        } else {
+            noDataFound();
+        }
     }
 
     private void noDataFound() {
@@ -134,47 +136,4 @@ public class SelectCategoryFragment extends Fragment {
         linearLayout.addView(view);
     }
 
-    //get all category list data
-    private void getAllCategoryList() {
-
-        if (Utility.isOnline(context)) {
-            final BallTriangleDialog dotDialog = new BallTriangleDialog(context);
-            dotDialog.show();
-            ServiceCaller serviceCaller = new ServiceCaller(context);
-            serviceCaller.callAllCategoryListService(new IAsyncWorkCompletedCallback() {
-                @Override
-                public void onDone(String workName, boolean isComplete) {
-                    if (isComplete) {
-                        ContentDataAsArray contentDataAsArray = new Gson().fromJson(workName, ContentDataAsArray.class);
-                        for (Result result : contentDataAsArray.getResults())
-                            categoryList.addAll(Arrays.asList(result));
-                        if (categoryList != null && categoryList.size() > 0) {
-                            adapter = new SelectCatagoryAdapter(context, categoryList);
-                            recyclerView.setAdapter(adapter);
-                        } else {
-                            noDataFound();
-                        }
-                    } else {
-                        noDataFound();
-                    }
-                    if (dotDialog.isShowing()) {
-                        dotDialog.dismiss();
-                    }
-
-                }
-            });
-        } else {
-            //   Utility.alertForErrorMessage(Contants.OFFLINE_MESSAGE, context);//off line msg....
-            LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View view = inflater.inflate(R.layout.no_data_found, null);
-            TextView nodata = (TextView) view.findViewById(R.id.nodata);
-            TextView nodataIcon = (TextView) view.findViewById(R.id.nodataIcon);
-            nodataIcon.setTypeface(materialDesignIcons);
-            nodataIcon.setText(Html.fromHtml("&#xf187;"));
-            nodata.setText("No internet connection found");
-            linearLayout.setGravity(Gravity.CENTER);
-            linearLayout.removeAllViews();
-            linearLayout.addView(view);
-        }
-    }
 }

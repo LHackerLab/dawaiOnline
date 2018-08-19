@@ -27,7 +27,7 @@ import fusionsoftware.loop.dawaionline.utilities.Contants;
 public class DbHelper extends SQLiteOpenHelper {
 
     // If you change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION = 4;
+    public static final int DATABASE_VERSION = 6;
     public static final String DATABASE_NAME = Contants.DATABASE_NAME;
 
     public DbHelper(Context context) {
@@ -40,6 +40,7 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS cityData");
         db.execSQL("DROP TABLE IF EXISTS MyOrderDataEntity");
         db.execSQL("DROP TABLE IF EXISTS searchProductEntity");
+        db.execSQL("DROP TABLE IF EXISTS categoryEntity");
         db.execSQL("DROP TABLE IF EXISTS MyOrderHistoryDataEntity");
         db.execSQL("DROP TABLE IF EXISTS TrackOrderDataEntity");
         db.execSQL("DROP TABLE IF EXISTS MenuListDataEntity");
@@ -67,8 +68,11 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TrackOrder_TABLE);
 
         String CREATE_Menu_List_TABLE = "CREATE TABLE MenuListDataEntity(MenuId INTEGER, MenuName TEXT,ImageUrl TEXT)";
-        //            "MenuId","MenuName","ImageUrl"
         db.execSQL(CREATE_Menu_List_TABLE);
+
+        String categoryEntity = "CREATE TABLE categoryEntity(CategoryId INTEGER, CategoryName TEXT,CategoryPictures TEXT)";
+        //            "MenuId","MenuName","ImageUrl"
+        db.execSQL(categoryEntity);
 
     }
 
@@ -608,6 +612,98 @@ public class DbHelper extends SQLiteOpenHelper {
         return i > 0;
     }
 
+
+    //------------category data----------------
+    public boolean upsertCategoryData(Result ob) {
+        boolean done = false;
+        Result data = null;
+        if (ob.getCategoryId() != 0) {
+            data = getCategoryData(ob.getCategoryId());
+            if (data == null) {
+                done = insertCategoryData(ob);
+            } else {
+                done = updateCategoryData(ob);
+            }
+        }
+        return done;
+    }
+
+    //GetAll Category Order
+    private void populateCategoryData(Cursor cursor, Result ob) {
+        ob.setCategoryId(cursor.getInt(0));
+        ob.setCategoryName(cursor.getString(1));
+        ob.setCategoryPictures(cursor.getString(2));
+    }
+
+    //show  Category  list data
+    public List<Result> GetAllCategoryData() {
+        ArrayList<Result> list = new ArrayList<Result>();
+        String query = "Select * FROM categoryEntity ";
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.moveToFirst()) {
+
+            while (cursor.isAfterLast() == false) {
+                Result ob = new Result();
+                populateCategoryData(cursor, ob);
+                list.add(ob);
+                cursor.moveToNext();
+            }
+        }
+        db.close();
+        return list;
+    }
+
+    //insert Category data
+    public boolean insertCategoryData(Result ob) {
+        ContentValues values = new ContentValues();
+        populateCategoryValue(ob, values);
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        long i = db.insert("categoryEntity", null, values);
+        db.close();
+        return i > 0;
+    }
+
+    //Category by id
+    public Result getCategoryData(int id) {
+        String query = "Select * FROM categoryEntity WHERE CategoryId= " + id + "";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        Result data = new Result();
+
+        if (cursor.moveToFirst()) {
+            cursor.moveToFirst();
+            populateCategoryData(cursor, data);
+
+            cursor.close();
+        } else {
+            data = null;
+        }
+        db.close();
+        return data;
+    }
+
+    private void populateCategoryValue(Result ob, ContentValues values) {
+        values.put("CategoryId", ob.getCategoryId());
+        values.put("CategoryName", ob.getCategoryName());
+        values.put("CategoryPictures", ob.getCategoryPictures());
+
+    }
+
+    //update Category
+    public boolean updateCategoryData(Result ob) {
+        ContentValues values = new ContentValues();
+        populateCategoryValue(ob, values);
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        long i = 0;
+        i = db.update("categoryEntity", values, "CategoryId = " + ob.getCategoryId() + "", null);
+        db.close();
+        return i > 0;
+    }
 
     //----------------My order history Data-----------......................
 
