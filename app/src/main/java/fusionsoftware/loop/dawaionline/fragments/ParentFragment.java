@@ -269,15 +269,20 @@ public class ParentFragment extends Fragment implements View.OnClickListener {
                 moveFragment(fragment);
                 break;
             case R.id.layout_lab:
-
+                LabTestsFragment fragmentest = LabTestsFragment.newInstance("", "");
+                moveFragment(fragmentest);
                 break;
             case R.id.layout_otc:
                 SelectCategoryFragment fragmentotc = SelectCategoryFragment.newInstance(0, 0);
                 moveFragment(fragmentotc);
                 break;
             case R.id.layout_healtharticle:
+                HealthArticleFragment healthArticleFragment = HealthArticleFragment.newInstance("", "");
+                moveFragment(healthArticleFragment);
                 break;
             case R.id.layout_healthrecord:
+                HealthRecordFragment healthFragment = HealthRecordFragment.newInstance("", "");
+                moveFragment(healthFragment);
                 break;
             case R.id.layout_earn:
                 break;

@@ -51,22 +51,22 @@ public class SplashScreenActivity extends AppCompatActivity {
     private void init() {
         tv_one = findViewById(R.id.tv_one);
         tv_two = findViewById(R.id.tv_two);
-        tv_one.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(SplashScreenActivity.this, LoginWithPhoneActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-            }
-        });
-        tv_two.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(SplashScreenActivity.this, LoginActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-            }
-        });
+//        tv_one.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(SplashScreenActivity.this, LoginWithPhoneActivity.class);
+//                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+//                startActivity(intent);
+//            }
+//        });
+//        tv_two.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(SplashScreenActivity.this, LoginActivity.class);
+//                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+//                startActivity(intent);
+//            }
+//        });
     }
 
     //chech Portait And LandSacpe Orientation
@@ -84,26 +84,26 @@ public class SplashScreenActivity extends AppCompatActivity {
     private void waitForLogin() {
         DbHelper dbhelper = new DbHelper(SplashScreenActivity.this);
         Data data = dbhelper.getUserData();
-        if (data != null) {
+//        if (data == null) {
             tv_one.setVisibility(View.INVISIBLE);
             tv_two.setVisibility(View.INVISIBLE);
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    Intent intent = new Intent(SplashScreenActivity.this, DashboardActivity.class);
+                    Intent intent = new Intent(SplashScreenActivity.this, LoginActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
 
                 }
             }, 3000);
-        } else
+//        } else
 
-        {
-            tv_one.setVisibility(View.VISIBLE);
-            tv_two.setVisibility(View.VISIBLE);
+//        {
+//            tv_one.setVisibility(View.VISIBLE);
+//            tv_two.setVisibility(View.VISIBLE);
 //            Intent intent = new Intent(SplashScreenActivity.this, LoginActivity.class);
 //            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
 //            startActivity(intent);
-        }
+//        }
     }
 }

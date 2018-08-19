@@ -47,6 +47,9 @@ public class Contants {
     public static final String GetAllAddress = "getAllAddress.php";
     public static final String DeleteAddress = "Address/DeleteAddress";
     public static final String GetAllCategory = "getAllCategory.php";
+    public static final String getAllLabTests = "getAllLabTests.php";
+    public static final String getAllLHealthArticles = "getAllLHealthArticles.php";
+    public static final String getAllPrescription = "getAllPrescription.php";
     public static final String getViewPager = "getViewPager.php";
     public static final String getCity = "getCity.php";
     public static final String GetAllProductByCategory = "GetAllProductByCategory.php";

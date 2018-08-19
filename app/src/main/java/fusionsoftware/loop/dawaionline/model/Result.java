@@ -5,7 +5,6 @@ package fusionsoftware.loop.dawaionline.model;
  */
 
 public class Result {
-    private String LoginID;
 
     private int AddressId;
 
@@ -20,10 +19,6 @@ public class Result {
 
     private String LandMark;
 
-
-    public void setLoginID(String LoginID) {
-        this.LoginID = LoginID;
-    }
 
     public int getAddressId() {
         return AddressId;
@@ -141,6 +136,16 @@ public class Result {
 
 
     private int Otp;
+
+    public int getArticleId() {
+        return articleId;
+    }
+
+    public void setArticleId(int articleId) {
+        this.articleId = articleId;
+    }
+
+    private int articleId;
 
     private int Role;
 

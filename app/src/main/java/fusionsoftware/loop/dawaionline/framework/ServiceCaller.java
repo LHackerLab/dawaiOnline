@@ -389,7 +389,68 @@ public class ServiceCaller {
         });
     }
 
+    //call All lab test data
+    public void callAllLabTestService(final IAsyncWorkCompletedCallback workCompletedCallback) {
+        final String url = Contants.SERVICE_BASE_URL + Contants.getAllLabTests;
+        JSONObject obj = new JSONObject();
+        Log.d(Contants.LOG_TAG, "Payload*****" + obj);
+        new ServiceHelper().callService(url, obj, new IServiceSuccessCallback() {
+            @Override
+            public void onDone(String doneWhatCode, String result, String error) {
+                if (result != null) {
+                    workCompletedCallback.onDone(result, true);
+//                    parseAndSaveAllCategoryListData(result, workCompletedCallback);
+                } else {
+                    workCompletedCallback.onDone("callAllCategoryListService done", false);
+                }
+            }
+        });
+    }
 
+    //call All article data
+    public void callAllHealthArticleService(final IAsyncWorkCompletedCallback workCompletedCallback) {
+        final String url = Contants.SERVICE_BASE_URL + Contants.getAllLHealthArticles;
+        JSONObject obj = new JSONObject();
+        Log.d(Contants.LOG_TAG, "Payload*****" + obj);
+        new ServiceHelper().callService(url, obj, new IServiceSuccessCallback() {
+            @Override
+            public void onDone(String doneWhatCode, String result, String error) {
+                if (result != null) {
+                    workCompletedCallback.onDone(result, true);
+//                    parseAndSaveAllCategoryListData(result, workCompletedCallback);
+                } else {
+                    workCompletedCallback.onDone("callAllCategoryListService done", false);
+                }
+            }
+        });
+    }
+
+    //get all presp data...........
+    public void callGetAllPrescriptionService(final int LoginId, final IAsyncWorkCompletedCallback workCompletedCallback) {
+
+        final String url = Contants.SERVICE_BASE_URL + Contants.getAllPrescription;
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                workCompletedCallback.onDone(response, true);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                workCompletedCallback.onDone("no", false);
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("loginId", String.valueOf(LoginId));
+                return params;
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        requestQueue.add(stringRequest);
+    }
     //call  viewpager  data
     public void callViewPagerService(final IAsyncWorkCompletedCallback workCompletedCallback) {
 

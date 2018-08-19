@@ -54,9 +54,11 @@ import fusionsoftware.loop.dawaionline.utilities.Utility;
 public class OrderConfirmFragment extends Fragment implements View.OnClickListener {
     private String result;
     private String completeAddress, zipCode, phone;
-
+    private double totalPrice, dis, grandTotal;
+    private float shippingChareges;
     // TODO: Rename and change types and number of parameters
-    public static OrderConfirmFragment newInstance(String completeAddress, String zipCode, String phone, String result) {
+
+    public static OrderConfirmFragment newInstance(String completeAddress, String zipCode, String phone, String result, double totalPrice, double dis, float shippingChareges, double grandTotal) {
         OrderConfirmFragment fragment = new OrderConfirmFragment();
         Bundle args = new Bundle();
 
@@ -64,6 +66,10 @@ public class OrderConfirmFragment extends Fragment implements View.OnClickListen
         args.putString("zipCode", zipCode);
         args.putString("phone", phone);
         args.putString("Result", result);
+        args.putDouble("totalPrice", totalPrice);
+        args.putDouble("dis", dis);
+        args.putFloat("shippingChareges", shippingChareges);
+        args.putDouble("grandTotal", grandTotal);
         fragment.setArguments(args);
         return fragment;
     }
@@ -76,6 +82,10 @@ public class OrderConfirmFragment extends Fragment implements View.OnClickListen
             zipCode = getArguments().getString("zipCode");
             phone = getArguments().getString("phone");
             result = getArguments().getString("Result");
+            totalPrice = getArguments().getDouble("totalPrice");
+            dis = getArguments().getDouble("dis");
+            shippingChareges = getArguments().getFloat("shippingChareges");
+            grandTotal = getArguments().getDouble("grandTotal");
 
         }
     }
@@ -96,7 +106,6 @@ public class OrderConfirmFragment extends Fragment implements View.OnClickListen
     int orderId;
     private LinearLayout codLayout, onlineLayout;
     private ArrayList<CreateOrderDetails> orderDetailsesList;
-    float totalPrice = 0;
 
     @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD)
     @Override
@@ -220,7 +229,7 @@ public class OrderConfirmFragment extends Fragment implements View.OnClickListen
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
-//        setDetails();
+        setDetails();
         orderDetailsesList = new ArrayList<CreateOrderDetails>();
         DbHelper dbHelper = new DbHelper(context);
         List<MyBasket> orderList = dbHelper.GetAllBasketOrderData();
@@ -233,25 +242,29 @@ public class OrderConfirmFragment extends Fragment implements View.OnClickListen
 
     //get all details and set values
     private void setDetails() {
-        ContentData data = new Gson().fromJson(result, ContentData.class);
-        if (data != null) {
-            Result objData = data.getResult();
-            if (objData != null) {
-                OrderNumber = objData.getOrderNumber();
-                orderId = objData.getOrderId();
-                NetPayable = objData.getNetPrice();
-                total_amount.setText(String.valueOf(objData.getTotalPrice()));
-                grand_amount.setText(String.valueOf(objData.getGrandTotal()));
-                tv_Discount_charges.setText(String.valueOf(objData.getDiscount()));
-                shipping_charges.setText(String.valueOf(objData.getShippingCharge()));
+//        ContentData data = new Gson().fromJson(result, ContentData.class);
+//        if (data != null) {
+//            Result objData = data.getResult();
+//            if (objData != null) {
+//                OrderNumber = objData.getOrderNumber();
+//                orderId = objData.getOrderId();
+//                NetPayable = objData.getNetPrice();
+//                total_amount.setText(String.valueOf(objData.getTotalPrice()));
+//                grand_amount.setText(String.valueOf(objData.getGrandTotal()));
+//                tv_Discount_charges.setText(String.valueOf(objData.getDiscount()));
+//                shipping_charges.setText(String.valueOf(objData.getShippingCharge()));
 //                tv_promocode_value.setText(String.valueOf(objData.getPromoDiscount()));
-                net_price_amount.setText(String.valueOf(objData.getNetPrice()));
-                sub_amount.setText(String.valueOf(objData.getSubTotal()));
-                total_gst.setText(String.valueOf(objData.getTotalGST()));
+//                net_price_amount.setText(String.valueOf(objData.getNetPrice()));
+//                sub_amount.setText(String.valueOf(objData.getSubTotal()));
+//                total_gst.setText(String.valueOf(objData.getTotalGST()));
 
-
-            }
-        }
+                total_amount.setText(String.valueOf(totalPrice));
+                tv_Discount_charges.setText(String.valueOf(dis));
+                shipping_charges.setText(String.valueOf(shippingChareges));
+                sub_amount.setText(String.valueOf(totalPrice - dis));
+                net_price_amount.setText(String.valueOf(grandTotal));
+//            }
+//        }
     }
 
     @Override
@@ -308,32 +321,32 @@ public class OrderConfirmFragment extends Fragment implements View.OnClickListen
     }
 
     private void getCOD() {
-        if (Utility.isOnline(context)) {
-            String mode = "COD";
-            final BallTriangleDialog spotsDialog = new BallTriangleDialog(context);
-            spotsDialog.show();
-            final ServiceCaller serviceCaller = new ServiceCaller(context);
-            serviceCaller.getCODService(OrderNumber, 1, mode, new IAsyncWorkCompletedCallback() {
-                @Override
-                public void onDone(String result, boolean isComplete) {
-                    if (isComplete) {
+//        if (Utility.isOnline(context)) {
+//            String mode = "COD";
+//            final BallTriangleDialog spotsDialog = new BallTriangleDialog(context);
+//            spotsDialog.show();
+//            final ServiceCaller serviceCaller = new ServiceCaller(context);
+//            serviceCaller.getCODService(OrderNumber, 1, mode, new IAsyncWorkCompletedCallback() {
+//                @Override
+//                public void onDone(String result, boolean isComplete) {
+//                    if (isComplete) {
 //                        ContentData data = new Gson().fromJson(result, ContentData.class);
 //                        if (data != null) {
                         clearBasketData();
                         OrderPlacedFragment fragmentm = OrderPlacedFragment.newInstance(OrderNumber, "");
                         moveFragmentWithTag(fragmentm, "OrderPlacedFragment");
 //                        }
-                    }
-                        if (spotsDialog.isShowing()) {
-                            spotsDialog.dismiss();
-                        }
 //                    }
-                }
-            });
-
-        } else {
-            Utility.alertForErrorMessage(Contants.OFFLINE_MESSAGE, context);
-        }
+//                    if (spotsDialog.isShowing()) {
+//                        spotsDialog.dismiss();
+//                    }
+//                    }
+//                }
+//            });
+//
+//        } else {
+//            Utility.alertForErrorMessage(Contants.OFFLINE_MESSAGE, context);
+//        }
     }
 
     //remove data from cart.................

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/inner_background"
+    tools:context=".fragments.LabTestsFragment">
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dimValue_10"
+            android:layout_marginTop="@dimen/dimValue_10"
+            android:text="Health Records"
+            android:textColor="@color/primary_text"
+            android:textSize="@dimen/dimTextSize_16" />
+
+
+        <ImageView
+            android:layout_width="@dimen/size_60px"
+            android:layout_height="@dimen/size_60px"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/dimValue_10"
+            android:src="@drawable/ic_description_black_24dp" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dimValue_10"
+            android:background="@color/shop_name"
+            android:gravity="center"
+            android:text="Laboratory Report"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="@dimen/dimTextSize_14" />
+
+        <ImageView
+            android:layout_width="@dimen/size_60px"
+            android:layout_height="@dimen/size_60px"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/dimValue_10"
+            android:src="@drawable/ic_local_parking_black_24dp" />
+
+        <Button
+            android:id="@+id/btn_doctor_prep"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dimValue_10"
+            android:background="@color/Phone_btn"
+            android:gravity="center"
+            android:text="Doctor Prescription"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="@dimen/dimTextSize_14" />
+
+    </LinearLayout>
+
+</FrameLayout>
