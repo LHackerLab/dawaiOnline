@@ -247,7 +247,7 @@ public class AddNewAddressFragment extends Fragment implements View.OnClickListe
                 final BallTriangleDialog dotDialog = new BallTriangleDialog(context);
                 dotDialog.show();
                 DbHelper dbHelper = new DbHelper(context);
-                Data data = dbHelper.getUserData();
+                Result data = dbHelper.getUserData();
 //                int loginId = data.getLoginID();
                 int loginId = 1;
                 ServiceCaller serviceCaller = new ServiceCaller(context);
@@ -280,8 +280,8 @@ public class AddNewAddressFragment extends Fragment implements View.OnClickListe
                 final Utility utility = new Utility();
                 //utility.customProgressDialog(getActivity());
                 DbHelper dbHelper = new DbHelper(context);
-                Data data = dbHelper.getUserData();
-                int loginId = data.getLoginID();
+                Result data = dbHelper.getUserData();
+                int loginId = data.getLoginId();
                 ServiceCaller serviceCaller = new ServiceCaller(context);
                 //get login id from data base ..................
                 serviceCaller.updateAddressService(addressId, loginId, address, phone, pinCode, landMark, new IAsyncWorkCompletedCallback() {

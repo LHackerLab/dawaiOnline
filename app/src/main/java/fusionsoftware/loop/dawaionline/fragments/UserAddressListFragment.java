@@ -132,7 +132,7 @@ public class UserAddressListFragment extends Fragment implements View.OnClickLis
             final BallTriangleDialog dotDialog = new BallTriangleDialog(context);
             dotDialog.show();
             DbHelper dbHelper = new DbHelper(context);
-            Data data = dbHelper.getUserData();
+            Result data = dbHelper.getUserData();
 //            if (data != null) {
 //                int loginId = data.getLoginID();
                 int loginId = 1;

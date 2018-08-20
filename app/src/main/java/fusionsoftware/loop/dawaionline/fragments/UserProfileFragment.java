@@ -24,6 +24,7 @@ import fusionsoftware.loop.dawaionline.R;
 import fusionsoftware.loop.dawaionline.activity.DashboardActivity;
 import fusionsoftware.loop.dawaionline.database.DbHelper;
 import fusionsoftware.loop.dawaionline.model.Data;
+import fusionsoftware.loop.dawaionline.model.Result;
 import fusionsoftware.loop.dawaionline.utilities.CompatibilityUtility;
 import fusionsoftware.loop.dawaionline.utilities.FontManager;
 
@@ -120,7 +121,7 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
     //set user value
     private void setValue() {
         DbHelper dbHelper = new DbHelper(context);
-        Data data = dbHelper.getUserData();
+        Result data = dbHelper.getUserData();
         if (data != null) {
             tv_UserName.setText(data.getName());
             tv_UserPhone.setText(data.getPhoneNumber());

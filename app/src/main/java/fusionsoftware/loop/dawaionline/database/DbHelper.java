@@ -27,7 +27,7 @@ import fusionsoftware.loop.dawaionline.utilities.Contants;
 public class DbHelper extends SQLiteOpenHelper {
 
     // If you change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION = 6;
+    public static final int DATABASE_VERSION = 7;
     public static final String DATABASE_NAME = Contants.DATABASE_NAME;
 
     public DbHelper(Context context) {
@@ -54,7 +54,7 @@ public class DbHelper extends SQLiteOpenHelper {
     }
 
     public void onCreate(SQLiteDatabase db) {
-        String CREATE_user_TABLE = "CREATE TABLE userData(LoginID INTEGER,PhoneNumber TEXT,Name TEXT,Otp INTEGER,EmailID TEXT,Role INTEGER,ProfilePictureUrl TEXT)";
+        String CREATE_user_TABLE = "CREATE TABLE userData(LoginId INTEGER,PhoneNumber TEXT,Name TEXT,Otp INTEGER,EmailID TEXT,ProfilePictureUrl TEXT)";
         db.execSQL(CREATE_user_TABLE);
         String CREATE_city_TABLE = "CREATE TABLE cityData(cityId INTEGER,cityName TEXT,shippingCharge REAL)";
         db.execSQL(CREATE_city_TABLE);
@@ -77,11 +77,11 @@ public class DbHelper extends SQLiteOpenHelper {
     }
 
     //--------------------------userDataData---------------
-    public boolean upsertUserData(Data ob) {
+    public boolean upsertUserData(Result ob) {
         boolean done = false;
-        Data data = null;
-        if (ob.getLoginID() != 0) {
-            data = getUserDataByLoginId(ob.getLoginID());
+        Result data = null;
+        if (ob.getLoginId() != 0) {
+            data = getUserDataByLoginId(ob.getLoginId());
             if (data == null) {
                 done = insertUserData(ob);
             } else {
@@ -91,27 +91,14 @@ public class DbHelper extends SQLiteOpenHelper {
         return done;
     }
 
-    // for user data..........
-    private void populateUserData(Cursor cursor, Data ob) {
-        ob.setLoginID(cursor.getInt(0));
-        ob.setPhoneNumber(cursor.getString(1));
-        ob.setName(cursor.getString(2));
-        ob.setOtp(cursor.getInt(3));
-        ob.setEmailID(cursor.getString(4));
-        ob.setRole(cursor.getInt(5));
-        ob.setProfilePictureUrl(cursor.getString(6));
-    }
-
     //insert userData data.............
-    public boolean insertUserData(Data ob) {
+    public boolean insertUserData(Result ob) {
         ContentValues values = new ContentValues();
-
-        values.put("LoginId", ob.getLoginID());
-        values.put("Phonenumber", ob.getPhoneNumber());
+        values.put("LoginId", ob.getLoginId());
+        values.put("PhoneNumber", ob.getPhoneNumber());
         values.put("Name", ob.getName());
         values.put("otp", ob.getOtp());
         values.put("EmailId", ob.getEmailID());
-        values.put("Role", ob.getRole());
         values.put("ProfilePictureUrl", ob.getProfilePictureUrl());
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -122,24 +109,23 @@ public class DbHelper extends SQLiteOpenHelper {
     }
 
     // for userData data.............
-    private void populateUserformation(Cursor cursor, Data ob) {
-        ob.setLoginID(cursor.getInt(0));
+    private void populateUserformation(Cursor cursor, Result ob) {
+        ob.setLoginId(cursor.getInt(0));
         ob.setPhoneNumber(cursor.getString(1));
         ob.setName(cursor.getString(2));
         ob.setOtp(cursor.getInt(3));
         ob.setEmailID(cursor.getString(4));
-        ob.setRole(cursor.getInt(5));
         ob.setProfilePictureUrl(cursor.getString(6));
     }
 
     //userData data
-    public Data getUserData() {
+    public Result getUserData() {
 
         String query = "Select * FROM userData";
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
-        Data data = new Data();
+        Result data = new Result();
 
         if (cursor.moveToFirst()) {
             cursor.moveToFirst();
@@ -154,13 +140,13 @@ public class DbHelper extends SQLiteOpenHelper {
     }
 
     //userData data
-    public Data getUserDataByLoginId(int id) {
+    public Result getUserDataByLoginId(int id) {
 
         String query = "Select * FROM userData WHERE LoginId = " + id + " ";
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
-        Data data = new Data();
+        Result data = new Result();
 
         if (cursor.moveToFirst()) {
             cursor.moveToFirst();
@@ -175,20 +161,19 @@ public class DbHelper extends SQLiteOpenHelper {
     }
 
     //update user data
-    public boolean updateUserData(Data ob) {
+    public boolean updateUserData(Result ob) {
         ContentValues values = new ContentValues();
 
-        values.put("LoginId", ob.getLoginID());
-        values.put("Phonenumber", ob.getPhoneNumber());
+        values.put("LoginId", ob.getLoginId());
+        values.put("PhoneNumber", ob.getPhoneNumber());
         values.put("Name", ob.getName());
         values.put("otp", ob.getOtp());
         values.put("EmailId", ob.getEmailID());
-        values.put("Role", ob.getRole());
         values.put("ProfilePictureUrl", ob.getProfilePictureUrl());
 
         SQLiteDatabase db = this.getWritableDatabase();
         long i = 0;
-        i = db.update("userData", values, "loginId = '" + ob.getLoginID() + "' ", null);
+        i = db.update("userData", values, "loginId = '" + ob.getLoginId() + "' ", null);
 
         db.close();
         return i > 0;

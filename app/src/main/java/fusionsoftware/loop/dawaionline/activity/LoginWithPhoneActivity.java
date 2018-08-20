@@ -120,7 +120,7 @@ public class LoginWithPhoneActivity extends AppCompatActivity implements View.On
                 final BallTriangleDialog dotDialog = new BallTriangleDialog(LoginWithPhoneActivity.this);
                 dotDialog.show();
                 ServiceCaller serviceCaller = new ServiceCaller(this);
-                serviceCaller.callLoginService(phone, token, new IAsyncWorkCompletedCallback() {
+                serviceCaller.callLoginService(phone, new IAsyncWorkCompletedCallback() {
                     @Override
                     public void onDone(String workName, boolean isComplete) {
                         if (isComplete) {

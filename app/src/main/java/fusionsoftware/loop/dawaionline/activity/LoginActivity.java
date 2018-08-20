@@ -135,19 +135,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     //sign up with phone method.......
     private void loginWithPhone() {
-        phone = edt_phone.getText().toString();
         if (validation()) {
             //check internet connection
             if (Utility.isOnline(this)) {
                 final BallTriangleDialog dotDialog = new BallTriangleDialog(LoginActivity.this);
                 dotDialog.show();
                 ServiceCaller serviceCaller = new ServiceCaller(this);
-                serviceCaller.callLoginService(phone, "", new IAsyncWorkCompletedCallback() {
+                serviceCaller.callLoginService(phone, new IAsyncWorkCompletedCallback() {
                     @Override
                     public void onDone(String workName, boolean isComplete) {
+//                        Toast.makeText(LoginActivity.this, workName, Toast.LENGTH_SHORT).show();
                         if (isComplete) {
-                            //sendDeviceTokenRegistrationToServer();
-                            Toast.makeText(LoginActivity.this, Contants.SEND_MESSAGE, Toast.LENGTH_LONG).show();
+                        //sendDeviceTokenRegistrationToServer();
+//                            Toast.makeText(LoginActivity.this, Contants.SEND_MESSAGE, Toast.LENGTH_LONG).show();
                             Intent intent = new Intent(LoginActivity.this, OTPVerifyActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(intent);
@@ -167,7 +167,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     //validation for phone
     private boolean validation() {
-        //  String phone = edt_phone.getText().toString();
+        phone = edt_phone.getText().toString();
         if (phone.isEmpty()) {
             edt_phone.setError("Please Enter Mobile Number");
             return false;

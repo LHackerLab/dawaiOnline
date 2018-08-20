@@ -52,6 +52,7 @@ import fusionsoftware.loop.dawaionline.database.DbHelper;
 import fusionsoftware.loop.dawaionline.framework.IAsyncWorkCompletedCallback;
 import fusionsoftware.loop.dawaionline.framework.ServiceCaller;
 import fusionsoftware.loop.dawaionline.model.Data;
+import fusionsoftware.loop.dawaionline.model.Result;
 import fusionsoftware.loop.dawaionline.utilities.CompatibilityUtility;
 import fusionsoftware.loop.dawaionline.utilities.Contants;
 import fusionsoftware.loop.dawaionline.utilities.FontManager;
@@ -146,7 +147,7 @@ public class UpdateProfileFragment extends Fragment implements View.OnClickListe
     //set user value
     private void setValue() {
         DbHelper dbHelper = new DbHelper(context);
-        Data data = dbHelper.getUserData();
+        Result data = dbHelper.getUserData();
         if (data != null) {
             name.setText(data.getName());
             phone.setText(data.getPhoneNumber());//you can not change phone no
@@ -181,8 +182,8 @@ public class UpdateProfileFragment extends Fragment implements View.OnClickListe
                 final BallTriangleDialog dotDialog = new BallTriangleDialog(context);
                 dotDialog.show();
                 DbHelper dbHelper = new DbHelper(getActivity());
-                Data data = dbHelper.getUserData();
-                int loginId = data.getLoginID();
+                Result data = dbHelper.getUserData();
+                int loginId = data.getLoginId();
                 ServiceCaller serviceCaller = new ServiceCaller(context);
                 serviceCaller.UpdateUserProfileService(loginId, nameData, phoneData, emailData, new IAsyncWorkCompletedCallback() {
                     @Override
@@ -218,8 +219,8 @@ public class UpdateProfileFragment extends Fragment implements View.OnClickListe
                 final BallTriangleDialog dotDialog = new BallTriangleDialog(context);
                 dotDialog.show();
                 DbHelper dbHelper = new DbHelper(getActivity());
-                Data data = dbHelper.getUserData();
-                int loginId = data.getLoginID();
+                Result data = dbHelper.getUserData();
+                int loginId = data.getLoginId();
                 ServiceCaller serviceCaller = new ServiceCaller(context);
                 serviceCaller.UploadImageService(loginId, base64Image, new IAsyncWorkCompletedCallback() {
                     @Override

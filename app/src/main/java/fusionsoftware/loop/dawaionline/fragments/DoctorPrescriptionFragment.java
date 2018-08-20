@@ -19,6 +19,7 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import fusionsoftware.loop.dawaionline.R;
@@ -94,7 +95,7 @@ public class DoctorPrescriptionFragment extends Fragment {
         categoryList = new ArrayList<>();
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         linearLayout = (LinearLayout) view.findViewById(R.id.linearLayout);
-        gaggeredGridLayoutManager = new StaggeredGridLayoutManager(1, LinearLayoutManager.VERTICAL);
+        gaggeredGridLayoutManager = new StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(gaggeredGridLayoutManager);
         getAllPresList();
     }
@@ -113,6 +114,7 @@ public class DoctorPrescriptionFragment extends Fragment {
                         for (Result result : contentDataAsArray.getResults())
                             categoryList.addAll(Arrays.asList(result));
                         if (categoryList != null && categoryList.size() > 0) {
+                            Collections.reverse(categoryList);
                             DoctorPrescriptionAdapter adapter = new DoctorPrescriptionAdapter(context, categoryList);
                             recyclerView.setAdapter(adapter);
                         } else {

@@ -38,8 +38,8 @@ public class Contants {
     public static final String Dont_SEND_MESSAGE = "OTP Do Not Send Successfully";
     public static final String Dont_GetAddress_MESSAGE = "Some Problem For Geting Address";
     public static final String No_DATA_FOUND_MESSAGE = "No Record Found";
-    public static final String Login = "Login/Login";
-    public static final String VerifyOTP = "Login/VerifyOTP";
+    public static final String Login = "Login.php";
+    public static final String VerifyOTP = "VerifyOTP.php";
     public static final String GetUserProfile = "Login/GetUserProfile";
     public static final String UpdateProfile = "Login/UpdateProfile";
     public static final String AddNewAddress = "AddNewAddress.php";

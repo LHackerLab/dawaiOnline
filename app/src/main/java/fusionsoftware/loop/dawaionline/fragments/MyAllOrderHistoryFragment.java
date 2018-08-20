@@ -28,6 +28,7 @@ import fusionsoftware.loop.dawaionline.database.DbHelper;
 import fusionsoftware.loop.dawaionline.framework.IAsyncWorkCompletedCallback;
 import fusionsoftware.loop.dawaionline.framework.ServiceCaller;
 import fusionsoftware.loop.dawaionline.model.Data;
+import fusionsoftware.loop.dawaionline.model.Result;
 import fusionsoftware.loop.dawaionline.utilities.CompatibilityUtility;
 import fusionsoftware.loop.dawaionline.utilities.FontManager;
 import fusionsoftware.loop.dawaionline.utilities.Utility;
@@ -120,9 +121,9 @@ public class MyAllOrderHistoryFragment extends Fragment {
     public void getMyAllOrderHistoryData() {
         if (Utility.isOnline(context)) {
             DbHelper dbHelper = new DbHelper(context);
-            final Data data = dbHelper.getUserData();
+            final Result data = dbHelper.getUserData();
             if (data != null) {
-                int loginId = data.getLoginID();
+                int loginId = data.getLoginId();
                 if (loginId != 0) {
                     final BallTriangleDialog dotDialog = new BallTriangleDialog(context);
                     dotDialog.show();

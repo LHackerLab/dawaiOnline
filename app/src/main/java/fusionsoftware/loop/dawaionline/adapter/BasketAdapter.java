@@ -63,12 +63,11 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.ViewHolder
     public void onBindViewHolder(final ViewHolder viewHolder, final int i) {
         dbHelper = new DbHelper(context);
         viewHolder.categoryName.setText(basketdata.get(i).getCategoryName());
-        viewHolder.checkOutIcon.setText(Html.fromHtml("&#xf054;"));
         List<MyBasket> orderList = dbHelper.GetAllBasketOrderDataBasedOnCategoryId(basketdata.get(i).getCategoryId());
         if (orderList != null && orderList.size() > 0) {
             LinearLayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
             viewHolder.recycleView_inner.setLayoutManager(layoutManager);
-            BasketInnerAdapter adapter = new BasketInnerAdapter(context, orderList, basketdata, i, basketdata.get(i).getCategoryId(),myBasketFragment);
+            BasketInnerAdapter adapter = new BasketInnerAdapter(context, orderList, basketdata, i, basketdata.get(i).getCategoryId(), myBasketFragment);
             viewHolder.recycleView_inner.setAdapter(adapter);
         }
 
@@ -98,21 +97,14 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.ViewHolder
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         RecyclerView recycleView_inner;
-        TextView categoryName, checkOut, checkOutIcon;
-        LinearLayout checkoutLayout;
+        TextView categoryName;
 
         public ViewHolder(View view) {
             super(view);
             recycleView_inner = (RecyclerView) view.findViewById(R.id.recycleView_inner);
             //   edit = (TextView) view.findViewById(R.id.edit);
             categoryName = (TextView) view.findViewById(R.id.categoryName);
-            checkOut = (TextView) view.findViewById(R.id.checkOut);
-            checkOutIcon = (TextView) view.findViewById(R.id.checkOutIcon);
-            checkoutLayout = (LinearLayout) view.findViewById(R.id.checkoutLayout);
-            checkOut.setTypeface(medium);
             categoryName.setTypeface(medium);
-            //edit.setTypeface(medium);
-            checkOutIcon.setTypeface(materialDesignIcons);
         }
     }
 

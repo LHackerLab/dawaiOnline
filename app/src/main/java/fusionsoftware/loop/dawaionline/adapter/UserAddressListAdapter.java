@@ -149,10 +149,10 @@ public class UserAddressListAdapter extends RecyclerView.Adapter<UserAddressList
     //delete address
     private void callDeleteAddressService(int addressId, final int position) {
         DbHelper dbHelper = new DbHelper(context);
-        Data data = dbHelper.getUserData();
+        Result data = dbHelper.getUserData();
         if (data != null) {
             final ServiceCaller serviceCaller = new ServiceCaller(context);
-            serviceCaller.callDeleteAddressDataService(addressId, data.getLoginID(), new IAsyncWorkCompletedCallback() {
+            serviceCaller.callDeleteAddressDataService(addressId, data.getLoginId(), new IAsyncWorkCompletedCallback() {
                 @Override
                 public void onDone(String workName, boolean isComplete) {
                     if (isComplete) {

@@ -9,64 +9,26 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight=".3"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/categoryName"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dimValue_10"
-            android:layout_weight=".5"
             android:gravity="center|left"
             android:textColor="@color/primary_text"
             android:textSize="@dimen/dimTextSize_16" />
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="@dimen/size_30px"
-            android:layout_weight=".5"
-            android:orientation="horizontal">
 
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycleView_inner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimValue_10"
+            android:scrollbars="none">
 
-            <LinearLayout
-                android:id="@+id/checkoutLayout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="gone"
-                android:background="@color/Header_bg"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/checkOut"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="Checkout"
-                    android:textColor="@color/icons"
-                    android:textSize="@dimen/dimTextSize_16" />
-
-                <TextView
-                    android:id="@+id/checkOutIcon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:textColor="@color/icons"
-                    android:textSize="@dimen/dimTextSize_18" />
-
-            </LinearLayout>
-        </LinearLayout>
+        </android.support.v7.widget.RecyclerView>
     </LinearLayout>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycleView_inner"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="@dimen/dimValue_10"
-        android:layout_weight=".7"
-        android:scrollbars="none">
-
-    </android.support.v7.widget.RecyclerView>
 </LinearLayout>

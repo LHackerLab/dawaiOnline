@@ -161,6 +161,7 @@ public class AddDoctorPrescriptionFragment extends Fragment {
                 bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
 
                 image_view.setImageBitmap(bitmap);
+                btn_upload.setText("Upload Prescription");
 
             } catch (IOException e) {
 
@@ -171,7 +172,6 @@ public class AddDoctorPrescriptionFragment extends Fragment {
 
     public void ImageUploadToServerFunction() {
         if (bitmap != null) {
-
             ByteArrayOutputStream byteArrayOutputStreamObject;
 
             byteArrayOutputStreamObject = new ByteArrayOutputStream();
@@ -205,7 +205,7 @@ public class AddDoctorPrescriptionFragment extends Fragment {
                     // Setting image as transparent after done uploading.
 //                    image_view.setImageResource(android.R.color.transparent);
                     image_view.setImageResource(R.drawable.ic_menu_camera);
-
+                    btn_upload.setText("Pick Prescription");
 
                 }
 
@@ -226,8 +226,8 @@ public class AddDoctorPrescriptionFragment extends Fragment {
             AsyncTaskUploadClass AsyncTaskUploadClassOBJ = new AsyncTaskUploadClass();
 
             AsyncTaskUploadClassOBJ.execute();
-        }else {
-            Utility.alertForErrorMessage("Please Select Image",context);
+        } else {
+            Utility.alertForErrorMessage("Please Select Image", context);
         }
     }
 

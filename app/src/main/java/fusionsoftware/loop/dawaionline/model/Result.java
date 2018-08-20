@@ -598,14 +598,14 @@ public class Result {
     }
 
     public int getLoginId() {
-        return LoginId;
+        return loginId;
     }
 
     public void setLoginId(int loginId) {
-        LoginId = loginId;
+        loginId = loginId;
     }
 
-    private int LoginId;
+    private int loginId;
 
     public String getOrderTime() {
         return OrderTime;

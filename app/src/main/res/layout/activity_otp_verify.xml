@@ -52,21 +52,21 @@
                 android:layout_height="0dp"
                 android:layout_marginLeft="@dimen/dimValue_15"
                 android:layout_marginRight="@dimen/dimValue_15"
-                android:layout_weight=".4"
+                android:layout_weight=".5"
                 android:orientation="vertical">
 
                 <View
                     android:layout_width="0dp"
                     android:layout_height="@dimen/dimValue_1"
                     android:layout_gravity="center"
-                    android:layout_weight=".1"
+                    android:layout_weight=".15"
                     android:background="@color/Body_bg" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_marginTop="@dimen/dimValue_15"
-                    android:layout_weight=".4"
+                    android:layout_weight=".35"
                     android:orientation="horizontal">
 
                     <TextView
@@ -100,7 +100,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_marginTop="@dimen/dimValue_10"
-                    android:layout_weight=".4"
+                    android:layout_weight=".35"
                     android:background="@color/Delete_btn"
                     android:gravity="center"
                     android:text="@string/proceed_text"
@@ -111,21 +111,21 @@
                     android:layout_width="0dp"
                     android:layout_height="@dimen/dimValue_1"
                     android:layout_gravity="center"
-                    android:layout_weight=".1"
+                    android:layout_weight=".15"
                     android:background="@color/Body_bg" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight=".6"
+                android:layout_weight=".5"
                 android:gravity="center"
                 android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight=".65"
+                    android:layout_weight=".75"
                     android:gravity="center"
                     android:orientation="vertical">
 
@@ -146,7 +146,7 @@
                     android:layout_marginBottom="@dimen/dimValue_25"
                     android:layout_marginLeft="@dimen/dimValue_25"
                     android:layout_marginRight="@dimen/dimValue_25"
-                    android:layout_weight=".35"
+                    android:layout_weight=".25"
                     android:background="@drawable/border_layout_red">
 
                     <TextView

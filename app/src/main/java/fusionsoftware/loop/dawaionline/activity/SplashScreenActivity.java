@@ -27,6 +27,7 @@ import fusionsoftware.loop.dawaionline.database.DbHelper;
 import fusionsoftware.loop.dawaionline.framework.IAsyncWorkCompletedCallback;
 import fusionsoftware.loop.dawaionline.framework.ServiceCaller;
 import fusionsoftware.loop.dawaionline.model.Data;
+import fusionsoftware.loop.dawaionline.model.Result;
 import fusionsoftware.loop.dawaionline.utilities.CompatibilityUtility;
 import fusionsoftware.loop.dawaionline.utilities.Contants;
 
@@ -83,7 +84,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     //wait for 3 seconds
     private void waitForLogin() {
         DbHelper dbhelper = new DbHelper(SplashScreenActivity.this);
-        Data data = dbhelper.getUserData();
+        Result data = dbhelper.getUserData();
 //        if (data == null) {
             tv_one.setVisibility(View.INVISIBLE);
             tv_two.setVisibility(View.INVISIBLE);

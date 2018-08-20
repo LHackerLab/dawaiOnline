@@ -41,6 +41,7 @@ import fusionsoftware.loop.dawaionline.database.DbHelper;
 import fusionsoftware.loop.dawaionline.framework.IAsyncWorkCompletedCallback;
 import fusionsoftware.loop.dawaionline.framework.ServiceCaller;
 import fusionsoftware.loop.dawaionline.model.Data;
+import fusionsoftware.loop.dawaionline.model.Result;
 import fusionsoftware.loop.dawaionline.utilities.CompatibilityUtility;
 import fusionsoftware.loop.dawaionline.utilities.Contants;
 import fusionsoftware.loop.dawaionline.utilities.FontManager;
@@ -139,12 +140,12 @@ public class OTPVerifyActivity extends AppCompatActivity implements View.OnClick
         //check online.....
         if (Utility.isOnline(this)) {
             DbHelper dbHelper = new DbHelper(OTPVerifyActivity.this);
-            Data data = dbHelper.getUserData();
+            Result data = dbHelper.getUserData();
             String phone = data.getPhoneNumber();//get phone number.........
             final BallTriangleDialog dotDialog = new BallTriangleDialog(OTPVerifyActivity.this);
             dotDialog.show();
             ServiceCaller serviceCaller = new ServiceCaller(this);
-            serviceCaller.callLoginService(phone, token, new IAsyncWorkCompletedCallback() {
+            serviceCaller.callLoginService(phone, new IAsyncWorkCompletedCallback() {
                 @Override
                 public void onDone(String workName, boolean isComplete) {
                     if (isComplete) {
@@ -177,22 +178,23 @@ public class OTPVerifyActivity extends AppCompatActivity implements View.OnClick
     private void verifyOTP(String otp) {
         if (Utility.isOnline(this)) {
             DbHelper dbHelper = new DbHelper(OTPVerifyActivity.this);
-            Data data = dbHelper.getUserData();
+            Result data = dbHelper.getUserData();
             if (data != null) {
                 final BallTriangleDialog dotDialog = new BallTriangleDialog(OTPVerifyActivity.this);
                 dotDialog.show();
                 String phone = data.getPhoneNumber();
-                int loginId = data.getLoginID();
                 ServiceCaller serviceCaller = new ServiceCaller(OTPVerifyActivity.this);
-                serviceCaller.callLoginServiceOTPVerify(otp, phone, loginId, new IAsyncWorkCompletedCallback() {
+                serviceCaller.callLoginServiceOTPVerify(otp, phone, new IAsyncWorkCompletedCallback() {
                     @Override
                     public void onDone(String workName, boolean isComplete) {
                         if (isComplete) {
-                            Utility.setPhoneNoVerifyOrNotSharedPreferences(OTPVerifyActivity.this, true);
-                            //Toast.makeText(OTPVerifyActivity.this, Contants.SEND_OTP_MESSAGE, Toast.LENGTH_LONG).show();
-                            Intent intent = new Intent(OTPVerifyActivity.this, DashboardActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(intent);
+                            if (workName.equals("success")) {
+                                Utility.setPhoneNoVerifyOrNotSharedPreferences(OTPVerifyActivity.this, true);
+                                //Toast.makeText(OTPVerifyActivity.this, Contants.SEND_OTP_MESSAGE, Toast.LENGTH_LONG).show();
+                                Intent intent = new Intent(OTPVerifyActivity.this, DashboardActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+                            }
                         } else {
                             Utility.alertForErrorMessage(Contants.DoNot_SEND_OTP_MESSAGE, OTPVerifyActivity.this);
                         }
@@ -244,9 +246,9 @@ public class OTPVerifyActivity extends AppCompatActivity implements View.OnClick
     public void onBackPressed() {
         super.onBackPressed();
         DbHelper dbHelper = new DbHelper(this);
-        Data data = dbHelper.getUserData();
+        Result data = dbHelper.getUserData();
         if (data != null) {
-            int loginId = data.getLoginID();
+            int loginId = data.getLoginId();
             dbHelper.deleteUserData(loginId);
         }
     }

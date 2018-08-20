@@ -43,28 +43,30 @@ public class ServiceCaller {
     }
 
     //call login data
-    public void callLoginService(String phone, String token, final IAsyncWorkCompletedCallback workCompletedCallback) {
+    public void callLoginService(String phone, final IAsyncWorkCompletedCallback workCompletedCallback) {
 
         final String url = Contants.SERVICE_BASE_URL + Contants.Login;
-        JSONObject obj = new JSONObject();
-        try {
-            obj.put("PhoneNumber", phone);
-            obj.put("DeviceId", token);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        Log.d(Contants.LOG_TAG, "Payload*****" + obj);
-        new ServiceHelper().callService(url, obj, new IServiceSuccessCallback() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
-            public void onDone(String doneWhatCode, String result, String error) {
-                if (result != null) {
-                    parseAndSaveLoginData(result, workCompletedCallback);
-                } else {
-                    workCompletedCallback.onDone("loginService done", false);
-                }
+            public void onResponse(String response) {
+                parseAndSaveLoginData(response, workCompletedCallback);
             }
-        });
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                workCompletedCallback.onDone("no", false);
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("PhoneNumber", phone);
+                return params;
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        requestQueue.add(stringRequest);
     }
 
     //parse and save login data
@@ -75,15 +77,18 @@ public class ServiceCaller {
             @Override
             protected Boolean doInBackground(Void... voids) {
                 Boolean flag = false;
-                ContentData data = new Gson().fromJson(result, ContentData.class);
-                Log.d(Contants.LOG_TAG, "---" + data);
+                ContentDataAsArray data = new Gson().fromJson(result, ContentDataAsArray.class);
                 if (data != null) {
-                    if (data.getData() != null) {
-                        DbHelper dbhelper = new DbHelper(context);
-                        dbhelper.upsertUserData(data.getData());
-                        flag = true;
+                    DbHelper dbHelper = new DbHelper(context);
+                    for (Result objData : data.getResults()) {
+                        if (objData != null) {
+                            dbHelper.upsertUserData(objData);
+                        }
                     }
+                    flag = true;
+
                 }
+
                 return flag;
             }
 
@@ -101,34 +106,31 @@ public class ServiceCaller {
 
 // for otp verification
 
-    public void callLoginServiceOTPVerify(String Otp, String PhoneNumber, int LoginID, final IAsyncWorkCompletedCallback workCompletedCallback) {
+    public void callLoginServiceOTPVerify(String Otp, String PhoneNumber, final IAsyncWorkCompletedCallback workCompletedCallback) {
 
         final String url = Contants.SERVICE_BASE_URL + Contants.VerifyOTP;
-        JSONObject obj = new JSONObject();
-        try {
-            obj.put("Otp", Otp);
-            obj.put("PhoneNumber", PhoneNumber);
-            obj.put("LoginID", LoginID);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        Log.d(Contants.LOG_TAG, "Payload*****" + obj);
-        new ServiceHelper().callService(url, obj, new IServiceSuccessCallback() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
-            public void onDone(String doneWhatCode, String result, String error) {
-                ContentData data = new Gson().fromJson(result, ContentData.class);
-                if (data != null) {
-                    if (data.getResponse().getSuccess()) {
-                        workCompletedCallback.onDone("loginServiceOtpVerify done", true);
-                    } else {
-                        workCompletedCallback.onDone("loginServiceVerify done", false);
-                    }
-                } else {
-                    workCompletedCallback.onDone("loginServiceVerify done", false);
-                }
+            public void onResponse(String response) {
+                workCompletedCallback.onDone(response, true);
             }
-        });
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                workCompletedCallback.onDone("no", false);
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("PhoneNumber", PhoneNumber);
+                params.put("otp", Otp);
+                return params;
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        requestQueue.add(stringRequest);
     }
 
     //for get user profile................
@@ -168,7 +170,7 @@ public class ServiceCaller {
                     if (data.getResponse() != null && data.getResponse().getSuccess()) {
                         if (data.getData() != null) {
                             DbHelper dbhelper = new DbHelper(context);
-                            dbhelper.upsertUserData(data.getData());
+//                            dbhelper.upsertUserData(data.getData());
                             flag = true;
                         }
                     }
@@ -228,7 +230,7 @@ public class ServiceCaller {
                     if (data.getResponse() != null && data.getResponse().getSuccess()) {
                         if (data.getData() != null) {
                             DbHelper dbhelper = new DbHelper(context);
-                            dbhelper.upsertUserData(data.getData());
+//                            dbhelper.upsertUserData(data.getData());
                             flag = true;
                         }
                     }
@@ -1053,7 +1055,7 @@ public class ServiceCaller {
         final String url = Contants.SERVICE_BASE_URL + Contants.Notification;
         String deviceToken = Utility.getDeviceIDFromSharedPreferences(context);
         DbHelper dbHelper = new DbHelper(context);
-        Data userData = dbHelper.getUserData();
+        Result userData = dbHelper.getUserData();
         int loginId = 0;
         if (userData != null) {
             loginId = userData.getLoginId();

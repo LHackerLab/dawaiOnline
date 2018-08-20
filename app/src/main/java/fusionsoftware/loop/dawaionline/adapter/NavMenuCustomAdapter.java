@@ -29,6 +29,7 @@ import fusionsoftware.loop.dawaionline.fragments.TrackOrderFragment;
 import fusionsoftware.loop.dawaionline.fragments.UserAddressListFragment;
 import fusionsoftware.loop.dawaionline.fragments.UserProfileFragment;
 import fusionsoftware.loop.dawaionline.model.Data;
+import fusionsoftware.loop.dawaionline.model.Result;
 import fusionsoftware.loop.dawaionline.utilities.FontManager;
 
 
@@ -108,7 +109,7 @@ public class NavMenuCustomAdapter extends BaseAdapter {
             @Override
             public void onClick(View view) {
                 DbHelper dbHelper = new DbHelper(context);
-                Data userData = dbHelper.getUserData();
+                Result userData = dbHelper.getUserData();
                 if (userData != null) {
                     if (position == 0) {
                         setUpHomeFragment();

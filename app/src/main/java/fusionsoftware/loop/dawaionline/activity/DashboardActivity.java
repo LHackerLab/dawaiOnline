@@ -177,7 +177,7 @@ public class DashboardActivity extends AppCompatActivity
 
     public void setUserDetail() {
         DbHelper dbHelper = new DbHelper(DashboardActivity.this);
-        Data data = dbHelper.getUserData();
+        Result data = dbHelper.getUserData();
         if (data != null) {
             showLogin(false);
             phoneNumber.setText(data.getPhoneNumber());
@@ -354,10 +354,10 @@ public class DashboardActivity extends AppCompatActivity
     private void getUserProfileService() {
         if (isOnline(DashboardActivity.this)) {
             DbHelper dbHelper = new DbHelper(DashboardActivity.this);
-            Data data = dbHelper.getUserData();
+            Result data = dbHelper.getUserData();
             if (data != null) {
                 ServiceCaller serviceCaller = new ServiceCaller(DashboardActivity.this);
-                serviceCaller.getUserProfileService(data.getLoginID(), new IAsyncWorkCompletedCallback() {
+                serviceCaller.getUserProfileService(data.getLoginId(), new IAsyncWorkCompletedCallback() {
                     @Override
                     public void onDone(String workName, boolean isComplete) {
                     }
@@ -417,7 +417,7 @@ public class DashboardActivity extends AppCompatActivity
 
     private void logout() {
         DbHelper dbHelper = new DbHelper(DashboardActivity.this);
-        Data data = dbHelper.getUserData();
+        Result data = dbHelper.getUserData();
         if (data != null) {
             deleteUserData();// delete user details from database............
         } else {
@@ -429,8 +429,8 @@ public class DashboardActivity extends AppCompatActivity
     // delete user details from database............
     private void deleteUserData() {
         final DbHelper dbHelper = new DbHelper(DashboardActivity.this);
-        Data data = dbHelper.getUserData();
-        final int loginId = data.getLoginID();
+        Result data = dbHelper.getUserData();
+        final int loginId = data.getLoginId();
         new AlertDialog.Builder(DashboardActivity.this)
                 .setTitle("Logout")
                 .setCancelable(false)

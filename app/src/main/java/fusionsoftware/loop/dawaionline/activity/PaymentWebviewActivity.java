@@ -32,6 +32,7 @@ import fusionsoftware.loop.dawaionline.framework.IAsyncWorkCompletedCallback;
 import fusionsoftware.loop.dawaionline.framework.ServiceCaller;
 import fusionsoftware.loop.dawaionline.model.ContentData;
 import fusionsoftware.loop.dawaionline.model.Data;
+import fusionsoftware.loop.dawaionline.model.Result;
 import fusionsoftware.loop.dawaionline.utilities.CompatibilityUtility;
 import fusionsoftware.loop.dawaionline.utilities.Contants;
 import fusionsoftware.loop.dawaionline.utilities.Utility;
@@ -315,12 +316,12 @@ public class PaymentWebviewActivity extends AppCompatActivity {
     private void sendConfirmDetailsToServer(final String transaction_id, String payment_id, String PaymentOrderId) {
         final ServiceCaller serviceCaller = new ServiceCaller(this);
         DbHelper dbHelper = new DbHelper(this);
-        Data userData = dbHelper.getUserData();
+        Result userData = dbHelper.getUserData();
         if (userData != null) {
             paymentDone=false;
             spotsDialog.show();
             String PaymentMode = "ONLINE";
-            serviceCaller.sendConfirmDetailsToServerService(userData.getLoginID(), OrderId, OrderNo, storeId, transaction_id, payment_id, PaymentOrderId, PaymentMode, new IAsyncWorkCompletedCallback() {
+            serviceCaller.sendConfirmDetailsToServerService(userData.getLoginId(), OrderId, OrderNo, storeId, transaction_id, payment_id, PaymentOrderId, PaymentMode, new IAsyncWorkCompletedCallback() {
                 @Override
                 public void onDone(String result, boolean isComplete) {
                     if (isComplete) {
