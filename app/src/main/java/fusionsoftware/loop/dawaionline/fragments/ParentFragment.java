@@ -142,6 +142,7 @@ public class ParentFragment extends Fragment implements View.OnClickListener {
         layout_healtharticle = view.findViewById(R.id.layout_healtharticle);
         layout_otc = view.findViewById(R.id.layout_otc);
         btn_orderPre = view.findViewById(R.id.btn_orderPre);
+        linearLayout = view.findViewById(R.id.linearLayout);
         search.setOnClickListener(this);
         layout_medicin.setOnClickListener(this);
         layout_lab.setOnClickListener(this);

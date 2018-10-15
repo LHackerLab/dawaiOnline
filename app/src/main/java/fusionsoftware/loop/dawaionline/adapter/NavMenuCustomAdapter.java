@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.HashSet;
 import java.util.List;
@@ -136,8 +137,9 @@ public class NavMenuCustomAdapter extends BaseAdapter {
                         moveFragment(fragment);
                     }
                 } else {
-                    Intent intent = new Intent(context, LoginActivity.class);
-                    context.startActivity(intent);
+                    Toast.makeText(context, "Without login your can't see this", Toast.LENGTH_SHORT).show();
+//                    Intent intent = new Intent(context, LoginActivity.class);
+//                    context.startActivity(intent);
                 }
                 int pos = (int) view.getTag();
                 if (selectedPosition.contains(pos)) {

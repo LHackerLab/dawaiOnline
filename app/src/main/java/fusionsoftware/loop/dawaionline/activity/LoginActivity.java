@@ -146,13 +146,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     public void onDone(String workName, boolean isComplete) {
 //                        Toast.makeText(LoginActivity.this, workName, Toast.LENGTH_SHORT).show();
                         if (isComplete) {
-                        //sendDeviceTokenRegistrationToServer();
+                            //sendDeviceTokenRegistrationToServer();
 //                            Toast.makeText(LoginActivity.this, Contants.SEND_MESSAGE, Toast.LENGTH_LONG).show();
-                            Intent intent = new Intent(LoginActivity.this, OTPVerifyActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(intent);
-                        } else {
-                            Utility.alertForErrorMessage(Contants.Dont_SEND_MESSAGE, LoginActivity.this);
+//                            Intent intent = new Intent(LoginActivity.this, OTPVerifyActivity.class);
+//                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+//                            startActivity(intent);
+//                        } else {
+                            Toast.makeText(LoginActivity.this, "User Skip To Menu For Demo", Toast.LENGTH_SHORT).show();
+//                            Utility.alertForErrorMessage(Contants.Dont_SEND_MESSAGE, LoginActivity.this);
                         }
                         if (dotDialog.isShowing()) {
                             dotDialog.dismiss();

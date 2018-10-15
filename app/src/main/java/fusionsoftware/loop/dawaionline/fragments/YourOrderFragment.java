@@ -256,8 +256,17 @@ public class YourOrderFragment extends Fragment implements View.OnClickListener 
             SubTotalPrice = (total * qty);
             totalPrice = totalPrice + SubTotalPrice;
             dis = dis + ((SubTotalPrice / 100.0f) * discount);
+//            clearValue();
             setValues();
         }
+    }
+
+    void clearValue() {
+        shippingChareges = 0;
+        totalPrice = 0;
+        dis = 0;
+        grandTotal = 0;
+
     }
 
     void setValues() {
@@ -312,7 +321,7 @@ public class YourOrderFragment extends Fragment implements View.OnClickListener 
                             if (isComplete) {
 
 //                                if (result != null) {
-                                OrderConfirmFragment fragment = OrderConfirmFragment.newInstance(completeAddress,zipcode,phone, result,totalPrice,dis,shippingChareges,grandTotal);
+                                OrderConfirmFragment fragment = OrderConfirmFragment.newInstance(completeAddress, zipcode, phone, result, totalPrice, dis, shippingChareges, grandTotal);
                                 moveFragmentWithTag(fragment, "OrderPlacedFragment");
 //                                } else {
 //                                    Utility.alertForErrorMessage("Order not Placed Successfully", context);
