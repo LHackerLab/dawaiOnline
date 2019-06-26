@@ -107,7 +107,6 @@ public class DashboardActivity extends AppCompatActivity
         setItemCart();// add item in cart...........
         Listmenu();//list menu
         setUserDetail();
-        getAllCategoryList();
     }
 
     private void getCityList() {
@@ -153,20 +152,6 @@ public class DashboardActivity extends AppCompatActivity
         }
     }
 
-    //get all category list data
-    private void getAllCategoryList() {
-        if (Utility.isOnline(this)) {
-            ServiceCaller serviceCaller = new ServiceCaller(this);
-            serviceCaller.callAllCategoryListService(new IAsyncWorkCompletedCallback() {
-                @Override
-                public void onDone(String workName, boolean isComplete) {
-                    if (isComplete) {
-
-                    }
-                }
-            });
-        }
-    }
 
     public void updateCityPres(String s) {
         SharedPreferences sharedPreferences = getSharedPreferences("Data", MODE_PRIVATE);

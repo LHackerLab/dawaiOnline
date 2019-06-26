@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="demo_light_transparent">#FFFFFF</color>
+    <color name="default_shimmer_color">#E0DFE0</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorWhite">#ffffff</color>
+    <color name="colorBg">#6ac75010</color>
+    <color name="colorRed">#f3be041a</color>
+    <color name="colorSecondary">#F3888686</color>
+    <color name="colorSecondaryLight">#F3D8D6D6</color>
+</resources>

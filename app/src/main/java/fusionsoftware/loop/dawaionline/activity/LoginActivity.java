@@ -57,7 +57,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private Boolean CheckOrientation = false;
     String phone;
     LinearLayout layout_seeMenu;
-    final private int REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS = 124;
+//    final private int REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS = 124;
 
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,7 +68,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         setContentView(R.layout.activity_login);
         chechPortaitAndLandSacpe();//chech Portait And LandSacpe Orientation
-        checkRuntimePermission();
+//        checkRuntimePermission();
         init();//component intilization
         setIcon();//set icon in textview
     }
@@ -198,42 +198,42 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     //check storage and camera run time permission
-    private Boolean checkRuntimePermission() {
-        List<String> permissionsNeeded = new ArrayList<String>();
-
-        final List<String> permissionsList = new ArrayList<String>();
-        if (!addPermission(permissionsList, Manifest.permission.SEND_SMS))
-            permissionsNeeded.add("Send SMS");
-        if (!addPermission(permissionsList, Manifest.permission.RECEIVE_SMS))
-            permissionsNeeded.add("Receive SMS");
-        if (!addPermission(permissionsList, Manifest.permission.READ_PHONE_STATE))
-            permissionsNeeded.add("Read Phone State");
-        if (!addPermission(permissionsList, Manifest.permission.READ_SMS))
-            permissionsNeeded.add("Read SMS");
-
-        if (permissionsList.size() > 0) {
-            if (permissionsNeeded.size() > 0) {
+//    private Boolean checkRuntimePermission() {
+//        List<String> permissionsNeeded = new ArrayList<String>();
+//
+//        final List<String> permissionsList = new ArrayList<String>();
+//        if (!addPermission(permissionsList, Manifest.permission.SEND_SMS))
+//            permissionsNeeded.add("Send SMS");
+//        if (!addPermission(permissionsList, Manifest.permission.RECEIVE_SMS))
+//            permissionsNeeded.add("Receive SMS");
+//        if (!addPermission(permissionsList, Manifest.permission.READ_PHONE_STATE))
+//            permissionsNeeded.add("Read Phone State");
+//        if (!addPermission(permissionsList, Manifest.permission.READ_SMS))
+//            permissionsNeeded.add("Read SMS");
+//
+//        if (permissionsList.size() > 0) {
+//            if (permissionsNeeded.size() > 0) {
                 // Need Rationale
-                String message = "You Need To Grant Access To " + permissionsNeeded.get(0);
-                for (int i = 1; i < permissionsNeeded.size(); i++) {
-                    message = message + ", " + permissionsNeeded.get(i);
-                    showMessageOKCancel(message,
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    ActivityCompat.requestPermissions(LoginActivity.this, permissionsList.toArray(new String[permissionsList.size()]),
-                                            REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS);
-                                }
-                            });
-                }
-                return false;
-            }
-            ActivityCompat.requestPermissions(LoginActivity.this, permissionsList.toArray(new String[permissionsList.size()]),
-                    REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS);
-            return false;
-        }
-        return true;
-    }
+//                String message = "You Need To Grant Access To " + permissionsNeeded.get(0);
+//                for (int i = 1; i < permissionsNeeded.size(); i++) {
+//                    message = message + ", " + permissionsNeeded.get(i);
+//                    showMessageOKCancel(message,
+//                            new DialogInterface.OnClickListener() {
+//                                @Override
+//                                public void onClick(DialogInterface dialog, int which) {
+//                                    ActivityCompat.requestPermissions(LoginActivity.this, permissionsList.toArray(new String[permissionsList.size()]),
+//                                            REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS);
+//                                }
+//                            });
+//                }
+//                return false;
+//            }
+//            ActivityCompat.requestPermissions(LoginActivity.this, permissionsList.toArray(new String[permissionsList.size()]),
+//                    REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS);
+//            return false;
+//        }
+//        return true;
+//    }
 
     //add run time permission
     private boolean addPermission(List<String> permissionsList, String permission) {
@@ -260,26 +260,23 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
         switch (requestCode) {
-            case REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS: {
-                Map<String, Integer> perms = new HashMap<String, Integer>();
-                // Initial
-                perms.put(Manifest.permission.READ_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
-                perms.put(Manifest.permission.CAMERA, PackageManager.PERMISSION_GRANTED);
-                // Fill with results
-                for (int i = 0; i < permissions.length; i++)
-                    perms.put(permissions[i], grantResults[i]);
-                if (perms.get(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
-                        && perms.get(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-                    // All Permissions Granted
-                    //selectImage();
-                } else {
-                    // Permission Denied
-                    Toast.makeText(LoginActivity.this, "Permission is Denied", Toast.LENGTH_SHORT)
-                            .show();
-
-                }
-            }
-            break;
+//            case REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS: {
+//                Map<String, Integer> perms = new HashMap<String, Integer>();
+//                perms.put(Manifest.permission.READ_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
+//                perms.put(Manifest.permission.CAMERA, PackageManager.PERMISSION_GRANTED);
+//                for (int i = 0; i < permissions.length; i++)
+//                    perms.put(permissions[i], grantResults[i]);
+//                if (perms.get(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+//                        && perms.get(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+//                    selectImage();
+//                } else {
+//                     Permission Denied
+//                    Toast.makeText(LoginActivity.this, "Permission is Denied", Toast.LENGTH_SHORT)
+//                            .show();
+//
+//                }
+//            }
+//            break;
             default:
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }

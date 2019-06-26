@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.myshimmer.LalitRecyclerView;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -70,7 +71,7 @@ public class SelectCategoryFragment extends Fragment {
 
     private SelectCatagoryAdapter adapter;
     private List<Result> categoryList;
-    RecyclerView recyclerView;
+    LalitRecyclerView recyclerView;
     StaggeredGridLayoutManager gaggeredGridLayoutManager;
     private Context context;
     private LinearLayout linearLayout;
@@ -100,7 +101,7 @@ public class SelectCategoryFragment extends Fragment {
     //set data in reycle view
     private void init() {
         categoryList = new ArrayList<>();
-        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+        recyclerView = view.findViewById(R.id.recycler_view);
         linearLayout = (LinearLayout) view.findViewById(R.id.linearLayout);
         TextView title = (TextView) view.findViewById(R.id.tv_title);
         title.setText("Choose Category");
@@ -110,14 +111,33 @@ public class SelectCategoryFragment extends Fragment {
 //        recyclerView.setLayoutManager(new GridLayoutManager(context, 2));
         recyclerView.setHasFixedSize(false);
         gaggeredGridLayoutManager = new StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL);
+        recyclerView.showShimmerAdapter();
         recyclerView.setLayoutManager(gaggeredGridLayoutManager);
-        DbHelper dbHelper = new DbHelper(context);
-        categoryList = dbHelper.GetAllCategoryData();
-        if (categoryList != null && categoryList.size() > 0) {
-            adapter = new SelectCatagoryAdapter(context, categoryList);
-            recyclerView.setAdapter(adapter);
-        } else {
-            noDataFound();
+        getAllCategoryList();
+    }
+
+    //get all category list data
+    private void getAllCategoryList() {
+        if (Utility.isOnline(context)) {
+            ServiceCaller serviceCaller = new ServiceCaller(context);
+            serviceCaller.callAllCategoryListService(new IAsyncWorkCompletedCallback() {
+                @Override
+                public void onDone(String workName, boolean isComplete) {
+                    if (isComplete) {
+                        DbHelper dbHelper = new DbHelper(context);
+                        categoryList = dbHelper.GetAllCategoryData();
+                        if (categoryList != null && categoryList.size() > 0) {
+                            adapter = new SelectCatagoryAdapter(context, categoryList);
+                            recyclerView.setAdapter(adapter);
+                            recyclerView.hideShimmerAdapter();
+                        } else {
+                            noDataFound();
+                        }
+                    } else {
+                        noDataFound();
+                    }
+                }
+            });
         }
     }
 
