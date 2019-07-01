@@ -200,25 +200,29 @@ public class OTPVerifyActivity extends AppCompatActivity implements View.OnClick
                     public void onDone(String workName, boolean isComplete) {
                         dialog.dismiss();
                         if (isComplete){
-                            if (!workName.trim().equalsIgnoreCase("")){
-                                MyPojo myPojo=new Gson().fromJson(workName, MyPojo.class);
-                                for (Result result:myPojo.getResult()){
-                                    if (result.getStatus().equalsIgnoreCase("1")){
-                                        SharedPreferences sharedPreferences=getSharedPreferences("Login", Context.MODE_PRIVATE);
-                                        SharedPreferences.Editor editor=sharedPreferences.edit();
+                            if (!workName.trim().equalsIgnoreCase("no")) {
+                                if (!workName.equals("")) {
+                                MyPojo myPojo = new Gson().fromJson(workName, MyPojo.class);
+                                for (Result result : myPojo.getResult()) {
+                                    if (result.getStatus().equalsIgnoreCase("1")) {
+                                        SharedPreferences sharedPreferences = getSharedPreferences("Login", Context.MODE_PRIVATE);
+                                        SharedPreferences.Editor editor = sharedPreferences.edit();
                                         editor.putInt("Logid", result.getLoginId());
                                         editor.apply();
                                         Toast.makeText(OTPVerifyActivity.this, "Login Successfully", Toast.LENGTH_SHORT).show();
-                                        Intent intent=new Intent(OTPVerifyActivity.this, DashboardActivity.class);
+                                        Intent intent = new Intent(OTPVerifyActivity.this, DashboardActivity.class);
                                         startActivity(intent);
                                         edt_otp.setText("");
                                         finish();
-                                    }
-                                    else {
+                                    } else {
                                         Toast.makeText(OTPVerifyActivity.this, "Something went wrong please contact to Admin", Toast.LENGTH_SHORT).show();
                                     }
 
-                        }
+                                }
+                            }
+                                else {
+                                    Toast.makeText(OTPVerifyActivity.this, "Please Enter 6 Digit Otp", Toast.LENGTH_SHORT).show();
+                                }
 
                     }
 
