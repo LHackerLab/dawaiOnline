@@ -6,6 +6,32 @@ package fusionsoftware.loop.dawaionline.model;
 
 public class Result {
 
+    private int loginId;
+
+    private String status;
+
+    public int getLoginId ()
+    {
+        return loginId;
+    }
+
+    public void setLoginId (int loginId)
+    {
+        this.loginId = loginId;
+    }
+
+    public String getStatus ()
+    {
+        return status;
+    }
+
+    public void setStatus (String status)
+    {
+        this.status = status;
+    }
+
+
+
     private int AddressId;
 
 
@@ -597,15 +623,15 @@ public class Result {
         GrandTotal = grandTotal;
     }
 
-    public int getLoginId() {
-        return loginId;
-    }
+//    public int getLoginId() {
+//        return loginId;
+//    }
 
-    public void setLoginId(int loginId) {
-        loginId = loginId;
-    }
+//    public void setLoginId(int loginId) {
+//        loginId = loginId;
+//    }
 
-    private int loginId;
+//    private int loginId;
 
     public String getOrderTime() {
         return OrderTime;
@@ -768,3 +794,4 @@ public class Result {
         this.MenuId = MenuId;
     }
 }
+//

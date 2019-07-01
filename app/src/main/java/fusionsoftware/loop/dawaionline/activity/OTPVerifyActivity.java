@@ -2,11 +2,13 @@ package fusionsoftware.loop.dawaionline.activity;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Rect;
@@ -30,6 +32,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,6 +45,7 @@ import fusionsoftware.loop.dawaionline.database.DbHelper;
 import fusionsoftware.loop.dawaionline.framework.IAsyncWorkCompletedCallback;
 import fusionsoftware.loop.dawaionline.framework.ServiceCaller;
 import fusionsoftware.loop.dawaionline.model.Data;
+import fusionsoftware.loop.dawaionline.model.MyPojo;
 import fusionsoftware.loop.dawaionline.model.Result;
 import fusionsoftware.loop.dawaionline.utilities.CompatibilityUtility;
 import fusionsoftware.loop.dawaionline.utilities.Contants;
@@ -56,8 +61,9 @@ public class OTPVerifyActivity extends AppCompatActivity implements View.OnClick
     EditText edt_otp;
     LinearLayout onclick_resend_ly;
     private Boolean CheckOrientation = false;
-    private String otpData;
+    private String otpData, phone;
     String token;
+    Result results;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,6 +75,9 @@ public class OTPVerifyActivity extends AppCompatActivity implements View.OnClick
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         setContentView(R.layout.activity_otp_verify);
         chechPortaitAndLandSacpe();//chech Portait And LandSacpe Orientation
+        Bundle bundle=getIntent().getExtras();
+        phone=bundle.getString("phone");
+        results=new Result();
         init();//component intilization
         setIcon();//set icon in textview
 
@@ -95,9 +104,9 @@ public class OTPVerifyActivity extends AppCompatActivity implements View.OnClick
         italic = FontManager.getFontTypeface(this, "fonts/roboto.italic.ttf");
         tv_proceed.setTypeface(medium);
         tv_resend.setTypeface(medium);
-        tv_dontReciveOtp.setTypeface(regular);
+//        tv_dontReciveOtp.setTypeface(regular);
 //        tv_hint_otp.setTypeface(regular);
-        tv_description.setTypeface(italic);
+//        tv_description.setTypeface(italic);
         edt_otp.setTypeface(regular);
 
 
@@ -107,14 +116,14 @@ public class OTPVerifyActivity extends AppCompatActivity implements View.OnClick
     private void init() {
         tv_proceed = (TextView) findViewById(R.id.tv_proceed);
         lock_icon = (TextView) findViewById(R.id.lock_icon);
-        tv_dontReciveOtp = (TextView) findViewById(R.id.tv_dontReciveOtp);
+//        tv_dontReciveOtp = (TextView) findViewById(R.id.tv_dontReciveOtp);
         tv_resend = (TextView) findViewById(R.id.tv_resend);
 //        tv_hint_otp = (TextView) findViewById(R.id.tv_hint_otp);
-        tv_description = (TextView) findViewById(R.id.tv_description);
+//        tv_description = (TextView) findViewById(R.id.tv_description);
         edt_otp = (EditText) findViewById(R.id.edt_otp);
         onclick_resend_ly = (LinearLayout) findViewById(R.id.resend_layout);
         tv_proceed.setOnClickListener(this);//set onclick
-        onclick_resend_ly.setOnClickListener(this);//set onclick
+//        onclick_resend_ly.setOnClickListener(this);//set onclick
         // get data from data base........
 
 
@@ -129,40 +138,40 @@ public class OTPVerifyActivity extends AppCompatActivity implements View.OnClick
                     verifyOTP(otpData);
                 }
                 break;
-            case R.id.resend_layout:
-                resendOtp();//  resend otp....................
-                break;
+//            case R.id.resend_layout:
+//                resendOtp();//  resend otp....................
+//                break;
         }
     }
 
     //sign up with phone method.......
-    private void resendOtp() {
-        //check online.....
-        if (Utility.isOnline(this)) {
-            DbHelper dbHelper = new DbHelper(OTPVerifyActivity.this);
-            Result data = dbHelper.getUserData();
-            String phone = data.getPhoneNumber();//get phone number.........
-            final BallTriangleDialog dotDialog = new BallTriangleDialog(OTPVerifyActivity.this);
-            dotDialog.show();
-            ServiceCaller serviceCaller = new ServiceCaller(this);
-            serviceCaller.callLoginService(phone, new IAsyncWorkCompletedCallback() {
-                @Override
-                public void onDone(String workName, boolean isComplete) {
-                    if (isComplete) {
-                        Toast.makeText(OTPVerifyActivity.this, Contants.SEND_MESSAGE, Toast.LENGTH_LONG).show();
-                    } else {
-                        Utility.alertForErrorMessage(Contants.Dont_SEND_MESSAGE, OTPVerifyActivity.this);
-                    }
-                    if (dotDialog.isShowing()) {
-                        dotDialog.dismiss();
-                    }
-                }
-            });
-        } else {
-            Utility.alertForErrorMessage(Contants.OFFLINE_MESSAGE, this);//off line msg....
-        }
-
-    }
+//    private void resendOtp() {
+//        //check online.....
+//        if (Utility.isOnline(this)) {
+//            DbHelper dbHelper = new DbHelper(OTPVerifyActivity.this);
+//            Result data = dbHelper.getUserData();
+//            String phone = data.getPhoneNumber();//get phone number.........
+//            final BallTriangleDialog dotDialog = new BallTriangleDialog(OTPVerifyActivity.this);
+//            dotDialog.show();
+//            ServiceCaller serviceCaller = new ServiceCaller(this);
+//            serviceCaller.callLoginService(phone, new IAsyncWorkCompletedCallback() {
+//                @Override
+//                public void onDone(String workName, boolean isComplete) {
+//                    if (isComplete) {
+//                        Toast.makeText(OTPVerifyActivity.this, Contants.SEND_MESSAGE, Toast.LENGTH_LONG).show();
+//                    } else {
+//                        Utility.alertForErrorMessage(Contants.Dont_SEND_MESSAGE, OTPVerifyActivity.this);
+//                    }
+//                    if (dotDialog.isShowing()) {
+//                        dotDialog.dismiss();
+//                    }
+//                }
+//            });
+//        } else {
+//            Utility.alertForErrorMessage(Contants.OFFLINE_MESSAGE, this);//off line msg....
+//        }
+//
+//    }
 
     //validation for phone
     private boolean validation() {
@@ -171,42 +180,101 @@ public class OTPVerifyActivity extends AppCompatActivity implements View.OnClick
             Utility.alertForErrorMessage("Please Enter OTP", OTPVerifyActivity.this);
             return false;
         }
+        else if (otpData.length()!=4){
+            Utility.alertForErrorMessage("Please Enter Valid OTP", OTPVerifyActivity.this);
+            return false;
+        }
         return true;
     }
 
     //  resend otp....................
     private void verifyOTP(String otp) {
-        if (Utility.isOnline(this)) {
-            DbHelper dbHelper = new DbHelper(OTPVerifyActivity.this);
-            Result data = dbHelper.getUserData();
-            if (data != null) {
-                final BallTriangleDialog dotDialog = new BallTriangleDialog(OTPVerifyActivity.this);
-                dotDialog.show();
-                String phone = data.getPhoneNumber();
-                ServiceCaller serviceCaller = new ServiceCaller(OTPVerifyActivity.this);
-                serviceCaller.callLoginServiceOTPVerify(otp, phone, new IAsyncWorkCompletedCallback() {
+        if (validation()){
+            if (Utility.isOnline(this)){
+                ProgressDialog dialog=new ProgressDialog(this);
+                dialog.setMessage("Verifying Otp Please Wait...");
+                dialog.show();
+                ServiceCaller serviceCaller=new ServiceCaller(this);
+                serviceCaller.callOtpVerifyService(phone, otp, new IAsyncWorkCompletedCallback() {
                     @Override
                     public void onDone(String workName, boolean isComplete) {
-                        if (isComplete) {
-                            if (workName.equals("success")) {
-                                Utility.setPhoneNoVerifyOrNotSharedPreferences(OTPVerifyActivity.this, true);
-                                //Toast.makeText(OTPVerifyActivity.this, Contants.SEND_OTP_MESSAGE, Toast.LENGTH_LONG).show();
-                                Intent intent = new Intent(OTPVerifyActivity.this, DashboardActivity.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(intent);
-                            }
-                        } else {
-                            Utility.alertForErrorMessage(Contants.DoNot_SEND_OTP_MESSAGE, OTPVerifyActivity.this);
+                        dialog.dismiss();
+                        if (isComplete){
+                            if (!workName.trim().equalsIgnoreCase("")){
+                                MyPojo myPojo=new Gson().fromJson(workName, MyPojo.class);
+                                for (Result result:myPojo.getResult()){
+                                    if (result.getStatus().equalsIgnoreCase("1")){
+                                        SharedPreferences sharedPreferences=getSharedPreferences("Login", Context.MODE_PRIVATE);
+                                        SharedPreferences.Editor editor=sharedPreferences.edit();
+                                        editor.putInt("Logid", result.getLoginId());
+                                        editor.apply();
+                                        Toast.makeText(OTPVerifyActivity.this, "Login Successfully", Toast.LENGTH_SHORT).show();
+                                        Intent intent=new Intent(OTPVerifyActivity.this, DashboardActivity.class);
+                                        startActivity(intent);
+                                        edt_otp.setText("");
+                                        finish();
+                                    }
+                                    else {
+                                        Toast.makeText(OTPVerifyActivity.this, "Something went wrong please contact to Admin", Toast.LENGTH_SHORT).show();
+                                    }
+
                         }
-                        if (dotDialog.isShowing()) {
-                            dotDialog.dismiss();
+
+                    }
+
+                            else {
+                                Toast.makeText(OTPVerifyActivity.this, Contants.Dont_SEND_MESSAGE, Toast.LENGTH_SHORT).show();
+                            }
+                            
+                        }
+                        else {
+                            Toast.makeText(OTPVerifyActivity.this, Contants.DoNot_SEND_OTP_MESSAGE, Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
+
+
             }
-        } else {
-            Utility.alertForErrorMessage(Contants.OFFLINE_MESSAGE, this);//off line msg....
+            else {
+                Toast.makeText(this, Contants.OFFLINE_MESSAGE, Toast.LENGTH_SHORT).show();
+            }
+
         }
+        else {
+            Toast.makeText(this, "Please Enter Valid Details", Toast.LENGTH_SHORT).show();
+        }
+
+//        if (Utility.isOnline(this)) {
+//            DbHelper dbHelper = new DbHelper(OTPVerifyActivity.this);
+//            Result data = dbHelper.getUserData();
+//            if (data != null) {
+//                final BallTriangleDialog dotDialog = new BallTriangleDialog(OTPVerifyActivity.this);
+//                dotDialog.show();
+//                String phone = data.getPhoneNumber();
+//                ServiceCaller serviceCaller = new ServiceCaller(OTPVerifyActivity.this);
+//                serviceCaller.callLoginServiceOTPVerify(otp, phone, new IAsyncWorkCompletedCallback() {
+//                    @Override
+//                    public void onDone(String workName, boolean isComplete) {
+//                        if (isComplete) {
+//                            if (workName.equals("success")) {
+//                                Utility.setPhoneNoVerifyOrNotSharedPreferences(OTPVerifyActivity.this, true);
+//                                //Toast.makeText(OTPVerifyActivity.this, Contants.SEND_OTP_MESSAGE, Toast.LENGTH_LONG).show();
+//                                Intent intent = new Intent(OTPVerifyActivity.this, DashboardActivity.class);
+//                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+//                                startActivity(intent);
+//                            }
+//                        } else {
+//                            Utility.alertForErrorMessage(Contants.DoNot_SEND_OTP_MESSAGE, OTPVerifyActivity.this);
+//                        }
+//                        if (dotDialog.isShowing()) {
+//                            dotDialog.dismiss();
+//                        }
+//                    }
+//                });
+//            }
+//        } else {
+//            Utility.alertForErrorMessage(Contants.OFFLINE_MESSAGE, this);//off line msg....
+//        }
     }
 
     //for auto get otp from message

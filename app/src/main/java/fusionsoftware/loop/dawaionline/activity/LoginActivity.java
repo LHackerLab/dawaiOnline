@@ -2,6 +2,7 @@ package fusionsoftware.loop.dawaionline.activity;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -51,7 +52,7 @@ import fusionsoftware.loop.dawaionline.utilities.Utility;
  */
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
-    TextView tv_proceed, phone_icon, tv_description, tv_or, tv_see_menu_icon, SeeMenu;
+    TextView tv_proceed, phone_icon, tv_or, tv_see_menu_icon, SeeMenu;
     Typeface materialdesignicons_font, medium, regular, italic, bold, nova;
     EditText edt_phone;
     private Boolean CheckOrientation = false;
@@ -95,7 +96,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         bold = FontManager.getFontTypeface(this, "fonts/roboto.bold.ttf");
         nova = FontManager.getFontTypeface(this, "fonts/ProximaNova-Regular.otf");
         tv_proceed.setTypeface(nova);
-        tv_description.setTypeface(nova);
+//        tv_description.setTypeface(nova);
         edt_phone.setTypeface(nova);
         tv_or.setTypeface(nova);
         tv_see_menu_icon.setTypeface(materialdesignicons_font);
@@ -107,7 +108,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void init() {
         tv_proceed = (TextView) findViewById(R.id.tv_proceed);
         phone_icon = (TextView) findViewById(R.id.phone_icon);
-        tv_description = (TextView) findViewById(R.id.tv_description);
+//        tv_description = (TextView) findViewById(R.id.tv_description);
         edt_phone = (EditText) findViewById(R.id.edt_phone);
         tv_or = (TextView) findViewById(R.id.tv_or);
         tv_see_menu_icon = (TextView) findViewById(R.id.tv_see_menu_icon);
@@ -135,35 +136,68 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     //sign up with phone method.......
     private void loginWithPhone() {
-        if (validation()) {
-            //check internet connection
-            if (Utility.isOnline(this)) {
-                final BallTriangleDialog dotDialog = new BallTriangleDialog(LoginActivity.this);
-                dotDialog.show();
-                ServiceCaller serviceCaller = new ServiceCaller(this);
+        if (validation()){
+            if (Utility.isOnline(LoginActivity.this)){
+                ProgressDialog dialog=new ProgressDialog(this);
+                dialog.setMessage("Loading Please Wait...");
+                dialog.show();
+                ServiceCaller serviceCaller=new ServiceCaller(LoginActivity.this);
                 serviceCaller.callLoginService(phone, new IAsyncWorkCompletedCallback() {
                     @Override
                     public void onDone(String workName, boolean isComplete) {
-//                        Toast.makeText(LoginActivity.this, workName, Toast.LENGTH_SHORT).show();
-                        if (isComplete) {
-                            //sendDeviceTokenRegistrationToServer();
-//                            Toast.makeText(LoginActivity.this, Contants.SEND_MESSAGE, Toast.LENGTH_LONG).show();
-//                            Intent intent = new Intent(LoginActivity.this, OTPVerifyActivity.class);
-//                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-//                            startActivity(intent);
-//                        } else {
-                            Toast.makeText(LoginActivity.this, "User Skip To Menu For Demo", Toast.LENGTH_SHORT).show();
-//                            Utility.alertForErrorMessage(Contants.Dont_SEND_MESSAGE, LoginActivity.this);
+                        dialog.dismiss();
+                        if (isComplete){
+                            Toast.makeText(LoginActivity.this, Contants.SEND_MESSAGE, Toast.LENGTH_SHORT).show();
+                            Intent intent=new Intent(LoginActivity.this, OTPVerifyActivity.class);
+                            intent.putExtra("phone", phone);
+                            startActivity(intent);
+                            edt_phone.setText("");
                         }
-                        if (dotDialog.isShowing()) {
-                            dotDialog.dismiss();
+                        else {
+                            Toast.makeText(LoginActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
                         }
+
                     }
                 });
-            } else {
-                Utility.alertForErrorMessage(Contants.OFFLINE_MESSAGE, this);//off line msg....
+
+            }
+            else {
+                Toast.makeText(this, Contants.OFFLINE_MESSAGE, Toast.LENGTH_SHORT).show();
             }
         }
+        else {
+            Toast.makeText(this, "Please Enter Valid Details", Toast.LENGTH_SHORT).show();
+        }
+
+//        if (validation()) {
+            //check internet connection
+//            if (Utility.isOnline(this)) {
+//                final BallTriangleDialog dotDialog = new BallTriangleDialog(LoginActivity.this);
+//                dotDialog.show();
+//                ServiceCaller serviceCaller = new ServiceCaller(this);
+//                serviceCaller.callLoginService(phone, new IAsyncWorkCompletedCallback() {
+//                    @Override
+//                    public void onDone(String workName, boolean isComplete) {
+////                        Toast.makeText(LoginActivity.this, workName, Toast.LENGTH_SHORT).show();
+//                        if (isComplete) {
+//                            //sendDeviceTokenRegistrationToServer();
+////                            Toast.makeText(LoginActivity.this, Contants.SEND_MESSAGE, Toast.LENGTH_LONG).show();
+////                            Intent intent = new Intent(LoginActivity.this, OTPVerifyActivity.class);
+////                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+////                            startActivity(intent);
+////                        } else {
+//                            Toast.makeText(LoginActivity.this, "User Skip To Menu For Demo", Toast.LENGTH_SHORT).show();
+////                            Utility.alertForErrorMessage(Contants.Dont_SEND_MESSAGE, LoginActivity.this);
+//                        }
+//                        if (dotDialog.isShowing()) {
+//                            dotDialog.dismiss();
+//                        }
+//                    }
+//                });
+//            } else {
+//                Utility.alertForErrorMessage(Contants.OFFLINE_MESSAGE, this);//off line msg....
+//            }
+//        }
     }
 
     //validation for phone
@@ -173,7 +207,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             edt_phone.setError("Please Enter Mobile Number");
             return false;
         } else if (phone.length() != 10) {
-            edt_phone.setError("Please Enter Valid  Mobile Number 10 Digits");
+            edt_phone.setError("Please Enter Valid  Mobile Number");
             return false;
         }
         return true;
@@ -257,8 +291,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
 //            case REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS: {
 //                Map<String, Integer> perms = new HashMap<String, Integer>();

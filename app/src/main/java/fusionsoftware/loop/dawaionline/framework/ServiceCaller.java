@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -44,30 +45,55 @@ public class ServiceCaller {
 
     //call login data
     public void callLoginService(String phone, final IAsyncWorkCompletedCallback workCompletedCallback) {
-
         final String url = Contants.SERVICE_BASE_URL + Contants.Login;
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                parseAndSaveLoginData(response, workCompletedCallback);
+                workCompletedCallback.onDone(response, true);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                workCompletedCallback.onDone("no", false);
+                workCompletedCallback.onDone(error.getMessage(), false);
             }
         }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("PhoneNumber", phone);
+                Map<String, String> params = new HashMap<>();
+                params.put("phone", phone);
                 return params;
             }
         };
 
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
-        requestQueue.add(stringRequest);
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(20000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        AppController.getInstance().addToRequestQueue(stringRequest);//, tag_json_obj);
     }
+//        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+//            @Override
+//            public void onResponse(String response) {
+//                parseAndSaveLoginData(response, workCompletedCallback);
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                workCompletedCallback.onDone("no", false);
+//            }
+//        }) {
+//            @Override
+//            protected Map<String, String> getParams() throws AuthFailureError {
+//                Map<String, String> params = new HashMap<String, String>();
+//                params.put("PhoneNumber", phone);
+//                return params;
+//            }
+//        };
+//
+//        stringRequest.setRetryPolicy(new DefaultRetryPolicy(20000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+//        AppController.getInstance().addToRequestQueue(stringRequest);//, tag_json_obj);
+
+
+//        RequestQueue requestQueue = Volley.newRequestQueue(context);
+//        requestQueue.add(stringRequest);
+//    }
 
     //parse and save login data
     public void parseAndSaveLoginData(final String result, final IAsyncWorkCompletedCallback workCompletedCallback) {
@@ -104,10 +130,8 @@ public class ServiceCaller {
         }.execute();
     }
 
-// for otp verification
-
-    public void callLoginServiceOTPVerify(String Otp, String PhoneNumber, final IAsyncWorkCompletedCallback workCompletedCallback) {
-
+    //call otp data
+    public void callOtpVerifyService(final String phone, final String otp, final IAsyncWorkCompletedCallback workCompletedCallback) {
         final String url = Contants.SERVICE_BASE_URL + Contants.VerifyOTP;
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
@@ -117,20 +141,20 @@ public class ServiceCaller {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                workCompletedCallback.onDone("no", false);
+                workCompletedCallback.onDone(error.getMessage(), false);
             }
         }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("PhoneNumber", PhoneNumber);
-                params.put("otp", Otp);
+                Map<String, String> params = new HashMap<>();
+                params.put("phone", phone);
+                params.put("otp", otp);
                 return params;
             }
         };
 
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
-        requestQueue.add(stringRequest);
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(20000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        AppController.getInstance().addToRequestQueue(stringRequest);//, tag_json_obj);
     }
 
     //for get user profile................

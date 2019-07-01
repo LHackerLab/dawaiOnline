@@ -16,7 +16,7 @@ public class Contants {
     public static final String APP_DIRECTORY = "/E" + DEFAULT_APPLICATION_NAME + "Directory/";
     public static final String DATABASE_NAME = "dawai.db";// Environment.getExternalStorageDirectory() +  APP_DIRECTORY + "evergreen.db";
 
-    public static String SERVICE_BASE_URL = "http://dawaionline.96.lt/apis/";
+    public static String SERVICE_BASE_URL = "https://loopfusion.in/dawaionline/apis/";
 
     public static String outputBasePath = Environment.getExternalStorageDirectory().getAbsolutePath();
     public static String outputDirectoryLocation = outputBasePath + "/dawaiUnzipped/";
@@ -38,8 +38,8 @@ public class Contants {
     public static final String Dont_SEND_MESSAGE = "OTP Do Not Send Successfully";
     public static final String Dont_GetAddress_MESSAGE = "Some Problem For Geting Address";
     public static final String No_DATA_FOUND_MESSAGE = "No Record Found";
-    public static final String Login = "Login.php";
-    public static final String VerifyOTP = "VerifyOTP.php";
+    public static final String Login = "login.php";
+    public static final String VerifyOTP = "otpverifiy.php";
     public static final String GetUserProfile = "Login/GetUserProfile";
     public static final String UpdateProfile = "Login/UpdateProfile";
     public static final String AddNewAddress = "AddNewAddress.php";
