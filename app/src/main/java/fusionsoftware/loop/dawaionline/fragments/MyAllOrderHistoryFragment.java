@@ -76,7 +76,7 @@ public class MyAllOrderHistoryFragment extends Fragment {
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         view = inflater.inflate(R.layout.fragment_my_all_order_history, container, false);
         init();
-        getMyAllOrderHistoryData();
+//        getMyAllOrderHistoryData();
         return view;
     }
 
@@ -94,14 +94,14 @@ public class MyAllOrderHistoryFragment extends Fragment {
     private void setHistoryData(){
         DbHelper dbHelper = new DbHelper(context);
         List<Data> orderlist = dbHelper.GetMyAllOrderHistoryData();
-        if (orderlist != null && orderlist.size() > 0) {
+//        if (orderlist != null && orderlist.size() > 0) {
             MyAllOrderHistoryAdapter myAllOrderHistoryAdapter = new MyAllOrderHistoryAdapter(context, orderlist);
             my_order_recycler_view.setAdapter(myAllOrderHistoryAdapter);
             // do not add address messag
-        } else {
-            // for empty data .............
-            noDataFound();
-        }
+//        } else {
+//             for empty data .............
+//            noDataFound();
+//        }
     }
     private void noDataFound() {
         LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -118,48 +118,48 @@ public class MyAllOrderHistoryFragment extends Fragment {
     }
 
     // my order hisatory............
-    public void getMyAllOrderHistoryData() {
-        if (Utility.isOnline(context)) {
-            DbHelper dbHelper = new DbHelper(context);
-            final Result data = dbHelper.getUserData();
-            if (data != null) {
-                int loginId = data.getLoginId();
-                if (loginId != 0) {
-                    final BallTriangleDialog dotDialog = new BallTriangleDialog(context);
-                    dotDialog.show();
-                    ServiceCaller serviceCaller = new ServiceCaller(context);
-                    serviceCaller.callMyAllOrderHistoryService(loginId, new IAsyncWorkCompletedCallback() {
-                        @Override
-                        public void onDone(String workName, boolean isComplete) {
-                            if (isComplete) {
-                                setHistoryData();
-                            }
-                        else {
-                                noDataFound();
-                            }
-                            if (dotDialog.isShowing()) {
-                                dotDialog.dismiss();
-                            }
-                        }
-
-                    });
-                }
-            } else {
-                Intent intent = new Intent(context, LoginActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-            }
-        } else {
-           // Utility.alertForErrorMessage(Contants.OFFLINE_MESSAGE, context);//offline check..........
-            LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View view = inflater.inflate(R.layout.no_data_found, null);
-            TextView nodata= (TextView) view.findViewById(R.id.nodata);
-            nodata.setText("No internet connection found");
-            my_order_history_layout.setGravity(Gravity.CENTER);
-            my_order_history_layout.removeAllViews();
-            my_order_history_layout.addView(view);
-        }
-    }
+//    public void getMyAllOrderHistoryData() {
+//        if (Utility.isOnline(context)) {
+////            DbHelper dbHelper = new DbHelper(context);
+////            final Result data = dbHelper.getUserData();
+////            if (data != null) {
+////                int loginId = data.getLoginId();
+////                if (loginId != 0) {
+//                    final BallTriangleDialog dotDialog = new BallTriangleDialog(context);
+//                    dotDialog.show();
+//                    ServiceCaller serviceCaller = new ServiceCaller(context);
+//                    serviceCaller.callMyAllOrderHistoryService(loginId, new IAsyncWorkCompletedCallback() {
+//                        @Override
+//                        public void onDone(String workName, boolean isComplete) {
+//                            if (isComplete) {
+//                                setHistoryData();
+//                            }
+//                        else {
+//                                noDataFound();
+//                            }
+//                            if (dotDialog.isShowing()) {
+//                                dotDialog.dismiss();
+//                            }
+//                        }
+//
+//                    });
+//                }
+//            } else {
+//                Intent intent = new Intent(context, LoginActivity.class);
+//                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+//                startActivity(intent);
+//            }
+//        } else {
+//           // Utility.alertForErrorMessage(Contants.OFFLINE_MESSAGE, context);//offline check..........
+//            LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//            View view = inflater.inflate(R.layout.no_data_found, null);
+//            TextView nodata= (TextView) view.findViewById(R.id.nodata);
+//            nodata.setText("No internet connection found");
+//            my_order_history_layout.setGravity(Gravity.CENTER);
+//            my_order_history_layout.removeAllViews();
+//            my_order_history_layout.addView(view);
+//        }
+//    }
 }
 
 

@@ -91,9 +91,21 @@ public class SplashScreenActivity extends AppCompatActivity {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    Intent intent = new Intent(SplashScreenActivity.this, LoginActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
+                    SharedPreferences preferences = getSharedPreferences("Login", Context.MODE_PRIVATE);
+                    int phone = preferences.getInt("Logid", 0);
+                    if (phone!=0){
+                        Intent intent = new Intent(SplashScreenActivity.this, DashboardActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                        finish();
+                    }
+                    else {
+                        Intent intent = new Intent(SplashScreenActivity.this, DashboardActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                        finish();
+                    }
+
 
                 }
             }, 3000);

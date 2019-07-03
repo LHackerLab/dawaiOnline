@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -70,12 +71,13 @@ public class SelectCatagoryAdapter extends RecyclerView.Adapter<SelectCatagoryAd
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
-        holder.title.setText(categoryList.get(position).getCategoryName());
-        Picasso.with(mContext).load(categoryList.get(position).getCategoryPictures()).resize(100, 100).placeholder(R.drawable.logo).into(holder.imageView);
+        holder.title.setText(categoryList.get(position).getCategory());
+        Glide.with(mContext).load(categoryList.get(position).getProductSubTitle()).into(holder.imageView);
+//        Picasso.with(mContext).load(categoryList.get(position).getPic()).resize(100, 100).placeholder(R.drawable.logo).into(holder.imageView);
         holder.card_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ProductListFragment fragment = ProductListFragment.newInstance(categoryList.get(position).getCategoryId(), categoryList.get(position).getCategoryName());
+                ProductListFragment fragment = ProductListFragment.newInstance(categoryList.get(position).getId(), categoryList.get(position).getMain_category());
                 moveFragment(fragment);
             }
         });
@@ -94,3 +96,4 @@ public class SelectCatagoryAdapter extends RecyclerView.Adapter<SelectCatagoryAd
         return categoryList.size();
     }
 }
+//}

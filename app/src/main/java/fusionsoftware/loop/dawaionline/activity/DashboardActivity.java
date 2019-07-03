@@ -256,6 +256,7 @@ public class DashboardActivity extends AppCompatActivity
         icondatalist.add(String.valueOf(Html.fromHtml("&#xf2da;")));
         icondatalist.add(String.valueOf(Html.fromHtml("&#xF076;")));
         icondatalist.add(String.valueOf(Html.fromHtml("&#xf004;")));
+        icondatalist.add(String.valueOf(Html.fromHtml("&#xf425;")));
         List<String> stringList = new ArrayList<>();
         stringList.add("Home");
         // stringList.add("Notifications");
@@ -266,6 +267,7 @@ public class DashboardActivity extends AppCompatActivity
         stringList.add("My Order History");
         stringList.add("My Basket");
         stringList.add("My Profile");
+        stringList.add("Logout");
         //..................
         NavMenuCustomAdapter custom_adapter = new NavMenuCustomAdapter(DashboardActivity.this, stringList, icondatalist);
         list_menuitem.setAdapter(custom_adapter);

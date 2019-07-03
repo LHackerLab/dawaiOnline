@@ -31,6 +31,226 @@ public class Result {
     }
 
 
+    private String isactive;
+
+    private String main_category;
+
+    private int id;
+
+    private String pic;
+
+    private String category;
+
+    public String getIsactive ()
+    {
+        return isactive;
+    }
+
+    public void setIsactive (String isactive)
+    {
+        this.isactive = isactive;
+    }
+
+    public String getMain_category ()
+    {
+        return main_category;
+    }
+
+    public void setMain_category (String main_category)
+    {
+        this.main_category = main_category;
+    }
+
+    public int getId ()
+    {
+        return id;
+    }
+
+    public void setId (int id)
+    {
+        this.id = id;
+    }
+
+    public String getPic ()
+    {
+        return pic;
+    }
+
+    public void setPic (String pic)
+    {
+        this.pic = pic;
+    }
+
+    public String getCategory ()
+    {
+        return category;
+    }
+
+    public void setCategory (String category)
+    {
+        this.category = category;
+    }
+
+
+    private String p_rx;
+
+    private String product_dis;
+
+    private String product_pic;
+
+    private String product_mrp;
+
+    private int sc_id;
+
+    private String product_name;
+
+    private String p_qty;
+
+    private String mc_name;
+
+    private String product_subtitle;
+
+    private String isoutofstock;
+
+    private String product_comp_name;
+
+    private String product_details;
+
+    private String product_salt;
+
+    public String getP_rx ()
+    {
+        return p_rx;
+    }
+
+    public void setP_rx (String p_rx)
+    {
+        this.p_rx = p_rx;
+    }
+
+    public String getProduct_dis ()
+    {
+        return product_dis;
+    }
+
+    public void setProduct_dis (String product_dis)
+    {
+        this.product_dis = product_dis;
+    }
+
+    public String getProduct_pic ()
+    {
+        return product_pic;
+    }
+
+    public void setProduct_pic (String product_pic)
+    {
+        this.product_pic = product_pic;
+    }
+
+    public String getProduct_mrp ()
+    {
+        return product_mrp;
+    }
+
+    public void setProduct_mrp (String product_mrp)
+    {
+        this.product_mrp = product_mrp;
+    }
+
+
+    public int getSc_id ()
+    {
+        return sc_id;
+    }
+
+    public void setSc_id (int sc_id)
+    {
+        this.sc_id = sc_id;
+    }
+
+    public String getProduct_name ()
+    {
+        return product_name;
+    }
+
+    public void setProduct_name (String product_name)
+    {
+        this.product_name = product_name;
+    }
+
+    public String getP_qty ()
+    {
+        return p_qty;
+    }
+
+    public void setP_qty (String p_qty)
+    {
+        this.p_qty = p_qty;
+    }
+
+    public String getMc_name ()
+    {
+        return mc_name;
+    }
+
+    public void setMc_name (String mc_name)
+    {
+        this.mc_name = mc_name;
+    }
+
+    public String getProduct_subtitle ()
+    {
+        return product_subtitle;
+    }
+
+    public void setProduct_subtitle (String product_subtitle)
+    {
+        this.product_subtitle = product_subtitle;
+    }
+
+    public String getIsoutofstock ()
+    {
+        return isoutofstock;
+    }
+
+    public void setIsoutofstock (String isoutofstock)
+    {
+        this.isoutofstock = isoutofstock;
+    }
+
+
+    public String getProduct_comp_name ()
+    {
+        return product_comp_name;
+    }
+
+    public void setProduct_comp_name (String product_comp_name)
+    {
+        this.product_comp_name = product_comp_name;
+    }
+
+    public String getProduct_details ()
+    {
+        return product_details;
+    }
+
+    public void setProduct_details (String product_details)
+    {
+        this.product_details = product_details;
+    }
+
+    public String getProduct_salt ()
+    {
+        return product_salt;
+    }
+
+    public void setProduct_salt (String product_salt)
+    {
+        this.product_salt = product_salt;
+    }
+
+
 
     private int AddressId;
 
@@ -495,13 +715,13 @@ public class Result {
         this.TotalAmount = TotalAmount;
     }
 
-    public String getId() {
-        return Id;
-    }
-
-    public void setId(String Id) {
-        this.Id = Id;
-    }
+//    public String getId() {
+//        return Id;
+//    }
+//
+//    public void setId(String Id) {
+//        this.Id = Id;
+//    }
 
     public String getPaymentId() {
         return PaymentId;

@@ -25,6 +25,7 @@ import fusionsoftware.loop.dawaionline.activity.LoginActivity;
 import fusionsoftware.loop.dawaionline.database.DbHelper;
 import fusionsoftware.loop.dawaionline.fragments.MyAllOrderHistoryFragment;
 import fusionsoftware.loop.dawaionline.fragments.MyBasketFragment;
+import fusionsoftware.loop.dawaionline.fragments.ParentFragment;
 import fusionsoftware.loop.dawaionline.fragments.SelectCategoryFragment;
 import fusionsoftware.loop.dawaionline.fragments.TrackOrderFragment;
 import fusionsoftware.loop.dawaionline.fragments.UserAddressListFragment;
@@ -109,38 +110,47 @@ public class NavMenuCustomAdapter extends BaseAdapter {
         holder.forTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DbHelper dbHelper = new DbHelper(context);
-                Result userData = dbHelper.getUserData();
-                if (userData != null) {
                     if (position == 0) {
-                        setUpHomeFragment();
+//                        setUpHomeFragment();
+                        ParentFragment parentFragment = new ParentFragment();
+                        moveFragment(parentFragment);
                     }
-                    if (position == 1) {
+                    else if (position == 1) {
                         UserAddressListFragment fragment = UserAddressListFragment.newInstance(false, 0);
                         moveFragment(fragment);
                     }
-                    if (position == 2) {
-                        TrackOrderFragment fragment = TrackOrderFragment.newInstance("", "");
-                        moveFragment(fragment);
+                   else if (position == 2) {
+//                        Toast.makeText(context, "Track", Toast.LENGTH_SHORT).show();
+                        TrackOrderFragment trackOrderFragment=new TrackOrderFragment();
+                        moveFragment(trackOrderFragment);
+//                        TrackOrderFragment orderFragment = TrackOrderFragment.newInstance("", "");
+//                        moveFragment(orderFragment);
                     }
-                    if (position == 3) {
-                        MyAllOrderHistoryFragment fragment = MyAllOrderHistoryFragment.newInstance(0, "");
-                        moveFragment(fragment);
+                   else if (position == 3) {
+//                        Toast.makeText(context, "History", Toast.LENGTH_SHORT).show();
+                        MyAllOrderHistoryFragment orderHistoryFragment=new MyAllOrderHistoryFragment();
+                        moveFragment(orderHistoryFragment);
+//                        MyAllOrderHistoryFragment orderHistoryFragment = MyAllOrderHistoryFragment.newInstance(0, "");
+//                        moveFragment(orderHistoryFragment);
                     }
-                    if (position == 4) {
+                    else if (position == 4) {
                         MyBasketFragment fragment = MyBasketFragment.newInstance("", "");
                         moveFragment(fragment);
                     }
 
-                    if (position == 5) {
+                    else if (position == 5) {
                         UserProfileFragment fragment = UserProfileFragment.newInstance("", "");
                         moveFragment(fragment);
                     }
-                } else {
-                    Toast.makeText(context, "Without login your can't see this", Toast.LENGTH_SHORT).show();
-//                    Intent intent = new Intent(context, LoginActivity.class);
-//                    context.startActivity(intent);
-                }
+
+                   else if (position == 6) {
+                        SharedPreferences preferences = context.getSharedPreferences("Login", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.clear();
+                        editor.apply();
+                        Intent intent=new Intent(context, LoginActivity.class);
+                        context.startActivity(intent);
+                    }
                 int pos = (int) view.getTag();
                 if (selectedPosition.contains(pos)) {
                     //selectedPosition.remove(pos);
@@ -160,8 +170,8 @@ public class NavMenuCustomAdapter extends BaseAdapter {
 
     //open home fragement
     private void setUpHomeFragment() {
-        SelectCategoryFragment fragment = SelectCategoryFragment.newInstance(0, 0);
-        moveFragment(fragment);
+//        SelectCategoryFragment fragment = SelectCategoryFragment.newInstance("", 0);
+//        moveFragment(fragment);
     }
 
     //move to fragment

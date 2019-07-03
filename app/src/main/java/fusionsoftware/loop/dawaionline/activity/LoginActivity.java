@@ -152,6 +152,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             intent.putExtra("phone", phone);
                             startActivity(intent);
                             edt_phone.setText("");
+                            finish();
                         }
                         else {
                             Toast.makeText(LoginActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();

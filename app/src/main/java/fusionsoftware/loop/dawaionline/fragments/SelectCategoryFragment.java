@@ -34,6 +34,7 @@ import fusionsoftware.loop.dawaionline.framework.IAsyncWorkCompletedCallback;
 import fusionsoftware.loop.dawaionline.framework.ServiceCaller;
 import fusionsoftware.loop.dawaionline.model.ContentDataAsArray;
 import fusionsoftware.loop.dawaionline.model.Data;
+import fusionsoftware.loop.dawaionline.model.MyPojo;
 import fusionsoftware.loop.dawaionline.model.Result;
 import fusionsoftware.loop.dawaionline.utilities.CompatibilityUtility;
 import fusionsoftware.loop.dawaionline.utilities.FontManager;
@@ -46,15 +47,15 @@ import fusionsoftware.loop.dawaionline.utilities.Utility;
 
 public class SelectCategoryFragment extends Fragment {
 
-    private int menuId;
+    private String categoryName;
     private int storeId;
 
 
     // TODO: Rename and change types and number of parameters
-    public static SelectCategoryFragment newInstance(int menuId, int storeId) {
+    public static SelectCategoryFragment newInstance(String categoryName, int storeId) {
         SelectCategoryFragment fragment = new SelectCategoryFragment();
         Bundle args = new Bundle();
-        args.putInt("MenuId", menuId);
+        args.putString("catName", categoryName);
         args.putInt("StoreId", storeId);
         fragment.setArguments(args);
         return fragment;
@@ -64,7 +65,7 @@ public class SelectCategoryFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            menuId = getArguments().getInt("MenuId");
+            categoryName = getArguments().getString("catName");
             storeId = getArguments().getInt("StoreId");
         }
     }
@@ -120,14 +121,19 @@ public class SelectCategoryFragment extends Fragment {
     private void getAllCategoryList() {
         if (Utility.isOnline(context)) {
             ServiceCaller serviceCaller = new ServiceCaller(context);
-            serviceCaller.callAllCategoryListService(new IAsyncWorkCompletedCallback() {
+            serviceCaller.callAllCategoryListService(categoryName, new IAsyncWorkCompletedCallback() {
                 @Override
                 public void onDone(String workName, boolean isComplete) {
-                    if (isComplete) {
+                    if (isComplete){
                         DbHelper dbHelper = new DbHelper(context);
-                        categoryList = dbHelper.GetAllCategoryData();
+                        MyPojo myPojo=new Gson().fromJson(workName, MyPojo.class);
+                        for (Result result:myPojo.getResult()){
+                            categoryList = dbHelper.GetAllCategoryData();
+                            categoryList.addAll(Arrays.asList(result));
+                        }
                         if (categoryList != null && categoryList.size() > 0) {
                             adapter = new SelectCatagoryAdapter(context, categoryList);
+                            recyclerView.setLayoutManager(new LinearLayoutManager(context));
                             recyclerView.setAdapter(adapter);
                             recyclerView.hideShimmerAdapter();
                         } else {
@@ -136,8 +142,11 @@ public class SelectCategoryFragment extends Fragment {
                     } else {
                         noDataFound();
                     }
-                }
+
+                    }
+
             });
+
         }
     }
 

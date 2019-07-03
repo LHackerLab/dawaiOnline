@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.Filterable;
@@ -88,13 +89,13 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
 
     @Override
     public void onBindViewHolder(final ViewHolder viewHolder, final int position) {
-        Picasso.with(context).load(FilteruserList.get(position).getProductPicturesUrl()).resize(800, 800).placeholder(R.drawable.logo).into(viewHolder.productImage);
-        Picasso.with(context).load(FilteruserList.get(position).getProductPicturesUrl()).resize(800, 800).placeholder(R.drawable.logo).into(viewHolder.productImageCopy);
-        viewHolder.productTitle.setText(FilteruserList.get(position).getProductName());
-        viewHolder.productSubTitle.setText(FilteruserList.get(position).getProductSubTitle());
-        viewHolder.productPrice.setText(String.valueOf(FilteruserList.get(position).getUnitPrice()));
-        viewHolder.productDetails.setText(FilteruserList.get(position).getProductDetails());
-        viewHolder.tv_discount.setText(String.valueOf(FilteruserList.get(position).getDiscount()) + "% off");
+        Picasso.with(context).load(FilteruserList.get(position).getProduct_pic()).resize(800, 800).placeholder(R.drawable.baby).into(viewHolder.productImage);
+        viewHolder.productTitle.setText(FilteruserList.get(position).getProduct_name());
+        viewHolder.productSubTitle.setText(FilteruserList.get(position).getProduct_subtitle());
+        viewHolder.productPrice.setText(String.valueOf(FilteruserList.get(position).getProduct_mrp()));
+        viewHolder.productDetails.getSettings().setJavaScriptEnabled(true);
+        viewHolder.productDetails.loadData(FilteruserList.get(position).getProduct_details(), "text/html", "UTF-8");
+        viewHolder.tv_discount.setText(String.valueOf("Discount - "+FilteruserList.get(position).getProduct_dis() + "% off"));
         if (FilteruserList.get(position).getCountValue() != 0) {
             DecimalFormat df = new DecimalFormat("0");
             String value = df.format(FilteruserList.get(position).getCountValue());
@@ -222,19 +223,20 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView productTitle, tv_or, tv_discount, productPrice, rupees_icon, productDetails, textView_addToCart,
+        TextView productTitle, tv_or, tv_discount, productPrice, rupees_icon, textView_addToCart,
                 productSubTitle, increase_Product, textView_nos, decrement_Product;
         ImageView productImage, productImageCopy;
         LinearLayout orderLayout;
         CardView card_view;
+        WebView productDetails;
 
         public ViewHolder(View view) {
             super(view);
             productTitle = (TextView) view.findViewById(R.id.productTitle);
-            productDetails = (TextView) view.findViewById(R.id.productDetails);
+            productDetails = (WebView) view.findViewById(R.id.productDetails);
             productPrice = (TextView) view.findViewById(R.id.productPrice);
             productImage = (ImageView) view.findViewById(R.id.productImage);
-            productImageCopy = (ImageView) view.findViewById(R.id.productImageCopy);
+//            productImageCopy = (ImageView) view.findViewById(R.id.productImageCopy);
             rupees_icon = (TextView) view.findViewById(R.id.rupees_icon);
             tv_or = (TextView) view.findViewById(R.id.tv_or);
             textView_addToCart = (TextView) view.findViewById(R.id.textView_addToCart);
@@ -248,7 +250,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             productTitle.setTypeface(medium);
             rupees_icon.setTypeface(materialDesignIcons);
             rupees_icon.setText(Html.fromHtml("&#xf1af;"));
-            productDetails.setTypeface(regular);
+//            productDetails.setTypeface(regular);
             productPrice.setTypeface(medium);
             textView_addToCart.setTypeface(medium);
             productSubTitle.setTypeface(regular);

@@ -68,6 +68,8 @@ public class ServiceCaller {
         stringRequest.setRetryPolicy(new DefaultRetryPolicy(20000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         AppController.getInstance().addToRequestQueue(stringRequest);//, tag_json_obj);
     }
+
+
 //        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
 //            @Override
 //            public void onResponse(String response) {
@@ -149,6 +151,61 @@ public class ServiceCaller {
                 Map<String, String> params = new HashMap<>();
                 params.put("phone", phone);
                 params.put("otp", otp);
+                return params;
+            }
+        };
+
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(20000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        AppController.getInstance().addToRequestQueue(stringRequest);//, tag_json_obj);
+    }
+
+
+    //call all category list data
+    public void callAllCategoryListService(String categoryName, final IAsyncWorkCompletedCallback workCompletedCallback) {
+        final String url = Contants.SERVICE_BASE_URL + Contants.GetAllCategoryList;
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                workCompletedCallback.onDone(response, true);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                workCompletedCallback.onDone(error.getMessage(), false);
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("main_category", categoryName);
+                return params;
+            }
+        };
+
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(20000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        AppController.getInstance().addToRequestQueue(stringRequest);//, tag_json_obj);
+    }
+
+
+    //call all product list data
+    public void callAllProductListService(String categoryName, final int id, final IAsyncWorkCompletedCallback workCompletedCallback) {
+        final String url = Contants.SERVICE_BASE_URL + Contants.GetAllProductList;
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                workCompletedCallback.onDone(response, true);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                workCompletedCallback.onDone(error.getMessage(), false);
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("main_category", categoryName);
+                params.put("id", String.valueOf(id));
                 return params;
             }
         };
@@ -396,24 +453,24 @@ public class ServiceCaller {
     }
 
 
-    //call All CategoryList data
-    public void callAllCategoryListService(final IAsyncWorkCompletedCallback workCompletedCallback) {
-
-        final String url = Contants.SERVICE_BASE_URL + Contants.GetAllCategory;
-        JSONObject obj = new JSONObject();
-        Log.d(Contants.LOG_TAG, "Payload*****" + obj);
-        new ServiceHelper().callService(url, obj, new IServiceSuccessCallback() {
-            @Override
-            public void onDone(String doneWhatCode, String result, String error) {
-                if (result != null) {
-//                    workCompletedCallback.onDone(result, true);
-                    parseAndSaveAllCategoryListData(result, workCompletedCallback);
-                } else {
-                    workCompletedCallback.onDone("callAllCategoryListService done", false);
-                }
-            }
-        });
-    }
+//    //call All CategoryList data
+//    public void callAllCategoryListService(final IAsyncWorkCompletedCallback workCompletedCallback) {
+//
+//        final String url = Contants.SERVICE_BASE_URL + Contants.GetAllCategory;
+//        JSONObject obj = new JSONObject();
+//        Log.d(Contants.LOG_TAG, "Payload*****" + obj);
+//        new ServiceHelper().callService(url, obj, new IServiceSuccessCallback() {
+//            @Override
+//            public void onDone(String doneWhatCode, String result, String error) {
+//                if (result != null) {
+////                    workCompletedCallback.onDone(result, true);
+//                    parseAndSaveAllCategoryListData(result, workCompletedCallback);
+//                } else {
+//                    workCompletedCallback.onDone("callAllCategoryListService done", false);
+//                }
+//            }
+//        });
+//    }
 
     //parse and save category  data
     public void parseAndSaveAllCategoryListData(final String result, final IAsyncWorkCompletedCallback workCompletedCallback) {

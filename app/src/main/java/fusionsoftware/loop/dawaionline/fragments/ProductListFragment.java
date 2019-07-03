@@ -1,6 +1,7 @@
 package fusionsoftware.loop.dawaionline.fragments;
 
 import android.animation.Animator;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -18,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -36,6 +38,7 @@ import fusionsoftware.loop.dawaionline.framework.IAsyncWorkCompletedCallback;
 import fusionsoftware.loop.dawaionline.framework.ServiceCaller;
 import fusionsoftware.loop.dawaionline.model.ContentDataAsArray;
 import fusionsoftware.loop.dawaionline.model.Data;
+import fusionsoftware.loop.dawaionline.model.MyPojo;
 import fusionsoftware.loop.dawaionline.model.Result;
 import fusionsoftware.loop.dawaionline.utilities.CompatibilityUtility;
 import fusionsoftware.loop.dawaionline.utilities.FontManager;
@@ -46,7 +49,7 @@ public class ProductListFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
 
     // TODO: Rename and change types of parameters
-    private int categoryId;
+    private int id;
     private String categoryName;
 
 
@@ -56,10 +59,10 @@ public class ProductListFragment extends Fragment {
 
 
     // TODO: Rename and change types and number of parameters
-    public static ProductListFragment newInstance(int categoryId, String categoryName) {
+    public static ProductListFragment newInstance(int id, String categoryName) {
         ProductListFragment fragment = new ProductListFragment();
         Bundle args = new Bundle();
-        args.putInt("categoryId", categoryId);
+        args.putInt("id", id);
         args.putString("categoryName", categoryName);
         fragment.setArguments(args);
         return fragment;
@@ -69,7 +72,7 @@ public class ProductListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            categoryId = getArguments().getInt("categoryId");
+            id = getArguments().getInt("id");
             categoryName = getArguments().getString("categoryName");
         }
     }
@@ -188,28 +191,31 @@ public class ProductListFragment extends Fragment {
     //get all Product list data
     private void getAllProductList() {
         if (Utility.isOnline(context)) {
-            final BallTriangleDialog dotDialog = new BallTriangleDialog(context);
-            dotDialog.show();
-            ServiceCaller serviceCaller = new ServiceCaller(context);
-            serviceCaller.callProductData(categoryId, new IAsyncWorkCompletedCallback() {
+            ProgressDialog dialog=new ProgressDialog(context);
+            dialog.setMessage("Loading Data...");
+            dialog.show();
+            ServiceCaller serviceCaller=new ServiceCaller(context);
+            serviceCaller.callAllProductListService(categoryName, 9, new IAsyncWorkCompletedCallback() {
                 @Override
                 public void onDone(String workName, boolean isComplete) {
-                    if (isComplete) {
-                        ContentDataAsArray contentDataAsArray = new Gson().fromJson(workName, ContentDataAsArray.class);
-                        for (Result result : contentDataAsArray.getResults()) {
+                    dialog.dismiss();
+//                    Toast.makeText(context, workName, Toast.LENGTH_SHORT).show();
+                    if (isComplete){
+                        MyPojo myPojo=new Gson().fromJson(workName, MyPojo.class);
+                        for (Result result:myPojo.getResult()){
                             productList.addAll(Arrays.asList(result));
                         }
                         setProductData(productList);
-                    } else {
-                        noDataFound();
                     }
 
-                    if (dotDialog.isShowing()) {
-                        dotDialog.dismiss();
+                    else {
+                        noDataFound();
                     }
                 }
             });
-        } else {
+        }
+
+        else {
             // Utility.alertForErrorMessage(Contants.OFFLINE_MESSAGE, context);//off line msg....
             LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View view = inflater.inflate(R.layout.no_data_found, null);
@@ -219,6 +225,7 @@ public class ProductListFragment extends Fragment {
             linearLayout.removeAllViews();
             linearLayout.addView(view);
         }
+
     }
 
 }

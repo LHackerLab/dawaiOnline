@@ -283,15 +283,15 @@ public class ParentFragment extends Fragment implements View.OnClickListener {
 //                Toast.makeText(context, "Search Fragment Here", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.layout_medicin:
-                SelectCategoryFragment fragment = SelectCategoryFragment.newInstance(0, 0);
+                SelectCategoryFragment fragment = SelectCategoryFragment.newInstance("Medicines", 0);
                 moveFragment(fragment);
                 break;
             case R.id.layout_lab:
-                LabTestsFragment fragmentest = LabTestsFragment.newInstance("", "");
-                moveFragment(fragmentest);
+                SelectCategoryFragment categoryFragment = SelectCategoryFragment.newInstance("Lab Package", 0);
+                moveFragment(categoryFragment);
                 break;
             case R.id.layout_otc:
-                SelectCategoryFragment fragmentotc = SelectCategoryFragment.newInstance(0, 0);
+                SelectCategoryFragment fragmentotc = SelectCategoryFragment.newInstance("Health Product", 0);
                 moveFragment(fragmentotc);
                 break;
             case R.id.layout_healtharticle:
