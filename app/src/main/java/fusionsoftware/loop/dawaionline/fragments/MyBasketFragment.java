@@ -36,6 +36,7 @@ import fusionsoftware.loop.dawaionline.adapter.BasketAdapter;
 import fusionsoftware.loop.dawaionline.database.DbHelper;
 import fusionsoftware.loop.dawaionline.model.Data;
 import fusionsoftware.loop.dawaionline.model.MyBasket;
+import fusionsoftware.loop.dawaionline.model.Result;
 import fusionsoftware.loop.dawaionline.utilities.CompatibilityUtility;
 import fusionsoftware.loop.dawaionline.utilities.FontManager;
 
@@ -74,7 +75,7 @@ public class MyBasketFragment extends Fragment implements View.OnClickListener {
     private Context context;
     View view;
     private double totalPrice = 0;
-    private List<MyBasket> basketdata;
+    private List<Result> basketdata;
     BasketAdapter adapter;
     RecyclerView recyclerView;
 
@@ -116,7 +117,7 @@ public class MyBasketFragment extends Fragment implements View.OnClickListener {
         rootActivity.setScreencart(false);
         rootActivity.setScreenSave(false);
         rootActivity.setScreenCartDot(false);
-//        rootActivity.setItemCart();
+        rootActivity.setItemCart();
         arrow_icon = (TextView) view.findViewById(R.id.arrow_icon);
         tv_continue = (TextView) view.findViewById(R.id.tv_continue);
         tv_yourOrder = (TextView) view.findViewById(R.id.tv_yourOrder);
@@ -134,10 +135,11 @@ public class MyBasketFragment extends Fragment implements View.OnClickListener {
         LinearLayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
         DbHelper dbHelper = new DbHelper(context);
-        List<MyBasket> orderList = dbHelper.GetAllBasketOrderData();
-//        if (orderList != null && orderList.size() > 0) {
-//            shortBasketData(orderList);
-//        } else {
+        List<Result> orderList = dbHelper.GetAllBasketOrderData();
+        if (orderList != null && orderList.size() > 0) {
+            shortBasketData(orderList);
+        } else
+        {
             LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View view = inflater.inflate(R.layout.no_data_found, null);
             TextView nodataIcon = (TextView) view.findViewById(R.id.nodataIcon);
@@ -151,16 +153,16 @@ public class MyBasketFragment extends Fragment implements View.OnClickListener {
             layout_basket.addView(view);
             continuelayout.setVisibility(View.VISIBLE);
             layoutcheck.setVisibility(View.GONE);
-//        }
+        }
     }
 
     //sort  data.................
-    private void shortBasketData(List<MyBasket> resultList) {
-        List<MyBasket> newList = new ArrayList<MyBasket>();
-        for (MyBasket c : resultList) {
-//            if (!categoryDataExist(newList, c.getCategoryName())) {
-//                newList.add(c);
-//            }
+    private void shortBasketData(List<Result> resultList) {
+        List<Result> newList = new ArrayList<Result>();
+        for (Result c : resultList) {
+            if (!categoryDataExist(newList, c.getMc_name())) {
+                newList.add(c);
+            }
         }
         adapter = new BasketAdapter(context, newList, MyBasketFragment.this);
         recyclerView.setAdapter(adapter);
@@ -171,33 +173,33 @@ public class MyBasketFragment extends Fragment implements View.OnClickListener {
         grand_total.setText("\u20B9" + df.format(mostTotal));
     }
 
-//    private boolean categoryDataExist(List<MyBasket> newList, String name) {
-//        for (MyBasket c : newList) {
-//            if (c.getCategoryName().equalsIgnoreCase(name)) {
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
+    private boolean categoryDataExist(List<Result> newList, String name) {
+        for (Result c : newList) {
+            if (c.getMc_name().equalsIgnoreCase(name)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     //notifiy adapter if data delete
     private void notifiyAdapter() {
-//        if (adapter != null) {
-//            adapter.notifyDataSetChanged();
-//        }
+        if (adapter != null) {
+            adapter.notifyDataSetChanged();
+        }
     }
 
     //    get message from basketinneradapter for notify adapter
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-//            if (intent.getAction().equalsIgnoreCase("basketItem")) {
-//                boolean basketFlag = intent.getBooleanExtra("basketFlag", false);
-////                Do whatever you want with the code here
-//                if (basketFlag) {
-//                    notifiyAdapter();
-//                }
-//            }
+            if (intent.getAction().equalsIgnoreCase("basketItem")) {
+                boolean basketFlag = intent.getBooleanExtra("basketFlag", false);
+//                Do whatever you want with the code here
+                if (basketFlag) {
+                    notifiyAdapter();
+                }
+            }
         }
     };
 

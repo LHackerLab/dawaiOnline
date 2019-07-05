@@ -232,7 +232,7 @@ public class OrderConfirmFragment extends Fragment implements View.OnClickListen
         setDetails();
         orderDetailsesList = new ArrayList<CreateOrderDetails>();
         DbHelper dbHelper = new DbHelper(context);
-        List<MyBasket> orderList = dbHelper.GetAllBasketOrderData();
+        List<Result> orderList = dbHelper.GetAllBasketOrderData();
         if (orderList != null && orderList.size() > 0) {
             adapter = new OrderConfirmAdapter(context, orderList);
             recyclerView.setAdapter(adapter);

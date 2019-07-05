@@ -94,7 +94,7 @@ public class Result {
 
     private String p_rx;
 
-    private String product_dis;
+    private float product_dis;
 
     private String product_pic;
 
@@ -128,12 +128,12 @@ public class Result {
         this.p_rx = p_rx;
     }
 
-    public String getProduct_dis ()
+    public float getProduct_dis ()
     {
         return product_dis;
     }
 
-    public void setProduct_dis (String product_dis)
+    public void setProduct_dis (float product_dis)
     {
         this.product_dis = product_dis;
     }

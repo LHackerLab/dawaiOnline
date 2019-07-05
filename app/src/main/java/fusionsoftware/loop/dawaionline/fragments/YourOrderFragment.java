@@ -210,7 +210,7 @@ public class YourOrderFragment extends Fragment implements View.OnClickListener 
 //        Data userData = dbHelper.getUserData();
 //        loginID = userData.getLoginID();
         getShippingData();
-        List<MyBasket> orderList = dbHelper.GetAllBasketOrderData();
+        List<Result> orderList = dbHelper.GetAllBasketOrderData();
         if (orderList != null && orderList.size() > 0) {
             adapter = new YourOrderAdpater(context, orderList);
             recyclerView.setAdapter(adapter);
@@ -220,8 +220,8 @@ public class YourOrderFragment extends Fragment implements View.OnClickListener 
         tv_deliveryAddress.setText(completeAddress + "," + phone + "," + zipcode);
     }
 
-    private void orderDetails(List<MyBasket> orderList) {
-        for (MyBasket order : orderList) {
+    private void orderDetails(List<Result> orderList) {
+        for (Result order : orderList) {
             CreateOrderDetails orderDetails = new CreateOrderDetails();
             orderDetails.setProductId(order.getProductId());
             orderDetails.setQuantity(order.getQuantity());
@@ -245,15 +245,15 @@ public class YourOrderFragment extends Fragment implements View.OnClickListener 
         });
     }
 
-    private void getCalculation(List<MyBasket> orderList) {
+    private void getCalculation(List<Result> orderList) {
 
-        for (MyBasket myBasket : orderList) {
+        for (Result myBasket : orderList) {
             int productId = myBasket.getProductId();
-            MyBasket myBaskets = dbHelper.getBasketOrderData(productId);
+            Result myBaskets = dbHelper.getBasketOrderData(productId);
             double discount = myBaskets.getDiscount();
-            double total = myBaskets.getPrice();
+//            double total = myBaskets.getProduct_mrp();
             double qty = myBaskets.getQuantity();
-            SubTotalPrice = (total * qty);
+//            SubTotalPrice = (total * qty);
             totalPrice = totalPrice + SubTotalPrice;
             dis = dis + ((SubTotalPrice / 100.0f) * discount);
 //            clearValue();

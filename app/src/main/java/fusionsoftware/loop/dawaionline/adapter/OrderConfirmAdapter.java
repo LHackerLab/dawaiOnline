@@ -19,6 +19,7 @@ import java.util.List;
 
 import fusionsoftware.loop.dawaionline.R;
 import fusionsoftware.loop.dawaionline.model.MyBasket;
+import fusionsoftware.loop.dawaionline.model.Result;
 import fusionsoftware.loop.dawaionline.utilities.FontManager;
 
 
@@ -27,12 +28,12 @@ import fusionsoftware.loop.dawaionline.utilities.FontManager;
  */
 
 public class OrderConfirmAdapter extends RecyclerView.Adapter<OrderConfirmAdapter.ViewHolder> {
-    private List<MyBasket> orderDataList;
+    private List<Result> orderDataList;
     private Context context;
     private boolean isEditDeleteRequired;
     private int storeId;
 
-    public OrderConfirmAdapter(Context context, List<MyBasket> categoriesItemsDatas) {
+    public OrderConfirmAdapter(Context context, List<Result> categoriesItemsDatas) {
         this.context = context;
         this.orderDataList = categoriesItemsDatas;
         this.storeId = storeId;
@@ -51,7 +52,7 @@ public class OrderConfirmAdapter extends RecyclerView.Adapter<OrderConfirmAdapte
         String value = df.format(orderDataList.get(i).getQuantity());
         holder.quality_item.setText(value + "");
         holder.nameofdish_item.setText(orderDataList.get(i).getProductName());
-        holder.price_item.setText(orderDataList.get(i).getPrice() + "");
+        holder.price_item.setText(orderDataList.get(i).getProduct_mrp() + "");
     }
 
     //move to fragment

@@ -26,6 +26,7 @@ import fusionsoftware.loop.dawaionline.database.DbHelper;
 import fusionsoftware.loop.dawaionline.fragments.MyBasketFragment;
 import fusionsoftware.loop.dawaionline.model.Data;
 import fusionsoftware.loop.dawaionline.model.MyBasket;
+import fusionsoftware.loop.dawaionline.model.Result;
 import fusionsoftware.loop.dawaionline.utilities.FontManager;
 
 /**
@@ -33,19 +34,18 @@ import fusionsoftware.loop.dawaionline.utilities.FontManager;
  */
 
 public class BasketInnerAdapter extends RecyclerView.Adapter<BasketInnerAdapter.ViewHolder> {
-    private List<MyBasket> basketItemdata, categoryData;
+    private List<Result> basketItemdata, categoryData;
     private Context context;
     private Typeface materialDesignIcons, medium, regular, bold;
-    private int categoryPosition, categoryId;
+    private String mc_Name;
     double total, grandTotal = 0.0;
     MyBasketFragment myBasketFragment;
 
-    public BasketInnerAdapter(Context context, List<MyBasket> basketItemdata, List<MyBasket> categoryData, int categoryPosition, int categoryId, MyBasketFragment myBasketFragment) {
+    public BasketInnerAdapter(Context context, List<Result> basketItemdata, List<Result> categoryData, String mc_Name, MyBasketFragment myBasketFragment) {
         this.context = context;
         this.basketItemdata = basketItemdata;
         this.categoryData = categoryData;
-        this.categoryPosition = categoryPosition;
-        this.categoryId = categoryId;
+        this.mc_Name = mc_Name;
         this.myBasketFragment = myBasketFragment;
         this.medium = FontManager.getFontTypeface(context, "fonts/roboto.medium.ttf");
         this.regular = FontManager.getFontTypeface(context, "fonts/roboto.regular.ttf");
@@ -66,22 +66,22 @@ public class BasketInnerAdapter extends RecyclerView.Adapter<BasketInnerAdapter.
         String qty = df.format(basketItemdata.get(i).getQuantity());
         viewHolder.Quantity.setText(qty);
         //calculate discounts & total....
-        String price = df.format(basketItemdata.get(i).getPrice());
+        String price = df.format(basketItemdata.get(i).getProduct_mrp());
         total = Double.parseDouble(price) * Double.parseDouble(qty);
         viewHolder.total.setText("\u20B9" + df.format(total));//total price
-        float dis = basketItemdata.get(i).getDiscount();
+        float dis = basketItemdata.get(i).getProduct_dis();
         double discount = (total / 100.0f) * dis;//calculate discount value
         viewHolder.discount.setText("\u20B9" + df.format(discount));
         viewHolder.grand_total.setText(df.format(total - discount));//grand total.
         grandTotal = grandTotal + (total - discount);// all categorygrand total....
         myBasketFragment.setMostTotal(grandTotal);
 
-        viewHolder.item_name.setText(basketItemdata.get(i).getProductName());
-        viewHolder.itemPrice.setText(String.valueOf(basketItemdata.get(i).getPrice()));
+        viewHolder.item_name.setText(basketItemdata.get(i).getProduct_name());
+        viewHolder.itemPrice.setText(String.valueOf(basketItemdata.get(i).getProduct_mrp()));
         viewHolder.increase_Product.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int count1 = (int) basketItemdata.get(i).getQuantity();
+                int count1 =  (int) basketItemdata.get(i).getQuantity();
                 basketItemdata.get(i).setQuantity(count1 + 1);
                 addProduct(i);
                 notifyDataSetChanged();
@@ -92,11 +92,11 @@ public class BasketInnerAdapter extends RecyclerView.Adapter<BasketInnerAdapter.
         {
             @Override
             public void onClick(View view) {
-                int count1 = (int) basketItemdata.get(i).getQuantity();
-                if (count1 > 1) {
-                    basketItemdata.get(i).setQuantity(count1 - 1);
-                    addProduct(i);
-                }
+                int count1 =  (int)basketItemdata.get(i).getQuantity();
+//                if (count1 > 1) {
+//                    basketItemdata.get(i).setQuantity(count1 - 1);
+//                    addProduct(i);
+//                }
                 notifyDataSetChanged();
             }
         });
@@ -106,11 +106,11 @@ public class BasketInnerAdapter extends RecyclerView.Adapter<BasketInnerAdapter.
             @Override
             public void onClick(View view) {
                 DbHelper dbHelper = new DbHelper(context);
-                dbHelper.deleteBasketOrderDataByProductId(basketItemdata.get(i).getProductId());
+                dbHelper.deleteBasketOrderDataById(basketItemdata.get(i).getId());
                 basketItemdata.remove(i);
                 if (basketItemdata.size() == 0) {//delete category data if all item deleted from this ctegory
-                    dbHelper.deleteBasketOrderDataByCategoryId(categoryId);
-                    categoryData.remove(categoryPosition);
+                    dbHelper.deleteBasketOrderDataByCategoryName(mc_Name);
+                    categoryData.remove(mc_Name);
                     if (categoryData.size() == 0) {
                         ((FragmentActivity) context).getSupportFragmentManager().popBackStack();//back to previes screen
                     } else {
@@ -129,16 +129,16 @@ public class BasketInnerAdapter extends RecyclerView.Adapter<BasketInnerAdapter.
     private void addProduct(int position) {
         float Quantity = 0;
         DbHelper dbHelper = new DbHelper(context);
-        MyBasket myBasket = new MyBasket();
-        myBasket.setProductId(basketItemdata.get(position).getProductId());
-        String productName = basketItemdata.get(position).getProductName();
-        myBasket.setProductName(productName);
-        myBasket.setCategoryId(basketItemdata.get(position).getCategoryId());
+        Result myBasket = new Result();
+        myBasket.setId(basketItemdata.get(position).getId());
+        String productName = basketItemdata.get(position).getProduct_name();
+        myBasket.setProduct_name(productName);
+        myBasket.setMc_name(basketItemdata.get(position).getMc_name());
         Quantity = basketItemdata.get(position).getQuantity();
         myBasket.setQuantity(Quantity);
-        myBasket.setPrice(basketItemdata.get(position).getPrice());
-        myBasket.setDiscount(basketItemdata.get(position).getDiscount());
-        myBasket.setCategoryName(basketItemdata.get(position).getCategoryName());
+        myBasket.setProduct_mrp(basketItemdata.get(position).getProduct_mrp());
+        myBasket.setProduct_dis(basketItemdata.get(position).getProduct_dis());
+//        myBasket.setCategoryName(basketItemdata.get(position).getCategoryName());
         dbHelper.upsertBasketOrderData(myBasket);
 //        if (Quantity == 0) {//if quantity 0 then delete order in data base
 //            dbHelper.deleteBasketOrderDataByProductId(basketItemdata.get(position).getProductId());//delete item

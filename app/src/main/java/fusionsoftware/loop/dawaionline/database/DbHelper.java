@@ -27,7 +27,7 @@ import fusionsoftware.loop.dawaionline.utilities.Contants;
 public class DbHelper extends SQLiteOpenHelper {
 
     // If you change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION = 7;
+    public static final int DATABASE_VERSION = 8;
     public static final String DATABASE_NAME = Contants.DATABASE_NAME;
 
     public DbHelper(Context context) {
@@ -58,7 +58,7 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_user_TABLE);
         String CREATE_city_TABLE = "CREATE TABLE cityData(cityId INTEGER,cityName TEXT,shippingCharge REAL)";
         db.execSQL(CREATE_city_TABLE);
-        String CREATE_MyOrder_TABLE = "CREATE TABLE MyOrderDataEntity(ProductId INTEGER,ProductName TEXT,Quantity REAL,Price REAL, OrderTime TEXT,CategoryId INTEGER,discount REAL,CategoryName TEXT)";
+        String CREATE_MyOrder_TABLE = "CREATE TABLE MyOrderDataEntity(id INTEGER, mc_name TEXT, product_name TEXT, product_subtitle TEXT, product_comp_name TEXT, product_mrp TEXT, product_dis REAL, product_details TEXT, product_pic TEXT, p_qty TEXT)";
         db.execSQL(CREATE_MyOrder_TABLE);
         String searchProductEntity = "CREATE TABLE searchProductEntity(ProductId INTEGER,ProductName TEXT,UnitPrice REAL,Discount REAL,ProductDetails TEXT,CategoryId INTEGER,ProductPicturesUrl TEXT,ProductSubTitle TEXT)";
         db.execSQL(searchProductEntity);
@@ -320,11 +320,11 @@ public class DbHelper extends SQLiteOpenHelper {
 
 
     //------------basket Order data----------------
-    public boolean upsertBasketOrderData(MyBasket ob) {
+    public boolean upsertBasketOrderData(Result ob) {
         boolean done = false;
-        MyBasket data = null;
-        if (ob.getProductId() != 0) {
-            data = getBasketOrderData(ob.getProductId());
+        Result data = null;
+        if (ob.getId() != 0) {
+            data = getBasketOrderData(ob.getId());
             if (data == null) {
                 done = insertBasketOrderData(ob);
             } else {
@@ -335,20 +335,22 @@ public class DbHelper extends SQLiteOpenHelper {
     }
 
     //GetAll Basket Order
-    private void populateBasketOrderData(Cursor cursor, MyBasket ob) {
-        ob.setProductId(cursor.getInt(0));
-        ob.setProductName(cursor.getString(1));
-        ob.setQuantity(cursor.getFloat(2));
-        ob.setPrice(cursor.getFloat(3));
-        ob.setOrderTime(cursor.getString(4));
-        ob.setCategoryId(cursor.getInt(5));
-        ob.setDiscount(cursor.getFloat(6));
-        ob.setCategoryName(cursor.getString(7));
+    private void populateBasketOrderData(Cursor cursor, Result ob) {
+        ob.setId(cursor.getInt(0));
+        ob.setMc_name(cursor.getString(1));
+        ob.setProduct_name(cursor.getString(2));
+        ob.setProduct_subtitle(cursor.getString(3));
+        ob.setProduct_comp_name(cursor.getString(4));
+        ob.setProduct_mrp(cursor.getString(5));
+        ob.setProduct_dis(cursor.getFloat(6));
+        ob.setProduct_details(cursor.getString(7));
+        ob.setPic(cursor.getString(8));
+        ob.setP_qty(cursor.getString(9));
     }
 
     //show  Basket Order list data
-    public List<MyBasket> GetAllBasketOrderData() {
-        ArrayList<MyBasket> list = new ArrayList<MyBasket>();
+    public List<Result> GetAllBasketOrderData() {
+        ArrayList<Result> list = new ArrayList<Result>();
         String query = "Select * FROM MyOrderDataEntity ";
 
         SQLiteDatabase db = this.getReadableDatabase();
@@ -357,7 +359,7 @@ public class DbHelper extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
 
             while (cursor.isAfterLast() == false) {
-                MyBasket ob = new MyBasket();
+                Result ob = new Result();
                 populateBasketOrderData(cursor, ob);
                 list.add(ob);
                 cursor.moveToNext();
@@ -368,9 +370,9 @@ public class DbHelper extends SQLiteOpenHelper {
     }
 
     //show  Basket Order list data
-    public List<MyBasket> GetAllBasketOrderDataBasedOnCategoryId(int CategoryId) {
-        ArrayList<MyBasket> list = new ArrayList<MyBasket>();
-        String query = "Select * FROM MyOrderDataEntity WHERE CategoryId= " + CategoryId + "";
+    public List<Result> GetAllBasketOrderDataBasedOnCategoryName(String mc_name) {
+        ArrayList<Result> list = new ArrayList<Result>();
+        String query = "Select * FROM MyOrderDataEntity WHERE mc_name= " + mc_name + "";
 
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -378,7 +380,7 @@ public class DbHelper extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
 
             while (cursor.isAfterLast() == false) {
-                MyBasket ob = new MyBasket();
+                Result ob = new Result();
                 populateBasketOrderData(cursor, ob);
                 list.add(ob);
                 cursor.moveToNext();
@@ -389,7 +391,7 @@ public class DbHelper extends SQLiteOpenHelper {
     }
 
     //insert Basket Order data
-    public boolean insertBasketOrderData(MyBasket ob) {
+    public boolean insertBasketOrderData(Result ob) {
         ContentValues values = new ContentValues();
         populateBasketOrderValue(ob, values);
         SQLiteDatabase db = this.getWritableDatabase();
@@ -400,11 +402,11 @@ public class DbHelper extends SQLiteOpenHelper {
     }
 
     //Basket Order data by id
-    public MyBasket getBasketOrderData(int id) {
-        String query = "Select * FROM MyOrderDataEntity WHERE ProductId= " + id + "";
+    public Result getBasketOrderData(int id) {
+        String query = "Select * FROM MyOrderDataEntity WHERE id= " + id + "";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
-        MyBasket data = new MyBasket();
+        Result data = new Result();
 
         if (cursor.moveToFirst()) {
             cursor.moveToFirst();
@@ -418,46 +420,48 @@ public class DbHelper extends SQLiteOpenHelper {
         return data;
     }
 
-    private void populateBasketOrderValue(MyBasket ob, ContentValues values) {
-        values.put("ProductId", ob.getProductId());
-        values.put("ProductName", ob.getProductName());
-        values.put("Quantity", ob.getQuantity());
-        values.put("Price", ob.getPrice());
-        values.put("OrderTime", ob.getOrderTime());
-        values.put("CategoryId", ob.getCategoryId());
-        values.put("discount", ob.getDiscount());
-        values.put("CategoryName", ob.getCategoryName());
+    private void populateBasketOrderValue(Result ob, ContentValues values) {
+        values.put("id", ob.getId());
+        values.put("mc_name", ob.getMc_name());
+        values.put("product_name", ob.getProduct_name());
+        values.put("product_subtitle", ob.getProduct_subtitle());
+        values.put("product_comp_name", ob.getProduct_comp_name());
+        values.put("product_mrp", ob.getProduct_mrp());
+        values.put("product_dis", ob.getProduct_dis());
+        values.put("product_details", ob.getProduct_details());
+        values.put("product_pic", ob.getPic());
+        values.put("p_qty", ob.getP_qty());
 
     }
 
     //ProductId,ProductName,BasketId,StoreId,Quantity,Price,OrderTime  MyOrderDataEntity
     //update Basket Order data
-    public boolean updateBasketOrderData(MyBasket ob) {
+    public boolean updateBasketOrderData(Result ob) {
         ContentValues values = new ContentValues();
         populateBasketOrderValue(ob, values);
 
         SQLiteDatabase db = this.getWritableDatabase();
         long i = 0;
-        i = db.update("MyOrderDataEntity", values, "ProductId = " + ob.getProductId() + "", null);
+        i = db.update("MyOrderDataEntity", values, "id = " + ob.getId() + "", null);
         db.close();
         return i > 0;
     }
 
     // delete Basket Order Data By Product Id ...........
-    public boolean deleteBasketOrderDataByProductId(int productId) {
+    public boolean deleteBasketOrderDataById(int id) {
         boolean result = false;
         SQLiteDatabase db = this.getWritableDatabase();
-        String query = "ProductId = " + productId + " ";
+        String query = "id = " + id + " ";
         db.delete("MyOrderDataEntity", query, null);
         db.close();
         return result;
     }
 
     // delete Basket Order Data By category Id ...........
-    public boolean deleteBasketOrderDataByCategoryId(int category) {
+    public boolean deleteBasketOrderDataByCategoryName(String mc_name) {
         boolean result = false;
         SQLiteDatabase db = this.getWritableDatabase();
-        String query = "CategoryId = " + category + " ";
+        String query = "mc_name = " + mc_name + " ";
         db.delete("MyOrderDataEntity", query, null);
         db.close();
         return result;
@@ -474,13 +478,13 @@ public class DbHelper extends SQLiteOpenHelper {
     }
 
     // get Basket OrderData
-    public MyBasket getBasketOrderData() {
+    public Result getBasketOrderData() {
 
         String query = "Select * FROM MyOrderDataEntity";
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
-        MyBasket data = new MyBasket();
+        Result data = new Result();
 
         if (cursor.moveToFirst()) {
             cursor.moveToFirst();

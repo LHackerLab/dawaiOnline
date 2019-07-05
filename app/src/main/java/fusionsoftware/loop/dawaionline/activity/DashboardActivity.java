@@ -178,7 +178,7 @@ public class DashboardActivity extends AppCompatActivity
     //add item in  cart or not.........
     public void setItemCart() {
         DbHelper dbHelper = new DbHelper(this);
-        List<MyBasket> myBasket = dbHelper.GetAllBasketOrderData();
+        List<Result> myBasket = dbHelper.GetAllBasketOrderData();
         if (myBasket != null && myBasket.size() > 0) {
             //for no of added item in basket
             cart_dot.setText(String.valueOf(myBasket.size()));

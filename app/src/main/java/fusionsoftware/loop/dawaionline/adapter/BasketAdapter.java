@@ -28,6 +28,7 @@ import fusionsoftware.loop.dawaionline.fragments.MyBasketFragment;
 import fusionsoftware.loop.dawaionline.fragments.UserAddressListFragment;
 import fusionsoftware.loop.dawaionline.model.Data;
 import fusionsoftware.loop.dawaionline.model.MyBasket;
+import fusionsoftware.loop.dawaionline.model.Result;
 import fusionsoftware.loop.dawaionline.utilities.FontManager;
 import fusionsoftware.loop.dawaionline.utilities.Utility;
 
@@ -36,13 +37,13 @@ import fusionsoftware.loop.dawaionline.utilities.Utility;
  * Created by user on 8/14/2017.
  */
 public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.ViewHolder> {
-    private List<MyBasket> basketdata;
+    private List<Result> basketdata;
     private Context context;
     private Typeface materialDesignIcons, medium, regular, bold;
     DbHelper dbHelper;
     MyBasketFragment myBasketFragment;
 
-    public BasketAdapter(Context context, List<MyBasket> basketdata, MyBasketFragment myBasketFragment) {
+    public BasketAdapter(Context context, List<Result> basketdata, MyBasketFragment myBasketFragment) {
         this.context = context;
         this.basketdata = basketdata;
         this.myBasketFragment = myBasketFragment;
@@ -62,12 +63,12 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.ViewHolder
     @Override
     public void onBindViewHolder(final ViewHolder viewHolder, final int i) {
         dbHelper = new DbHelper(context);
-        viewHolder.categoryName.setText(basketdata.get(i).getCategoryName());
-        List<MyBasket> orderList = dbHelper.GetAllBasketOrderDataBasedOnCategoryId(basketdata.get(i).getCategoryId());
+        viewHolder.categoryName.setText(basketdata.get(i).getProduct_name());
+        List<Result> orderList = dbHelper.GetAllBasketOrderDataBasedOnCategoryName(basketdata.get(i).getMc_name());
         if (orderList != null && orderList.size() > 0) {
             LinearLayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
             viewHolder.recycleView_inner.setLayoutManager(layoutManager);
-            BasketInnerAdapter adapter = new BasketInnerAdapter(context, orderList, basketdata, i, basketdata.get(i).getCategoryId(), myBasketFragment);
+            BasketInnerAdapter adapter = new BasketInnerAdapter(context, orderList, basketdata,  basketdata.get(i).getMc_name(), myBasketFragment);
             viewHolder.recycleView_inner.setAdapter(adapter);
         }
 

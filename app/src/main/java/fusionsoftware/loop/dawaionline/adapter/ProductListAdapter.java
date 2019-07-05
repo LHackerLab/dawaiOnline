@@ -1,27 +1,24 @@
 package fusionsoftware.loop.dawaionline.adapter;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.graphics.Typeface;
-import android.os.Handler;
 import android.os.Vibrator;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
-import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -29,15 +26,12 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 
 import fusionsoftware.loop.dawaionline.R;
 import fusionsoftware.loop.dawaionline.activity.DashboardActivity;
 import fusionsoftware.loop.dawaionline.database.DbHelper;
-import fusionsoftware.loop.dawaionline.model.Data;
-import fusionsoftware.loop.dawaionline.model.MyBasket;
-import fusionsoftware.loop.dawaionline.model.Response;
+import fusionsoftware.loop.dawaionline.fragments.ViewProductFragment;
 import fusionsoftware.loop.dawaionline.model.Result;
 import fusionsoftware.loop.dawaionline.utilities.FontManager;
 import fusionsoftware.loop.dawaionline.utilities.Utility;
@@ -95,12 +89,22 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         viewHolder.productPrice.setText(String.valueOf(FilteruserList.get(position).getProduct_mrp()));
         viewHolder.productDetails.getSettings().setJavaScriptEnabled(true);
         viewHolder.productDetails.loadData(FilteruserList.get(position).getProduct_details(), "text/html", "UTF-8");
-        viewHolder.tv_discount.setText(String.valueOf("Discount - "+FilteruserList.get(position).getProduct_dis() + "% off"));
+        viewHolder.tv_discount.setText(String.valueOf("Discount-\u20B9 "+FilteruserList.get(position).getProduct_dis()+" off"));
         if (FilteruserList.get(position).getCountValue() != 0) {
             DecimalFormat df = new DecimalFormat("0");
             String value = df.format(FilteruserList.get(position).getCountValue());
             viewHolder.textView_nos.setText(value);
         }
+
+        viewHolder.main_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ViewProductFragment viewProductFragment=ViewProductFragment.newInstance(FilteruserList.get(position).getId(), "");
+                moveFragment(viewProductFragment);
+//                ViewProductFragment productFragment=ViewProductFragment.newInstance(FilteruserList.get(position).getId(),"");
+//                moveFragment(productFragment);
+            }
+        });
 
         viewHolder.increase_Product.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -140,26 +144,32 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             }
 
         });
+
     }
 
     // add items in cart.............
     public void addItemToCart(int position) {
         DbHelper dbHelper = new DbHelper(context);
-        MyBasket myBasket = new MyBasket();
-        myBasket.setProductId(FilteruserList.get(position).getProductId());
-        String productName = FilteruserList.get(position).getProductName();
-        myBasket.setProductName(productName);
-        myBasket.setCategoryId(FilteruserList.get(position).getCategoryId());
+        Result myBasket = new Result();
+        myBasket.setId(FilteruserList.get(position).getId());
+        myBasket.setMc_name(FilteruserList.get(position).getMc_name());
+        myBasket.setProduct_name(FilteruserList.get(position).getProduct_name());
+        myBasket.setProduct_subtitle(FilteruserList.get(position).getProduct_subtitle());
+        myBasket.setProduct_mrp(FilteruserList.get(position).getProduct_mrp());
+        myBasket.setProduct_dis(FilteruserList.get(position).getProduct_dis());
         myBasket.setQuantity(FilteruserList.get(position).getCountValue());
-        myBasket.setPrice(FilteruserList.get(position).getUnitPrice());
-        myBasket.setDiscount(FilteruserList.get(position).getDiscount());
-        myBasket.setOrderTime(getCurrentDateTime());
-        if (categoryName != null && !categoryName.equals("")) {
-            myBasket.setCategoryName(categoryName);
-        } else {
-            Result result = dbHelper.getCategoryData(FilteruserList.get(position).getCategoryId());
-            myBasket.setCategoryName(result.getCategoryName());
-        }
+        myBasket.setProduct_details(FilteruserList.get(position).getProduct_details());
+        myBasket.setPic(FilteruserList.get(position).getPic());
+        myBasket.setP_qty(FilteruserList.get(position).getP_qty());
+        myBasket.setIsoutofstock(FilteruserList.get(position).getIsoutofstock());
+        myBasket.setProduct_comp_name(FilteruserList.get(position).getProduct_comp_name());
+
+//        if (categoryName != null && !categoryName.equals("")) {
+//            myBasket.setCategoryName(categoryName);
+//        } else {
+//            Result result = dbHelper.getCategoryData(FilteruserList.get(position).getCategoryId());
+//            myBasket.setCategoryName(result.getCategoryName());
+//        }
         dbHelper.upsertBasketOrderData(myBasket);
         notifyDataSetChanged();
     }
@@ -229,6 +239,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         LinearLayout orderLayout;
         CardView card_view;
         WebView productDetails;
+        CoordinatorLayout main_layout;
 
         public ViewHolder(View view) {
             super(view);
@@ -236,7 +247,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             productDetails = (WebView) view.findViewById(R.id.productDetails);
             productPrice = (TextView) view.findViewById(R.id.productPrice);
             productImage = (ImageView) view.findViewById(R.id.productImage);
-//            productImageCopy = (ImageView) view.findViewById(R.id.productImageCopy);
+            productImageCopy = (ImageView) view.findViewById(R.id.productImageCopy);
             rupees_icon = (TextView) view.findViewById(R.id.rupees_icon);
             tv_or = (TextView) view.findViewById(R.id.tv_or);
             textView_addToCart = (TextView) view.findViewById(R.id.textView_addToCart);
@@ -247,6 +258,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             increase_Product = (TextView) view.findViewById(R.id.increase_Product);
             decrement_Product = (TextView) view.findViewById(R.id.decrement_Product);
             productSubTitle = (TextView) view.findViewById(R.id.productSubTitle);
+            main_layout = view.findViewById(R.id.main_layout);
             productTitle.setTypeface(medium);
             rupees_icon.setTypeface(materialDesignIcons);
             rupees_icon.setText(Html.fromHtml("&#xf1af;"));
@@ -260,5 +272,13 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
 
     public interface ProductItemActionListener {
         void onItemTap(ImageView imageView);
+    }
+
+    private void moveFragment(Fragment fragment) {
+        FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.container, fragment)
+                .addToBackStack(null)
+                .commit();
     }
 }

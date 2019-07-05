@@ -24,6 +24,7 @@ import java.util.List;
 import fusionsoftware.loop.dawaionline.R;
 import fusionsoftware.loop.dawaionline.fragments.ProductListFragment;
 import fusionsoftware.loop.dawaionline.model.MyBasket;
+import fusionsoftware.loop.dawaionline.model.Result;
 import fusionsoftware.loop.dawaionline.utilities.FontManager;
 
 
@@ -31,11 +32,11 @@ import fusionsoftware.loop.dawaionline.utilities.FontManager;
  * Created by LALIT on 8/14/2017.
  */
 public class YourOrderAdpater extends RecyclerView.Adapter<YourOrderAdpater.ViewHolder> {
-    private List<MyBasket> orderDataList;
+    private List<Result> orderDataList;
     private Context context;
     private boolean isEditDeleteRequired;
 
-    public YourOrderAdpater(Context context, List<MyBasket> categoriesItemsDatas) {
+    public YourOrderAdpater(Context context, List<Result> categoriesItemsDatas) {
         this.context = context;
         this.orderDataList = categoriesItemsDatas;
     }
@@ -54,7 +55,7 @@ public class YourOrderAdpater extends RecyclerView.Adapter<YourOrderAdpater.View
         String value = df.format(orderDataList.get(i).getQuantity());
         holder.quality_item.setText(value);
         holder.nameofdish_item.setText(orderDataList.get(i).getProductName());
-        holder.price_item.setText(orderDataList.get(i).getPrice() + "");
+        holder.price_item.setText(orderDataList.get(i).getProduct_mrp() + "");
 //        holder.edit_icon.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {

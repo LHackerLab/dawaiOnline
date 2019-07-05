@@ -162,7 +162,7 @@ public class ProductListFragment extends Fragment {
 
                             }
                         }).startAnimation();
-                        //  circleAnimationUtil.setOriginRect(133,50);
+                          circleAnimationUtil.setOriginRect(133,50);
                     }
                 }
             });
