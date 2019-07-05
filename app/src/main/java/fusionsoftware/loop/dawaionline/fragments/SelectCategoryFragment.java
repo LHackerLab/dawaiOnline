@@ -154,8 +154,8 @@ public class SelectCategoryFragment extends Fragment {
         linearLayout = (LinearLayout) view.findViewById(R.id.linearLayout);
         LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.no_data_found, null);
-        TextView nodataIcon = (TextView) view.findViewById(R.id.nodataIcon);
-        TextView nodata = (TextView) view.findViewById(R.id.nodata);
+        TextView nodataIcon = view.findViewById(R.id.nodataIcon);
+        TextView nodata = view.findViewById(R.id.nodata);
         nodata.setTypeface(regular);
         nodataIcon.setTypeface(materialDesignIcons);
         nodataIcon.setText(Html.fromHtml("&#xf187;"));
