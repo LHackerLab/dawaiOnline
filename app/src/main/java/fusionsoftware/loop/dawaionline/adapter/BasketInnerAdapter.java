@@ -66,11 +66,11 @@ public class BasketInnerAdapter extends RecyclerView.Adapter<BasketInnerAdapter.
         String qty = df.format(basketItemdata.get(i).getQuantity());
         viewHolder.Quantity.setText(qty);
         //calculate discounts & total....
-//        String price = df.format(basketItemdata.get(i).getProduct_mrp());
-//        total = Double.parseDouble(price) * Double.parseDouble(qty);
+        String price = df.format(basketItemdata.get(i).getProduct_mrp());
+        total = Double.parseDouble(price) * Double.parseDouble(qty);
         viewHolder.total.setText("\u20B9" + df.format(total));//total price
         float dis = basketItemdata.get(i).getProduct_dis();
-        double discount = (total / 100.0f) * dis;//calculate discount value
+        double discount = Double.parseDouble(qty) * dis;//calculate discount value
         viewHolder.discount.setText("\u20B9" + df.format(discount));
         viewHolder.grand_total.setText(df.format(total - discount));//grand total.
         grandTotal = grandTotal + (total - discount);// all categorygrand total....
@@ -93,10 +93,10 @@ public class BasketInnerAdapter extends RecyclerView.Adapter<BasketInnerAdapter.
             @Override
             public void onClick(View view) {
                 int count1 =  (int)basketItemdata.get(i).getQuantity();
-//                if (count1 > 1) {
-//                    basketItemdata.get(i).setQuantity(count1 - 1);
-//                    addProduct(i);
-//                }
+                if (count1 > 1) {
+                    basketItemdata.get(i).setQuantity(count1 - 1);
+                    addProduct(i);
+                }
                 notifyDataSetChanged();
             }
         });

@@ -58,7 +58,7 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_user_TABLE);
         String CREATE_city_TABLE = "CREATE TABLE cityData(cityId INTEGER,cityName TEXT,shippingCharge REAL)";
         db.execSQL(CREATE_city_TABLE);
-        String CREATE_MyOrder_TABLE = "CREATE TABLE MyOrderDataEntity(id INTEGER, mc_name TEXT, product_name TEXT, product_subtitle TEXT, product_comp_name TEXT, product_mrp TEXT, product_dis REAL, product_details TEXT, product_pic TEXT, p_qty TEXT)";
+        String CREATE_MyOrder_TABLE = "CREATE TABLE MyOrderDataEntity(id INTEGER, mc_name TEXT, product_name TEXT, product_subtitle TEXT, product_comp_name TEXT, product_mrp REAL, product_dis REAL, product_details TEXT, product_pic TEXT, p_qty TEXT)";
         db.execSQL(CREATE_MyOrder_TABLE);
         String searchProductEntity = "CREATE TABLE searchProductEntity(ProductId INTEGER,ProductName TEXT,UnitPrice REAL,Discount REAL,ProductDetails TEXT,CategoryId INTEGER,ProductPicturesUrl TEXT,ProductSubTitle TEXT)";
         db.execSQL(searchProductEntity);
@@ -341,7 +341,7 @@ public class DbHelper extends SQLiteOpenHelper {
         ob.setProduct_name(cursor.getString(2));
         ob.setProduct_subtitle(cursor.getString(3));
         ob.setProduct_comp_name(cursor.getString(4));
-        ob.setProduct_mrp(cursor.getString(5));
+        ob.setProduct_mrp(cursor.getFloat(5));
         ob.setProduct_dis(cursor.getFloat(6));
         ob.setProduct_details(cursor.getString(7));
         ob.setPic(cursor.getString(8));

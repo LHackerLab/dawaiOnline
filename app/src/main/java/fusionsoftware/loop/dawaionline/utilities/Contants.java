@@ -42,9 +42,9 @@ public class Contants {
     public static final String VerifyOTP = "otpverifiy.php";
     public static final String GetUserProfile = "Login/GetUserProfile";
     public static final String UpdateProfile = "Login/UpdateProfile";
-    public static final String AddNewAddress = "AddNewAddress.php";
+    public static final String AddNewAddress = "addUserAddress.php";
     public static final String UpdateAddress = "Address/UpdateAddress";
-    public static final String GetAllAddress = "getAllAddress.php";
+    public static final String GetAllAddress = "getUserAddressByMobile.php";
     public static final String DeleteAddress = "Address/DeleteAddress";
     public static final String GetAllCategoryList = "getAllCategoryList.php";
     public static final String GetAllProductList = "getAllProductList.php";

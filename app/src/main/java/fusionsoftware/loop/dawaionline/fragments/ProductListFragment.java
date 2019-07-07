@@ -191,11 +191,10 @@ public class ProductListFragment extends Fragment {
     //get all Product list data
     private void getAllProductList() {
         if (Utility.isOnline(context)) {
-            ProgressDialog dialog=new ProgressDialog(context);
-            dialog.setMessage("Loading Data...");
+            BallTriangleDialog dialog=new BallTriangleDialog(context);
             dialog.show();
             ServiceCaller serviceCaller=new ServiceCaller(context);
-            serviceCaller.callAllProductListService(categoryName, 9, new IAsyncWorkCompletedCallback() {
+            serviceCaller.callAllProductListService(categoryName, id, new IAsyncWorkCompletedCallback() {
                 @Override
                 public void onDone(String workName, boolean isComplete) {
                     dialog.dismiss();

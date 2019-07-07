@@ -191,8 +191,7 @@ public class OTPVerifyActivity extends AppCompatActivity implements View.OnClick
     private void verifyOTP(String otp) {
         if (validation()){
             if (Utility.isOnline(this)){
-                ProgressDialog dialog=new ProgressDialog(this);
-                dialog.setMessage("Verifying Otp Please Wait...");
+                BallTriangleDialog dialog=new BallTriangleDialog(OTPVerifyActivity.this);
                 dialog.show();
                 ServiceCaller serviceCaller=new ServiceCaller(this);
                 serviceCaller.callOtpVerifyService(phone, otp, new IAsyncWorkCompletedCallback() {
@@ -207,7 +206,7 @@ public class OTPVerifyActivity extends AppCompatActivity implements View.OnClick
                                     if (result.getStatus().equalsIgnoreCase("1")) {
                                         SharedPreferences sharedPreferences = getSharedPreferences("Login", Context.MODE_PRIVATE);
                                         SharedPreferences.Editor editor = sharedPreferences.edit();
-                                        editor.putInt("Logid", result.getLoginId());
+                                        editor.putString("Login", phone);
                                         editor.apply();
                                         Toast.makeText(OTPVerifyActivity.this, "Login Successfully", Toast.LENGTH_SHORT).show();
                                         Intent intent = new Intent(OTPVerifyActivity.this, DashboardActivity.class);

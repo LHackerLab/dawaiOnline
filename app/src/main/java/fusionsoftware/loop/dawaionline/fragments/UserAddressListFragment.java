@@ -38,6 +38,7 @@ import fusionsoftware.loop.dawaionline.framework.ServiceCaller;
 import fusionsoftware.loop.dawaionline.model.Addresses;
 import fusionsoftware.loop.dawaionline.model.ContentDataAsArray;
 import fusionsoftware.loop.dawaionline.model.Data;
+import fusionsoftware.loop.dawaionline.model.MyPojo;
 import fusionsoftware.loop.dawaionline.model.Result;
 import fusionsoftware.loop.dawaionline.utilities.CompatibilityUtility;
 import fusionsoftware.loop.dawaionline.utilities.Contants;
@@ -78,6 +79,7 @@ public class UserAddressListFragment extends Fragment implements View.OnClickLis
     TextView addNewAddress, addressIcon;
     Typeface materialdesignicons_font, medium, regular;
     LinearLayout linearLayout;
+    String phoneNumber;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -135,38 +137,40 @@ public class UserAddressListFragment extends Fragment implements View.OnClickLis
             Result data = dbHelper.getUserData();
 //            if (data != null) {
 //                int loginId = data.getLoginID();
-                int loginId = 1;
-                if (loginId != 0) {
-                    ServiceCaller serviceCaller = new ServiceCaller(getActivity());
-                    serviceCaller.callGetAllAddressService(loginId, new IAsyncWorkCompletedCallback() {
-                        @Override
-                        public void onDone(String workName, boolean isComplete) {
-                            if (isComplete) {
-                                ContentDataAsArray contentDataAsArray = new Gson().fromJson(workName, ContentDataAsArray.class);
-                                for (Result result : contentDataAsArray.getResults()) {
-                                    clientlist.addAll(Arrays.asList(result));
-                                }
+//                int loginId = 1;
+            SharedPreferences sharedPreferences = context.getSharedPreferences("Login", Context.MODE_PRIVATE);
+            phoneNumber = sharedPreferences.getString("Login", "");
+            if (phoneNumber != null) {
+                ServiceCaller serviceCaller = new ServiceCaller(context);
+                serviceCaller.callGetAllAddressService(phoneNumber, new IAsyncWorkCompletedCallback() {
+                    @Override
+                    public void onDone(String workName, boolean isComplete) {
+                        if (isComplete) {
+                            MyPojo myPojo = new Gson().fromJson(workName, MyPojo.class);
+                            for (Result result : myPojo.getResult()) {
+                                clientlist.addAll(Arrays.asList(result));
+                            }
 
-                                if (clientlist != null && clientlist.size() != 0) {
-                                    UserAddressListAdapter itemAdapter = new UserAddressListAdapter(context, clientlist, navigateFlag);
-                                    reycyle_view.setAdapter(itemAdapter);
-                                    itemAdapter.notifyDataSetChanged();
-                                } else {
-                                    noDataFoundUI();
-                                }
+                            if (clientlist != null && clientlist.size() > 0) {
+                                UserAddressListAdapter itemAdapter = new UserAddressListAdapter(context, clientlist, navigateFlag);
+                                reycyle_view.setAdapter(itemAdapter);
+                                itemAdapter.notifyDataSetChanged();
                             } else {
                                 noDataFoundUI();
                             }
-                            try {
-                                if (dotDialog.isShowing() && dotDialog != null) {
-                                    dotDialog.dismiss();
-                                }
-                            } catch (Exception ex) {
-                                Log.e(Contants.LOG_TAG, ex.getMessage(), ex);
-                            }
+                        } else {
+                            noDataFoundUI();
                         }
+                        try {
+                            if (dotDialog.isShowing() && dotDialog != null) {
+                                dotDialog.dismiss();
+                            }
+                        } catch (Exception ex) {
+                            Log.e(Contants.LOG_TAG, ex.getMessage(), ex);
+                        }
+                    }
 
-                    });
+                });
 //                }
             } else {
                 if (dotDialog.isShowing() && dotDialog != null) {

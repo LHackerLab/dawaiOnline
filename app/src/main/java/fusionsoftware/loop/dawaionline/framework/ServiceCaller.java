@@ -241,6 +241,67 @@ public class ServiceCaller {
         AppController.getInstance().addToRequestQueue(stringRequest);//, tag_json_obj);
     }
 
+
+    //call add new address
+    public void callAddNewAddressService(final String address, final String landmark, final String city, final String name, final String pincode, final String locality, final String mobile, final IAsyncWorkCompletedCallback workCompletedCallback) {
+        final String url = Contants.SERVICE_BASE_URL + Contants.AddNewAddress;
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                workCompletedCallback.onDone(response, true);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                workCompletedCallback.onDone(error.getMessage(), false);
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("address", address);
+                params.put("landmark", landmark);
+                params.put("city", city);
+                params.put("patient_name", name);
+                params.put("pincode", pincode);
+                params.put("locality", locality);
+                params.put("mobile", mobile);
+                return params;
+            }
+        };
+
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(20000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        AppController.getInstance().addToRequestQueue(stringRequest);//, tag_json_obj);
+    }
+
+
+
+    //get all address data...........
+    public void callGetAllAddressService(final String phone, final IAsyncWorkCompletedCallback workCompletedCallback) {
+        final String url = Contants.SERVICE_BASE_URL + Contants.GetAllAddress;
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                workCompletedCallback.onDone(response, true);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                workCompletedCallback.onDone(error.getMessage(), false);
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("mobile", phone);
+                return params;
+            }
+        };
+
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(20000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        AppController.getInstance().addToRequestQueue(stringRequest);//, tag_json_obj);
+    }
+
     //for get user profile................
     public void getUserProfileService(int LoginID, final IAsyncWorkCompletedCallback workCompletedCallback) {
 
@@ -264,6 +325,9 @@ public class ServiceCaller {
             }
         });
     }
+
+
+
 
     //parse and save get user profile
     public void parseGetUserProfileService(final String result, final IAsyncWorkCompletedCallback workCompletedCallback) {
@@ -420,32 +484,7 @@ public class ServiceCaller {
         });
     }
 
-    //get all address data...........
-    public void callGetAllAddressService(final int LoginId, final IAsyncWorkCompletedCallback workCompletedCallback) {
 
-        final String url = Contants.SERVICE_BASE_URL + Contants.GetAllAddress;
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                workCompletedCallback.onDone(response, true);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                workCompletedCallback.onDone("no", false);
-            }
-        }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("LoginID", String.valueOf(LoginId));
-                return params;
-            }
-        };
-
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
-        requestQueue.add(stringRequest);
-    }
 
 
     //call Delete address data

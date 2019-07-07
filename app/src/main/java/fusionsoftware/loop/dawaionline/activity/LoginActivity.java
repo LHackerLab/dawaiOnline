@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Rect;
@@ -138,8 +139,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void loginWithPhone() {
         if (validation()){
             if (Utility.isOnline(LoginActivity.this)){
-                ProgressDialog dialog=new ProgressDialog(this);
-                dialog.setMessage("Loading Please Wait...");
+               BallTriangleDialog dialog=new BallTriangleDialog(LoginActivity.this);
                 dialog.show();
                 ServiceCaller serviceCaller=new ServiceCaller(LoginActivity.this);
                 serviceCaller.callLoginService(phone, new IAsyncWorkCompletedCallback() {
@@ -148,6 +148,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         dialog.dismiss();
                         if (isComplete){
                             Toast.makeText(LoginActivity.this, Contants.SEND_MESSAGE, Toast.LENGTH_SHORT).show();
+                            SharedPreferences sharedPreferences = getSharedPreferences("PhoneNumber", Context.MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString("p_numb", phone);
+                            editor.apply();
                             Intent intent=new Intent(LoginActivity.this, OTPVerifyActivity.class);
                             intent.putExtra("phone", phone);
                             startActivity(intent);

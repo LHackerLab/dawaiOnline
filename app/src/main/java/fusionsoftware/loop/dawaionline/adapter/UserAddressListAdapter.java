@@ -64,9 +64,11 @@ public class UserAddressListAdapter extends RecyclerView.Adapter<UserAddressList
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-        holder.completeaddress.setText(addresslist.get(position).getCompleteAddress() + "," + addresslist.get(position).getZipCode());
-        holder.phonenumber.setText(addresslist.get(position).getPhoneNumber());
-        holder.locality_name.setText(addresslist.get(position).getCityName());
+        holder.completename.setText(addresslist.get(position).getPatient_name());
+        holder.completeaddress.setText(addresslist.get(position).getLocality()+", "+addresslist.get(position).getAddress()+", "+  addresslist.get(position).getLandmark()+", "+addresslist.get(position).getCity());
+        holder.Zipcode.setText(addresslist.get(position).getPincode());
+        holder.phonenumber.setText(addresslist.get(position).getMobile());
+//        holder.locality_name.setText(addresslist.get(position).getCityName());
         holder.tv_edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -177,24 +179,25 @@ public class UserAddressListAdapter extends RecyclerView.Adapter<UserAddressList
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView completeaddress, Zipcode, phonenumber, tv_delete, tv_edit, locality_name;
+        TextView completename, completeaddress, Zipcode, phonenumber, tv_delete, tv_edit;
         LinearLayout mainLayout;
 
         public ViewHolder(View view) {
             super(view);
+            completename = (TextView) view.findViewById(R.id.completename);
             completeaddress = (TextView) view.findViewById(R.id.completeaddress);
-            locality_name = (TextView) view.findViewById(R.id.locality_name);
-            // Zipcode = (TextView) view.findViewById(R.id.Zipcode);
+//            locality_name = (TextView) view.findViewById(R.id.locality_name);
+            Zipcode = (TextView) view.findViewById(R.id.Zipcode);
             phonenumber = (TextView) view.findViewById(R.id.phonenumber);
             tv_edit = (TextView) view.findViewById(R.id.tv_edit);
             tv_delete = (TextView) view.findViewById(R.id.tv_delete);
             mainLayout = (LinearLayout) view.findViewById(R.id.mainLayout);
             completeaddress.setTypeface(medium);
-            //   Zipcode.setTypeface(medium);
+            Zipcode.setTypeface(medium);
             tv_edit.setTypeface(medium);
             tv_delete.setTypeface(medium);
-            phonenumber.setTypeface(regular);
-            locality_name.setTypeface(regular);
+            phonenumber.setTypeface(medium);
+//            locality_name.setTypeface(regular);
 
 
         }

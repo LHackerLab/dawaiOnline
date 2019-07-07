@@ -25,24 +25,31 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/completeaddress"
+                    android:id="@+id/completename"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/primary_text" />
 
                 <TextView
-                    android:id="@+id/locality_name"
+                    android:id="@+id/completeaddress"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dimValue_5"
                     android:textColor="@color/primary_text" />
 
                 <!--<TextView-->
-                    <!--android:id="@+id/Zipcode"-->
+                    <!--android:id="@+id/locality_name"-->
                     <!--android:layout_width="match_parent"-->
                     <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginTop="@dimen/dimValue_5"-->
                     <!--android:textColor="@color/primary_text" />-->
+
+
+                <TextView
+                    android:id="@+id/Zipcode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimValue_5"
+                    android:textColor="@color/primary_text" />
 
                 <TextView
                     android:id="@+id/phonenumber"

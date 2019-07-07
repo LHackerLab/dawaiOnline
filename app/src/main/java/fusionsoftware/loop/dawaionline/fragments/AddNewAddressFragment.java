@@ -74,17 +74,17 @@ public class AddNewAddressFragment extends Fragment implements View.OnClickListe
         }
     }
 
-    private EditText addNewAddress, addNewPinCode, addNewPhoneNumber, addNewLandMark;
+    private EditText addNewAddress, addNewPinCode, addNewPhoneNumber, addNewLandMark, addNewName, addNewLocality, addNewCity;
     private View view;
     private TextView address_icon, saveaddress, select_locality;
-    private String address, phone, pinCode, landMark, city;
+    private String name, address, phone, pinCode, landMark, city, locality;
     private TextInputLayout layout_address, layout_pincode, layout_phone, layout_landmark;
     private LinearLayout save_address, selectCityLayout;
     private Context context;
     private Button btn_proceed;
     private Boolean localityFlag = false;
     private Typeface materialdesignicons_font, regular, medium;
-    Spinner spinner;
+//    Spinner spinner;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -110,7 +110,7 @@ public class AddNewAddressFragment extends Fragment implements View.OnClickListe
         saveaddress.setTypeface(medium);
         addNewLandMark.setTypeface(regular);
         addNewPinCode.setTypeface(regular);
-        addNewPhoneNumber.setTypeface(regular);
+//        addNewPhoneNumber.setTypeface(regular);
         addNewAddress.setTypeface(regular);
 
     }
@@ -123,9 +123,12 @@ public class AddNewAddressFragment extends Fragment implements View.OnClickListe
 //        rootActivity.setScreenFavourite(false);
 //        rootActivity.setScreenLocation(false);
         rootActivity.setItemCart();
+        addNewName = (EditText) view.findViewById(R.id.edt_name);
+        addNewLocality = (EditText) view.findViewById(R.id.edt_locality);
         addNewAddress = (EditText) view.findViewById(R.id.edt_address);
         addNewPhoneNumber = (EditText) view.findViewById(R.id.edt_phone);
         addNewPinCode = (EditText) view.findViewById(R.id.edt_pincode);
+        addNewCity = (EditText) view.findViewById(R.id.edt_city);
         addNewLandMark = (EditText) view.findViewById(R.id.edt_landmark);
         layout_address = (TextInputLayout) view.findViewById(R.id.layout_address);
         layout_phone = (TextInputLayout) view.findViewById(R.id.layout_phone);
@@ -134,9 +137,9 @@ public class AddNewAddressFragment extends Fragment implements View.OnClickListe
         save_address = (LinearLayout) view.findViewById(R.id.save_address);
         address_icon = (TextView) view.findViewById(R.id.address_icon);
         saveaddress = (TextView) view.findViewById(R.id.saveaddress);
-        select_locality = (TextView) view.findViewById(R.id.select_locality_textView);
-        select_locality.setTypeface(regular);
-        spinner = view.findViewById(R.id.spinner);
+//        select_locality = (TextView) view.findViewById(R.id.select_locality_textView);
+//        select_locality.setTypeface(regular);
+//        spinner = view.findViewById(R.id.spinner);
         save_address.setOnClickListener(this);
         if (editFlag) {//only for edit
             saveaddress.setText("Update Address");
@@ -182,19 +185,21 @@ public class AddNewAddressFragment extends Fragment implements View.OnClickListe
             stringList.addAll(Arrays.asList(result.getCityName()));
         }
         ArrayAdapter<String> stringArrayAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, stringList);
-        stringArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(stringArrayAdapter);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                city = adapterView.getSelectedItem().toString();
-            }
+//        stringArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+////        spinner.setAdapter(stringArrayAdapter);
+////        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+////            @Override
+////            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+////                city = adapterView.getSelectedItem().toString();
+////            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> adapterView) {
+//
+//            }
+//        });
 
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
 
-            }
-        });
     }
 
 
@@ -208,35 +213,71 @@ public class AddNewAddressFragment extends Fragment implements View.OnClickListe
 
     //validation for new address............
     private boolean isValidate() {
+        name = addNewName.getText().toString();
         address = addNewAddress.getText().toString();
         pinCode = addNewPinCode.getText().toString();
-        phone = addNewPhoneNumber.getText().toString();
+//        phone = addNewPhoneNumber.getText().toString();
         landMark = addNewLandMark.getText().toString();
-        if (address.length() == 0) {
+        locality=addNewLocality.getText().toString();
+        city=addNewCity.getText().toString();
+
+        if (name.length() == 0) {
+            addNewAddress.setError("Please Enter Name");
+            requestFocus(addNewName);
+            return false;
+//        } else {
+//            layout_address.setErrorEnabled(false);
+        }
+
+       else if (address.length() == 0) {
             addNewAddress.setError("Please Enter Address");
             requestFocus(addNewAddress);
             return false;
 //        } else {
 //            layout_address.setErrorEnabled(false);
         }
-        if (phone.length() != 10) {
-            addNewPhoneNumber.setError("Please Enter Valid Phone Number ");
-            requestFocus(addNewPhoneNumber);
+
+       else if (landMark.length() == 0) {
+            addNewAddress.setError("Please Enter Landmark");
+            requestFocus(addNewAddress);
             return false;
 //        } else {
-//            layout_phone.setErrorEnabled(false);
+//            layout_address.setErrorEnabled(false);
         }
-        if (pinCode.length() == 0) {
+
+        else if (city.length() == 0) {
+            addNewAddress.setError("Please Enter City");
+            requestFocus(addNewCity);
+            return false;
+//        } else {
+//            layout_address.setErrorEnabled(false);
+        }
+
+
+        else  if (pinCode.length() == 0) {
             addNewPinCode.setError("Please Enter Pincode");
             requestFocus(addNewPinCode);
             return false;
-        } else if (pinCode.length() != 6) {
+        }
+        else if (pinCode.length() != 6) {
             addNewPinCode.setError("Please Enter  Valid Pincode");
             requestFocus(addNewPinCode);
             return false;
 //        } else {
 //            layout_pincode.setErrorEnabled(false);
         }
+
+
+        else if (locality.length() == 0) {
+            addNewPhoneNumber.setError("Please Enter Locality");
+            requestFocus(addNewPhoneNumber);
+            return false;
+//        } else {
+//            layout_phone.setErrorEnabled(false);
+        }
+
+
+
         return true;
     }
 
@@ -250,13 +291,21 @@ public class AddNewAddressFragment extends Fragment implements View.OnClickListe
                 Result data = dbHelper.getUserData();
 //                int loginId = data.getLoginID();
                 int loginId = 1;
+                SharedPreferences sharedPreferences = context.getSharedPreferences("Login", Context.MODE_PRIVATE);
+                phone=sharedPreferences.getString("Login", "");
                 ServiceCaller serviceCaller = new ServiceCaller(context);
-                serviceCaller.SetNewAddressService(loginId, address, phone, pinCode, landMark, city, new IAsyncWorkCompletedCallback() {
+                serviceCaller.callAddNewAddressService(address, landMark, city, name, pinCode, locality, phone, new IAsyncWorkCompletedCallback() {
                     @Override
                     public void onDone(String workName, boolean isComplete) {
                         if (isComplete) {
-                            Toast.makeText(context, Contants.ADD_NEW_ADDRESS, Toast.LENGTH_LONG).show();
-                            getActivity().getSupportFragmentManager().popBackStack();//back to previes screen
+                            if (workName.trim().equalsIgnoreCase("yes")){
+                                Toast.makeText(context, Contants.ADD_NEW_ADDRESS, Toast.LENGTH_LONG).show();
+                                getActivity().getSupportFragmentManager().popBackStack();//back to previes screen
+                            }
+                            else {
+                                Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
+                            }
+
                         } else {
                             Utility.alertForErrorMessage(Contants.DoNot_NEW_ADDRESS, context);
                         }

@@ -98,7 +98,7 @@ public class Result {
 
     private String product_pic;
 
-    private String product_mrp;
+    private float product_mrp;
 
     private int sc_id;
 
@@ -148,12 +148,12 @@ public class Result {
         this.product_pic = product_pic;
     }
 
-    public String getProduct_mrp ()
+    public float getProduct_mrp ()
     {
         return product_mrp;
     }
 
-    public void setProduct_mrp (String product_mrp)
+    public void setProduct_mrp (float product_mrp)
     {
         this.product_mrp = product_mrp;
     }
@@ -248,6 +248,93 @@ public class Result {
     public void setProduct_salt (String product_salt)
     {
         this.product_salt = product_salt;
+    }
+
+
+
+
+    private String pincode;
+
+    private String address;
+
+    private String city;
+
+    private String patient_name;
+
+    private String locality;
+
+    private String mobile;
+
+    private String landmark;
+
+    public String getPincode ()
+    {
+        return pincode;
+    }
+
+    public void setPincode (String pincode)
+    {
+        this.pincode = pincode;
+    }
+
+    public String getAddress ()
+    {
+        return address;
+    }
+
+    public void setAddress (String address)
+    {
+        this.address = address;
+    }
+
+    public String getCity ()
+    {
+        return city;
+    }
+
+    public void setCity (String city)
+    {
+        this.city = city;
+    }
+
+    public String getPatient_name ()
+    {
+        return patient_name;
+    }
+
+    public void setPatient_name (String patient_name)
+    {
+        this.patient_name = patient_name;
+    }
+
+    public String getLocality ()
+    {
+        return locality;
+    }
+
+    public void setLocality (String locality)
+    {
+        this.locality = locality;
+    }
+
+    public String getMobile ()
+    {
+        return mobile;
+    }
+
+    public void setMobile (String mobile)
+    {
+        this.mobile = mobile;
+    }
+
+    public String getLandmark ()
+    {
+        return landmark;
+    }
+
+    public void setLandmark (String landmark)
+    {
+        this.landmark = landmark;
     }
 
 

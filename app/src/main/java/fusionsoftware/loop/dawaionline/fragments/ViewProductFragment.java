@@ -27,6 +27,7 @@ import fusionsoftware.loop.dawaionline.R;
 import fusionsoftware.loop.dawaionline.activity.DashboardActivity;
 import fusionsoftware.loop.dawaionline.adapter.ProductListAdapter;
 import fusionsoftware.loop.dawaionline.adapter.SelectCatagoryAdapter;
+import fusionsoftware.loop.dawaionline.balltrianglecustomprogress.BallTriangleDialog;
 import fusionsoftware.loop.dawaionline.database.DbHelper;
 import fusionsoftware.loop.dawaionline.framework.IAsyncWorkCompletedCallback;
 import fusionsoftware.loop.dawaionline.framework.ServiceCaller;
@@ -167,8 +168,7 @@ public class ViewProductFragment extends Fragment {
 
     private void getProductDataById() {
         if (Utility.isOnline(context)) {
-            ProgressDialog dialog = new ProgressDialog(context);
-            dialog.setMessage("Fetching Product...");
+            BallTriangleDialog dialog=new BallTriangleDialog(context);
             dialog.show();
             ServiceCaller serviceCaller = new ServiceCaller(context);
             serviceCaller.callAllProductListServiceById(productId, new IAsyncWorkCompletedCallback() {

@@ -87,8 +87,8 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         viewHolder.productTitle.setText(FilteruserList.get(position).getProduct_name());
         viewHolder.productSubTitle.setText(FilteruserList.get(position).getProduct_subtitle());
         viewHolder.productPrice.setText(String.valueOf(FilteruserList.get(position).getProduct_mrp()));
-        viewHolder.productDetails.getSettings().setJavaScriptEnabled(true);
-        viewHolder.productDetails.loadData(FilteruserList.get(position).getProduct_details(), "text/html", "UTF-8");
+//        viewHolder.productDetails.getSettings().setJavaScriptEnabled(true);
+//        viewHolder.productDetails.loadData(FilteruserList.get(position).getProduct_details(), "text/html", "UTF-8");
         viewHolder.tv_discount.setText(String.valueOf("Discount-\u20B9 "+FilteruserList.get(position).getProduct_dis()+" off"));
         if (FilteruserList.get(position).getCountValue() != 0) {
             DecimalFormat df = new DecimalFormat("0");
@@ -238,13 +238,13 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         ImageView productImage, productImageCopy;
         LinearLayout orderLayout;
         CardView card_view;
-        WebView productDetails;
+//        WebView productDetails;
         CoordinatorLayout main_layout;
 
         public ViewHolder(View view) {
             super(view);
             productTitle = (TextView) view.findViewById(R.id.productTitle);
-            productDetails = (WebView) view.findViewById(R.id.productDetails);
+//            productDetails = (WebView) view.findViewById(R.id.productDetails);
             productPrice = (TextView) view.findViewById(R.id.productPrice);
             productImage = (ImageView) view.findViewById(R.id.productImage);
             productImageCopy = (ImageView) view.findViewById(R.id.productImageCopy);
