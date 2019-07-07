@@ -66,8 +66,8 @@ public class BasketInnerAdapter extends RecyclerView.Adapter<BasketInnerAdapter.
         String qty = df.format(basketItemdata.get(i).getQuantity());
         viewHolder.Quantity.setText(qty);
         //calculate discounts & total....
-        String price = df.format(basketItemdata.get(i).getProduct_mrp());
-        total = Double.parseDouble(price) * Double.parseDouble(qty);
+//        String price = df.format(basketItemdata.get(i).getProduct_mrp());
+//        total = Double.parseDouble(price) * Double.parseDouble(qty);
         viewHolder.total.setText("\u20B9" + df.format(total));//total price
         float dis = basketItemdata.get(i).getProduct_dis();
         double discount = (total / 100.0f) * dis;//calculate discount value

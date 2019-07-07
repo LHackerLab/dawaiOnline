@@ -372,7 +372,7 @@ public class DbHelper extends SQLiteOpenHelper {
     //show  Basket Order list data
     public List<Result> GetAllBasketOrderDataBasedOnCategoryName(String mc_name) {
         ArrayList<Result> list = new ArrayList<Result>();
-        String query = "Select * FROM MyOrderDataEntity WHERE mc_name= " + mc_name + "";
+        String query = "Select * FROM MyOrderDataEntity WHERE mc_name= '" + mc_name + "'";
 
         SQLiteDatabase db = this.getReadableDatabase();
 
