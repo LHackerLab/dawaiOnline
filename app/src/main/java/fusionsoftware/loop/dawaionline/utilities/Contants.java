@@ -45,7 +45,7 @@ public class Contants {
     public static final String AddNewAddress = "addUserAddress.php";
     public static final String UpdateAddress = "Address/UpdateAddress";
     public static final String GetAllAddress = "getUserAddressByMobile.php";
-    public static final String DeleteAddress = "Address/DeleteAddress";
+    public static final String DeleteAddress = "deleteUserAddress.php";
     public static final String GetAllCategoryList = "getAllCategoryList.php";
     public static final String GetAllProductList = "getAllProductList.php";
     public static final String GetAllProductListById = "getAllProductListById.php";

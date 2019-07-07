@@ -3,6 +3,7 @@ package fusionsoftware.loop.dawaionline.adapter;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -85,12 +86,12 @@ public class UserAddressListAdapter extends RecyclerView.Adapter<UserAddressList
         holder.mainLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (navigateFlag) {
-                    YourOrderFragment fragment = YourOrderFragment.newInstance(addresslist.get(position).getCompleteAddress(), addresslist.get(position).getPhoneNumber(), addresslist.get(position).getZipCode());
-                    moveFragment(fragment);
-                } else {
-
-                }
+//                if (navigateFlag) {
+//                    YourOrderFragment fragment = YourOrderFragment.newInstance(addresslist.get(position).getCompleteAddress(), addresslist.get(position).getPhoneNumber(), addresslist.get(position).getZipCode());
+//                    moveFragment(fragment);
+//                } else {
+//
+//                }
             }
         });
 
@@ -131,7 +132,7 @@ public class UserAddressListAdapter extends RecyclerView.Adapter<UserAddressList
     private void deleteAddress(int position) {
 
         if (Utility.isOnline(context)) {
-            if (addresslist.get(position).getAddressId() != 0) {
+            if (addresslist.get(position).getId() != 0) {
                 callDeleteAddressService(addresslist.get(position).getAddressId(), position);
             } else {
 
@@ -153,18 +154,27 @@ public class UserAddressListAdapter extends RecyclerView.Adapter<UserAddressList
         DbHelper dbHelper = new DbHelper(context);
         Result data = dbHelper.getUserData();
         if (data != null) {
+            SharedPreferences sharedPreferences = context.getSharedPreferences("Login", Context.MODE_PRIVATE);
+           String phone=sharedPreferences.getString("Login", "");
             final ServiceCaller serviceCaller = new ServiceCaller(context);
-            serviceCaller.callDeleteAddressDataService(addressId, data.getLoginId(), new IAsyncWorkCompletedCallback() {
+            serviceCaller.callDeleteAddressService(addresslist.get(position).getId(), phone, new IAsyncWorkCompletedCallback() {
                 @Override
                 public void onDone(String workName, boolean isComplete) {
                     if (isComplete) {
-                        DbHelper dbHelper = new DbHelper(context);
+                        if (workName.trim().equalsIgnoreCase("yes")){
+//                            DbHelper dbHelper = new DbHelper(context);
 //                        dbHelper.deleteAddressData(addresslist.get(position).getAddressId());
-                        addresslist.remove(position);
-                        Intent intent = new Intent("data");
-                        intent.putExtra("flag", "true");
-                        context.sendBroadcast(intent);
-                        notifyDataSetChanged();
+                            addresslist.remove(position);
+                            Intent intent = new Intent("data");
+                            intent.putExtra("flag", "true");
+                            context.sendBroadcast(intent);
+                            notifyDataSetChanged();
+                        }
+
+                        else {
+                            Toast.makeText(context, "No Address Found To Delete", Toast.LENGTH_SHORT).show();
+                        }
+
                     } else {
                         Toast.makeText(context, "Address not Deleted", Toast.LENGTH_SHORT).show();
                     }

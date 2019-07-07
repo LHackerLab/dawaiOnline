@@ -146,18 +146,26 @@ public class UserAddressListFragment extends Fragment implements View.OnClickLis
                     @Override
                     public void onDone(String workName, boolean isComplete) {
                         if (isComplete) {
-                            MyPojo myPojo = new Gson().fromJson(workName, MyPojo.class);
-                            for (Result result : myPojo.getResult()) {
-                                clientlist.addAll(Arrays.asList(result));
+                            if (!workName.trim().equalsIgnoreCase("no")) {
+                                MyPojo myPojo = new Gson().fromJson(workName, MyPojo.class);
+                                for (Result result : myPojo.getResult()) {
+                                    clientlist.addAll(Arrays.asList(result));
+                                }
+
+                                if (clientlist != null && clientlist.size() > 0) {
+                                    UserAddressListAdapter itemAdapter = new UserAddressListAdapter(context, clientlist, navigateFlag);
+                                    reycyle_view.setAdapter(itemAdapter);
+                                    itemAdapter.notifyDataSetChanged();
+                                } else {
+                                    noDataFoundUI();
+                                }
                             }
 
-                            if (clientlist != null && clientlist.size() > 0) {
-                                UserAddressListAdapter itemAdapter = new UserAddressListAdapter(context, clientlist, navigateFlag);
-                                reycyle_view.setAdapter(itemAdapter);
-                                itemAdapter.notifyDataSetChanged();
-                            } else {
+                                else {
                                 noDataFoundUI();
+
                             }
+
                         } else {
                             noDataFoundUI();
                         }
