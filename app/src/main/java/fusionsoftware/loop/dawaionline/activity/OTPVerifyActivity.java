@@ -211,8 +211,9 @@ public class OTPVerifyActivity extends AppCompatActivity implements View.OnClick
                                         Toast.makeText(OTPVerifyActivity.this, "Login Successfully", Toast.LENGTH_SHORT).show();
                                         Intent intent = new Intent(OTPVerifyActivity.this, DashboardActivity.class);
                                         startActivity(intent);
-                                        edt_otp.setText("");
                                         finish();
+                                        edt_otp.setText("");
+
                                     } else {
                                         Toast.makeText(OTPVerifyActivity.this, "Something went wrong please contact to Admin", Toast.LENGTH_SHORT).show();
                                     }

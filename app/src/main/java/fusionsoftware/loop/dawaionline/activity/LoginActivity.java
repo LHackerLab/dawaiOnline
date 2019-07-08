@@ -53,7 +53,7 @@ import fusionsoftware.loop.dawaionline.utilities.Utility;
  */
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
-    TextView tv_proceed, phone_icon, tv_or, tv_see_menu_icon, SeeMenu;
+    TextView tv_proceed, phone_icon, tv_or, tv_see_menu_icon,  SeeMenu;
     Typeface materialdesignicons_font, medium, regular, italic, bold, nova;
     EditText edt_phone;
     private Boolean CheckOrientation = false;
@@ -102,7 +102,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         tv_or.setTypeface(nova);
         tv_see_menu_icon.setTypeface(materialdesignicons_font);
         tv_see_menu_icon.setText(Html.fromHtml("&#xf4a3;"));
-        SeeMenu.setTypeface(nova);
+//        SeeMenu.setTypeface(nova);
     }
 
     //intilization.............
@@ -113,7 +113,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         edt_phone = (EditText) findViewById(R.id.edt_phone);
         tv_or = (TextView) findViewById(R.id.tv_or);
         tv_see_menu_icon = (TextView) findViewById(R.id.tv_see_menu_icon);
-        SeeMenu = (TextView) findViewById(R.id.tv_see_menu_text);
+//        SeeMenu = (TextView) findViewById(R.id.tv_see_menu_text);
         layout_seeMenu = (LinearLayout) findViewById(R.id.layout_seeMenu);
         tv_proceed.setOnClickListener(this);
         layout_seeMenu.setOnClickListener(this);
@@ -129,9 +129,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 //            case R.id.layout_facebook:
 //                facebookLogin();
 //                break;
-            case R.id.layout_seeMenu:
-                startActivity(new Intent(LoginActivity.this, DashboardActivity.class));
-                break;
+//            case R.id.layout_seeMenu:
+//                startActivity(new Intent(LoginActivity.this, DashboardActivity.class));
+//                break;
         }
     }
 

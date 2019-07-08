@@ -88,9 +88,12 @@ public class ViewProductFragment extends Fragment {
     Context context;
     View view;
     TextView txt_name, txt_price, txt_discount, txt_stock, decrement_Product, textView_nos, increase_Product, textView_addToCart, txt_subtitile;
-    ImageView product_img;
+    ImageView product_img, productImageCopy;
     WebView productDetails;
     int count = 1;
+    Result result;
+    private ProductItemActionListener actionListener;
+    List<Result> resultList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -105,13 +108,19 @@ public class ViewProductFragment extends Fragment {
 
     }
 
+    public void setActionListener(ProductItemActionListener actionListener) {
+        this.actionListener = actionListener;
+    }
+
 
     private void init() {
+        resultList=new ArrayList<>();
         txt_name = view.findViewById(R.id.txt_name);
         txt_price = view.findViewById(R.id.txt_price);
         txt_subtitile = view.findViewById(R.id.txt_subtitile);
         txt_discount = view.findViewById(R.id.txt_discount);
         product_img = view.findViewById(R.id.product_img);
+        productImageCopy = view.findViewById(R.id.productImageCopy);
         txt_stock=view.findViewById(R.id.txt_stock);
         decrement_Product = view.findViewById(R.id.decrement_Product);
         textView_nos = view.findViewById(R.id.textView_nos);
@@ -137,33 +146,51 @@ public class ViewProductFragment extends Fragment {
             }
 
         });
+
+        textView_addToCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final DashboardActivity rootActivity = (DashboardActivity) context;
+                if (rootActivity != null) {
+                    if (actionListener != null)
+                        actionListener.onItemTap(productImageCopy);
+                    addItemToCart();
+                    Vibrator vb = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+                    assert vb != null;
+                    vb.vibrate(20);
+                    rootActivity.setItemCart();
+                }
+
+            }
+
+        });
     }
 
-//    public void addItemToCart(int position) {
-//        DbHelper dbHelper = new DbHelper(context);
-//        Result myBasket = new Result();
-//        myBasket.setId(resultList.get(position).getId());
-//        myBasket.setMc_name(resultList.get(position).getMc_name());
-//        myBasket.setProduct_name(resultList.get(position).getProduct_name());
-//        myBasket.setProduct_subtitle(resultList.get(position).getProduct_subtitle());
-//        myBasket.setProduct_mrp(resultList.get(position).getProduct_mrp());
-//        myBasket.setProduct_dis(resultList.get(position).getProduct_dis());
-//        myBasket.setQuantity(resultList.get(position).getCountValue());
-//        myBasket.setProduct_details(resultList.get(position).getProduct_details());
-//        myBasket.setPic(resultList.get(position).getPic());
-//        myBasket.setP_qty(resultList.get(position).getP_qty());
-//        myBasket.setIsoutofstock(resultList.get(position).getIsoutofstock());
-//        myBasket.setProduct_comp_name(resultList.get(position).getProduct_comp_name());
-//
-////        if (categoryName != null && !categoryName.equals("")) {
-////            myBasket.setCategoryName(categoryName);
-////        } else {
-////            Result result = dbHelper.getCategoryData(FilteruserList.get(position).getCategoryId());
-////            myBasket.setCategoryName(result.getCategoryName());
-////        }
-//        dbHelper.upsertBasketOrderData(myBasket);
+    public void addItemToCart() {
+        DbHelper dbHelper = new DbHelper(context);
+        Result myBasket = new Result();
+        myBasket.setId(resultList.get(0).getId());
+        myBasket.setMc_name(resultList.get(0).getMc_name());
+        myBasket.setProduct_name(resultList.get(0).getProduct_name());
+        myBasket.setProduct_subtitle(resultList.get(0).getProduct_subtitle());
+        myBasket.setProduct_mrp(resultList.get(0).getProduct_mrp());
+        myBasket.setProduct_dis(resultList.get(0).getProduct_dis());
+        myBasket.setQuantity(resultList.get(0).getCountValue());
+        myBasket.setProduct_details(resultList.get(0).getProduct_details());
+        myBasket.setPic(resultList.get(0).getPic());
+        myBasket.setP_qty(resultList.get(0).getP_qty());
+        myBasket.setIsoutofstock(resultList.get(0).getIsoutofstock());
+        myBasket.setProduct_comp_name(resultList.get(0).getProduct_comp_name());
+
+//        if (categoryName != null && !categoryName.equals("")) {
+//            myBasket.setCategoryName(categoryName);
+//        } else {
+//            Result result = dbHelper.getCategoryData(FilteruserList.get(position).getCategoryId());
+//            myBasket.setCategoryName(result.getCategoryName());
+//        }
+        dbHelper.upsertBasketOrderData(myBasket);
 //        notify();
-//    }
+    }
 
 
     private void getProductDataById() {
@@ -177,7 +204,8 @@ public class ViewProductFragment extends Fragment {
                     dialog.dismiss();
                     if (isComplete) {
                         MyPojo myPojo = new Gson().fromJson(workName, MyPojo.class);
-                        for (Result result : myPojo.getResult()) {
+                        for ( Result result : myPojo.getResult()) {
+                            resultList.addAll(Arrays.asList(result));
                             txt_name.setText(result.getProduct_name());
                             txt_subtitile.setText(result.getProduct_subtitle());
                             txt_price.setText("\u20B9" + result.getProduct_mrp());
@@ -186,25 +214,8 @@ public class ViewProductFragment extends Fragment {
                             productDetails.getSettings().setJavaScriptEnabled(true);
                             productDetails.loadData(result.getProduct_details(), "text/html", "UTF-8");
 
-                            textView_addToCart.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    final DashboardActivity rootActivity = (DashboardActivity) context;
-                                    if (rootActivity != null) {
-//                                        if (actionListener != null)
-//                                            actionListener.onItemTap(viewHolder.productImageCopy);
-//                                        addItemToCart(i);
-                                        Vibrator vb = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-                                        assert vb != null;
-                                        vb.vibrate(20);
-                                        rootActivity.setItemCart();
-                                    }
-
-                                }
-
-                            });
-
                         }
+
                     } else {
                         Toast.makeText(context, "No Data Found", Toast.LENGTH_SHORT).show();
                     }
@@ -219,6 +230,10 @@ public class ViewProductFragment extends Fragment {
     private void setProductValue() {
         textView_nos.setText("" + count);
         txt_stock.setText("Quantity-" + count);
+    }
+
+    public interface ProductItemActionListener {
+        void onItemTap(ImageView imageView);
     }
 
 

@@ -142,7 +142,9 @@
                         <android.support.v7.widget.RecyclerView
                             android:id="@+id/listrecycler"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/dimValue_5"
+                            android:layout_marginRight="@dimen/dimValue_5">
 
 
                         </android.support.v7.widget.RecyclerView>
@@ -209,84 +211,84 @@
                     </LinearLayout>
                 </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/layout_promoCode"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dimValue_5"
-                    android:orientation="vertical"
-                    android:visibility="gone">
+                <!--<LinearLayout-->
+                    <!--android:id="@+id/layout_promoCode"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="@dimen/dimValue_5"-->
+                    <!--android:orientation="vertical"-->
+                    <!--android:visibility="gone">-->
 
-                    <android.support.v7.widget.CardView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/dimValue_5"
-                        app:cardCornerRadius="@dimen/dimValue_5"
-                        app:elevation="@dimen/dimValue_5">
+                    <!--<android.support.v7.widget.CardView-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginBottom="@dimen/dimValue_5"-->
+                        <!--app:cardCornerRadius="@dimen/dimValue_5"-->
+                        <!--app:elevation="@dimen/dimValue_5">-->
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_margin="@dimen/dimValue_10"
-                            android:orientation="vertical">
+                        <!--<LinearLayout-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="match_parent"-->
+                            <!--android:layout_margin="@dimen/dimValue_10"-->
+                            <!--android:orientation="vertical">-->
+
+                            <!--&lt;!&ndash;<TextView&ndash;&gt;-->
+                            <!--&lt;!&ndash;android:id="@+id/tv_off"&ndash;&gt;-->
+                            <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
+                            <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+                            <!--&lt;!&ndash;android:text="@string/flat_off"&ndash;&gt;-->
+                            <!--&lt;!&ndash;android:textColor="@color/green"&ndash;&gt;-->
+                            <!--&lt;!&ndash;android:textSize="@dimen/dimTextSize_14" />&ndash;&gt;-->
 
                             <!--<TextView-->
-                            <!--android:id="@+id/tv_off"-->
-                            <!--android:layout_width="match_parent"-->
-                            <!--android:layout_height="wrap_content"-->
-                            <!--android:text="@string/flat_off"-->
-                            <!--android:textColor="@color/green"-->
-                            <!--android:textSize="@dimen/dimTextSize_14" />-->
+                                <!--android:id="@+id/tv_promoCode"-->
+                                <!--android:layout_width="match_parent"-->
+                                <!--android:layout_height="wrap_content"-->
+                                <!--android:layout_marginTop="@dimen/dimValue_7"-->
+                                <!--android:text="@string/promo_code"-->
+                                <!--android:textSize="@dimen/dimTextSize_12" />-->
 
-                            <TextView
-                                android:id="@+id/tv_promoCode"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/dimValue_7"
-                                android:text="@string/promo_code"
-                                android:textSize="@dimen/dimTextSize_12" />
+                            <!--<LinearLayout-->
+                                <!--android:layout_width="match_parent"-->
+                                <!--android:layout_height="wrap_content"-->
+                                <!--android:layout_marginTop="@dimen/dimValue_5"-->
+                                <!--android:orientation="horizontal">-->
 
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/dimValue_5"
-                                android:orientation="horizontal">
+                                <!--<EditText-->
+                                    <!--android:id="@+id/edt_promoCode"-->
+                                    <!--android:layout_width="0dp"-->
+                                    <!--android:layout_height="match_parent"-->
+                                    <!--android:layout_weight=".75"-->
+                                    <!--android:background="@android:color/transparent"-->
+                                    <!--android:hint="Enter Promo Code Here"-->
+                                    <!--android:singleLine="true"-->
+                                    <!--android:textSize="@dimen/dimTextSize_14" />-->
 
-                                <EditText
-                                    android:id="@+id/edt_promoCode"
-                                    android:layout_width="0dp"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight=".75"
-                                    android:background="@android:color/transparent"
-                                    android:hint="Enter Promo Code Here"
-                                    android:singleLine="true"
-                                    android:textSize="@dimen/dimTextSize_14" />
+                                <!--<TextView-->
+                                    <!--android:id="@+id/tv_apply"-->
+                                    <!--android:layout_width="0dp"-->
+                                    <!--android:layout_height="match_parent"-->
+                                    <!--android:layout_weight=".2"-->
+                                    <!--android:background="@color/dark_green"-->
+                                    <!--android:gravity="center"-->
+                                    <!--android:padding="@dimen/dimValue_5"-->
+                                    <!--android:text="Apply"-->
+                                    <!--android:textColor="@color/text_color_white"-->
+                                    <!--android:textSize="@dimen/dimTextSize_14" />-->
 
-                                <TextView
-                                    android:id="@+id/tv_apply"
-                                    android:layout_width="0dp"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight=".2"
-                                    android:background="@color/dark_green"
-                                    android:gravity="center"
-                                    android:padding="@dimen/dimValue_5"
-                                    android:text="Apply"
-                                    android:textColor="@color/text_color_white"
-                                    android:textSize="@dimen/dimTextSize_14" />
-
-                                <TextView
-                                    android:id="@+id/tv_cancel"
-                                    android:layout_width="0dp"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight=".05"
-                                    android:gravity="center"
-                                    android:textColor="@color/red"
-                                    android:textSize="@dimen/dimTextSize_18"
-                                    android:visibility="gone" />
-                            </LinearLayout>
-                        </LinearLayout>
-                    </android.support.v7.widget.CardView>
-                </LinearLayout>
+                                <!--<TextView-->
+                                    <!--android:id="@+id/tv_cancel"-->
+                                    <!--android:layout_width="0dp"-->
+                                    <!--android:layout_height="match_parent"-->
+                                    <!--android:layout_weight=".05"-->
+                                    <!--android:gravity="center"-->
+                                    <!--android:textColor="@color/red"-->
+                                    <!--android:textSize="@dimen/dimTextSize_18"-->
+                                    <!--android:visibility="gone" />-->
+                            <!--</LinearLayout>-->
+                        <!--</LinearLayout>-->
+                    <!--</android.support.v7.widget.CardView>-->
+                <!--</LinearLayout>-->
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -350,48 +352,48 @@
                                 </LinearLayout>
                             </LinearLayout>
 
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginBottom="@dimen/dimValue_5"
-                                android:layout_marginTop="@dimen/dimValue_5"
-                                android:orientation="horizontal">
+                            <!--<LinearLayout-->
+                                <!--android:layout_width="match_parent"-->
+                                <!--android:layout_height="wrap_content"-->
+                                <!--android:layout_marginBottom="@dimen/dimValue_5"-->
+                                <!--android:layout_marginTop="@dimen/dimValue_5"-->
+                                <!--android:orientation="horizontal">-->
 
-                                <TextView
-                                    android:id="@+id/shipping"
-                                    android:layout_width="0dp"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight=".5"
-                                    android:text="@string/Shippingcharges"
-                                    android:textColor="@color/primary_text"
-                                    android:textSize="@dimen/dimTextSize_14" />
+                                <!--<TextView-->
+                                    <!--android:id="@+id/shipping"-->
+                                    <!--android:layout_width="0dp"-->
+                                    <!--android:layout_height="match_parent"-->
+                                    <!--android:layout_weight=".5"-->
+                                    <!--android:text="@string/Shippingcharges"-->
+                                    <!--android:textColor="@color/primary_text"-->
+                                    <!--android:textSize="@dimen/dimTextSize_14" />-->
 
-                                <LinearLayout
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight=".5"
-                                    android:gravity="right"
-                                    android:orientation="horizontal">
+                                <!--<LinearLayout-->
+                                    <!--android:layout_width="0dp"-->
+                                    <!--android:layout_height="wrap_content"-->
+                                    <!--android:layout_weight=".5"-->
+                                    <!--android:gravity="right"-->
+                                    <!--android:orientation="horizontal">-->
 
-                                    <TextView
-                                        android:id="@+id/rupees_icon"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="match_parent"
-                                        android:gravity="center|right"
-                                        android:textColor="@color/primary_text"
-                                        android:textSize="@dimen/dimTextSize_16" />
+                                    <!--<TextView-->
+                                        <!--android:id="@+id/rupees_icon"-->
+                                        <!--android:layout_width="wrap_content"-->
+                                        <!--android:layout_height="match_parent"-->
+                                        <!--android:gravity="center|right"-->
+                                        <!--android:textColor="@color/primary_text"-->
+                                        <!--android:textSize="@dimen/dimTextSize_16" />-->
 
-                                    <TextView
-                                        android:id="@+id/shipping_charges"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="match_parent"
-                                        android:gravity="end|center"
-                                        android:text="0"
-                                        android:textColor="@color/primary_text"
-                                        android:textSize="@dimen/dimTextSize_14" />
+                                    <!--<TextView-->
+                                        <!--android:id="@+id/shipping_charges"-->
+                                        <!--android:layout_width="wrap_content"-->
+                                        <!--android:layout_height="match_parent"-->
+                                        <!--android:gravity="end|center"-->
+                                        <!--android:text="0"-->
+                                        <!--android:textColor="@color/primary_text"-->
+                                        <!--android:textSize="@dimen/dimTextSize_14" />-->
 
-                                </LinearLayout>
-                            </LinearLayout>
+                                <!--</LinearLayout>-->
+                            <!--</LinearLayout>-->
 
                             <LinearLayout
                                 android:layout_width="match_parent"

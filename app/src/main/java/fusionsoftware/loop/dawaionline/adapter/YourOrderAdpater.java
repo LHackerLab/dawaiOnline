@@ -54,7 +54,7 @@ public class YourOrderAdpater extends RecyclerView.Adapter<YourOrderAdpater.View
         DecimalFormat df = new DecimalFormat("0");
         String value = df.format(orderDataList.get(i).getQuantity());
         holder.quality_item.setText(value);
-        holder.nameofdish_item.setText(orderDataList.get(i).getProductName());
+        holder.nameofdish_item.setText(orderDataList.get(i).getProduct_name());
         holder.price_item.setText(orderDataList.get(i).getProduct_mrp() + "");
 //        holder.edit_icon.setOnClickListener(new View.OnClickListener() {
 //            @Override

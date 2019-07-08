@@ -83,14 +83,37 @@
                     android:textColor="@color/colorBlack"
                     android:textSize="14sp" />
 
-
-                <ImageView
-                    android:id="@+id/product_img"
+                <RelativeLayout
+                    android:id="@+id/image_layout"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
-                    android:layout_marginLeft="@dimen/dimValue_10"
-                    android:layout_marginRight="@dimen/dimValue_10"
-                    android:src="@drawable/b_powder" />
+                    android:layout_margin="@dimen/dimValue_5"
+                    android:layout_weight="0.3">
+
+                    <ImageView
+                        android:id="@+id/product_img"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:src="@drawable/b_powder"/>
+
+                    <ImageView
+                        android:id="@+id/productImageCopy"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:src="@drawable/b_powder"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"/>
+                </RelativeLayout>
+
+
+                <!--<ImageView-->
+                    <!--android:id="@+id/product_img"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="200dp"-->
+                    <!--android:layout_marginLeft="@dimen/dimValue_10"-->
+                    <!--android:layout_marginRight="@dimen/dimValue_10"-->
+                    <!--android:src="@drawable/b_powder" />-->
 
                 <TextView
                     android:id="@+id/txt_stock"

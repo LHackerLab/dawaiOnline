@@ -92,15 +92,15 @@ public class SplashScreenActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     SharedPreferences preferences = getSharedPreferences("Login", Context.MODE_PRIVATE);
-                    int phone = preferences.getInt("Logid", 0);
-                    if (phone!=0){
+                    String phone = preferences.getString("Login", "");
+                    if (phone!=null){
                         Intent intent = new Intent(SplashScreenActivity.this, DashboardActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
                         finish();
                     }
                     else {
-                        Intent intent = new Intent(SplashScreenActivity.this, DashboardActivity.class);
+                        Intent intent = new Intent(SplashScreenActivity.this, LoginActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
                         finish();

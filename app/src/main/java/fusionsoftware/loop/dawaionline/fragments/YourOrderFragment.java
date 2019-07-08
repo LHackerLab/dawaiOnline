@@ -86,15 +86,15 @@ public class YourOrderFragment extends Fragment implements View.OnClickListener 
     YourOrderAdpater adapter;
     EditText edt_promoCode;
     View view;
-    TextView arrow_icon, tv_continue, your_order, tv_editOrder, tv_promoCode, tv_apply, tv_specialDiscount_charges, tv_specialDiscount,
-            rupee_icon, icon_rupees, tv_rupees_icon, rupees_icon, tv_cancel, tv_done,
-            tv_deliverTo, tv_edit_Icon, tv_deliveryAddress, quantity, dish_name, price, action, total, total_amount, shipping, shipping_charges, grand_amount, grand_total, tv_payOnline;
+    TextView arrow_icon, tv_continue, your_order, tv_editOrder,tv_promoCode,   tv_specialDiscount_charges, tv_specialDiscount,
+            rupee_icon, icon_rupees, tv_rupees_icon, rupees_icon,  tv_done, tv_apply, tv_cancel,  shipping, shipping_charges,
+            tv_deliverTo, tv_edit_Icon, tv_deliveryAddress, quantity, dish_name, price, action, total, total_amount, grand_amount, grand_total, tv_payOnline;
     private Context context;
     private int loginID;
-    private LinearLayout layout_promoCode, tv_continueLayout, layout_done;
+    private LinearLayout  layout_promoCode, tv_continueLayout, layout_done;
     private Boolean editFlag = false;
     private double SubTotalPrice = 0;
-    double totalPrice = 0.0, dis = 0.0, grandTotal = 0.0;
+    double totalPrice = 0.0,  dis=0.0, grandTotal = 0.0;
     DbHelper dbHelper;
     DashboardActivity rootActivity;
     float shippingChareges = 0;
@@ -128,15 +128,15 @@ public class YourOrderFragment extends Fragment implements View.OnClickListener 
         rupee_icon.setText(Html.fromHtml("&#xf1af;"));
         icon_rupees.setTypeface(materialdesignicons_font);
         icon_rupees.setText(Html.fromHtml("&#xf1af;"));
-        rupees_icon.setTypeface(materialdesignicons_font);
-        rupees_icon.setText(Html.fromHtml("&#xf1af;"));
+//        rupees_icon.setTypeface(materialdesignicons_font);
+//        rupees_icon.setText(Html.fromHtml("&#xf1af;"));
 
         tv_rupees_icon.setTypeface(materialdesignicons_font);
         tv_rupees_icon.setText(Html.fromHtml("&#xf1af;"));
         tv_edit_Icon.setTypeface(materialdesignicons_font);
         tv_edit_Icon.setText(Html.fromHtml("&#xf3eb;"));
-        tv_cancel.setTypeface(materialdesignicons_font);
-        tv_cancel.setText(Html.fromHtml("&#xf156;"));
+//        tv_cancel.setTypeface(materialdesignicons_font);
+//        tv_cancel.setText(Html.fromHtml("&#xf156;"));
         tv_done.setTypeface(materialdesignicons_font);
         tv_done.setText(Html.fromHtml("&#xf12c;"));
         tv_deliverTo.setTypeface(medium);
@@ -149,15 +149,15 @@ public class YourOrderFragment extends Fragment implements View.OnClickListener 
         price.setTypeface(regular);
         total.setTypeface(regular);
         total_amount.setTypeface(regular);
-        shipping.setTypeface(regular);
+//        shipping.setTypeface(regular);
         tv_specialDiscount.setTypeface(regular);
-        shipping_charges.setTypeface(regular);
+//        shipping_charges.setTypeface(regular);
         tv_specialDiscount_charges.setTypeface(regular);
         grand_amount.setTypeface(medium);
         grand_total.setTypeface(medium);
-        edt_promoCode.setTypeface(regular);
-        tv_promoCode.setTypeface(regular);
-        tv_apply.setTypeface(medium);
+//        edt_promoCode.setTypeface(regular);
+//        tv_promoCode.setTypeface(regular);
+//        tv_apply.setTypeface(medium);
     }
 
     //initlization..............
@@ -166,10 +166,10 @@ public class YourOrderFragment extends Fragment implements View.OnClickListener 
         rootActivity.setScreencart(false);
         rootActivity.setScreenSave(false);
         rootActivity.setScreenCartDot(false);
-        edt_promoCode = view.findViewById(R.id.edt_promoCode);
-        tv_promoCode = view.findViewById(R.id.tv_promoCode);
-        tv_apply = view.findViewById(R.id.tv_apply);
-        tv_apply.setOnClickListener(this);
+//        edt_promoCode = view.findViewById(R.id.edt_promoCode);
+//        tv_promoCode = view.findViewById(R.id.tv_promoCode);
+//        tv_apply = view.findViewById(R.id.tv_apply);
+//        tv_apply.setOnClickListener(this);
         tv_continue = view.findViewById(R.id.tv_continue);
         arrow_icon = view.findViewById(R.id.arrow_icon);
         your_order = view.findViewById(R.id.your_order);
@@ -182,9 +182,9 @@ public class YourOrderFragment extends Fragment implements View.OnClickListener 
         price = view.findViewById(R.id.price);
         total = view.findViewById(R.id.total);
         total_amount = view.findViewById(R.id.total_amount);
-        shipping = view.findViewById(R.id.shipping);
+//        shipping = view.findViewById(R.id.shipping);
         tv_specialDiscount = view.findViewById(R.id.tv_specialDiscount);
-        shipping_charges = view.findViewById(R.id.shipping_charges);
+//        shipping_charges = view.findViewById(R.id.shipping_charges);
         tv_specialDiscount_charges = view.findViewById(R.id.tv_specialDiscount_charges);
         grand_amount = view.findViewById(R.id.grant_amount);
         grand_total = view.findViewById(R.id.grand_total);
@@ -192,14 +192,14 @@ public class YourOrderFragment extends Fragment implements View.OnClickListener 
         tv_deliverTo = view.findViewById(R.id.tv_deliverTo);
         tv_deliveryAddress = view.findViewById(R.id.tv_deliveryAddress);
         tv_edit_Icon = view.findViewById(R.id.tv_edit_icon);
-        tv_cancel = view.findViewById(R.id.tv_cancel);
+//        tv_cancel = view.findViewById(R.id.tv_cancel);
         tv_done = view.findViewById(R.id.tv_done);
-        layout_promoCode = view.findViewById(R.id.layout_promoCode);
+//        layout_promoCode = view.findViewById(R.id.layout_promoCode);
         layout_done = view.findViewById(R.id.layout_done);
         tv_continueLayout = view.findViewById(R.id.tv_continueLayout);
         tv_continueLayout.setOnClickListener(this);
         tv_edit_Icon.setOnClickListener(this);
-        tv_cancel.setOnClickListener(this);
+//        tv_cancel.setOnClickListener(this);
         layout_done.setOnClickListener(this);
         setIcons();
         RecyclerView recyclerView = view.findViewById(R.id.listrecycler);
@@ -217,7 +217,7 @@ public class YourOrderFragment extends Fragment implements View.OnClickListener 
             getCalculation(orderList);
             orderDetails(orderList);
         }
-        tv_deliveryAddress.setText(completeAddress + "," + phone + "," + zipcode);
+        tv_deliveryAddress.setText(completeAddress + ", " + phone + ", " + zipcode);
     }
 
     private void orderDetails(List<Result> orderList) {
@@ -250,12 +250,12 @@ public class YourOrderFragment extends Fragment implements View.OnClickListener 
         for (Result myBasket : orderList) {
             int productId = myBasket.getProductId();
             Result myBaskets = dbHelper.getBasketOrderData(productId);
-//            double discount = myBaskets.getDiscount();
-//            double total = myBaskets.getProduct_mrp();
+            float  discount= myBaskets.getProduct_dis();
+            double total = myBaskets.getProduct_mrp();
             double qty = myBaskets.getQuantity();
-//            SubTotalPrice = (total * qty);
+            SubTotalPrice = (total * qty);
             totalPrice = totalPrice + SubTotalPrice;
-//            dis = dis + ((SubTotalPrice / 100.0f) * discount);
+            dis = dis +  discount;
 //            clearValue();
             setValues();
         }
@@ -275,15 +275,15 @@ public class YourOrderFragment extends Fragment implements View.OnClickListener 
         String cityname = sharedPreferences.getString("city", null);
         DbHelper dbHelper = new DbHelper(context);
         Result resultList = dbHelper.getCityDataByCityName(cityname);
-        if (resultList != null) {
-            shippingChareges = resultList.getShippingCharge();
-        }
+//        if (resultList != null) {
+//            shippingChareges = resultList.getShippingCharge();
+//        }
         DecimalFormat format = new DecimalFormat("0.0");
         total_amount.setText(format.format(totalPrice));
         tv_specialDiscount_charges.setText(format.format(dis));
-        grandTotal = grandTotal + (totalPrice - dis) + shippingChareges;
+        grandTotal = grandTotal + (totalPrice - dis) ;
         grand_amount.setText(format.format(grandTotal));
-        shipping_charges.setText(format.format(shippingChareges));
+//        shipping_charges.setText(format.format(shippingChareges));
     }
 
     @Override
@@ -292,11 +292,11 @@ public class YourOrderFragment extends Fragment implements View.OnClickListener 
             case R.id.tv_continueLayout:
                 createNewOrder();
                 break;
-            case R.id.tv_cancel:
-                edt_promoCode.setText("");
-                tv_apply.setVisibility(View.VISIBLE);
-                tv_cancel.setVisibility(View.GONE);
-                break;
+//            case R.id.tv_cancel:
+//                edt_promoCode.setText("");
+//                tv_apply.setVisibility(View.VISIBLE);
+//                tv_cancel.setVisibility(View.GONE);
+//                break;
             case R.id.layout_done:
                 break;
         }
