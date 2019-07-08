@@ -250,12 +250,12 @@ public class YourOrderFragment extends Fragment implements View.OnClickListener 
         for (Result myBasket : orderList) {
             int productId = myBasket.getProductId();
             Result myBaskets = dbHelper.getBasketOrderData(productId);
-            double discount = myBaskets.getDiscount();
+//            double discount = myBaskets.getDiscount();
 //            double total = myBaskets.getProduct_mrp();
             double qty = myBaskets.getQuantity();
 //            SubTotalPrice = (total * qty);
             totalPrice = totalPrice + SubTotalPrice;
-            dis = dis + ((SubTotalPrice / 100.0f) * discount);
+//            dis = dis + ((SubTotalPrice / 100.0f) * discount);
 //            clearValue();
             setValues();
         }

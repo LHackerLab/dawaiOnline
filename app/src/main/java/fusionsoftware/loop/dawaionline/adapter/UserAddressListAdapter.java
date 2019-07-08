@@ -66,7 +66,7 @@ public class UserAddressListAdapter extends RecyclerView.Adapter<UserAddressList
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         holder.completename.setText(addresslist.get(position).getPatient_name());
-        holder.completeaddress.setText(addresslist.get(position).getLocality()+", "+addresslist.get(position).getAddress()+", "+  addresslist.get(position).getLandmark()+", "+addresslist.get(position).getCity());
+        holder.completeaddress.setText(addresslist.get(position).getLocality() + ", " + addresslist.get(position).getAddress() + ", " + addresslist.get(position).getLandmark() + ", " + addresslist.get(position).getCity());
         holder.Zipcode.setText(addresslist.get(position).getPincode());
         holder.phonenumber.setText(addresslist.get(position).getMobile());
 //        holder.locality_name.setText(addresslist.get(position).getCityName());
@@ -86,12 +86,10 @@ public class UserAddressListAdapter extends RecyclerView.Adapter<UserAddressList
         holder.mainLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                if (navigateFlag) {
-//                    YourOrderFragment fragment = YourOrderFragment.newInstance(addresslist.get(position).getCompleteAddress(), addresslist.get(position).getPhoneNumber(), addresslist.get(position).getZipCode());
-//                    moveFragment(fragment);
-//                } else {
-//
-//                }
+                if (navigateFlag) {
+                    YourOrderFragment fragment = YourOrderFragment.newInstance(addresslist.get(position).getAddress(), addresslist.get(position).getMobile(), addresslist.get(position).getPincode());
+                    moveFragment(fragment);
+                }
             }
         });
 
@@ -133,7 +131,7 @@ public class UserAddressListAdapter extends RecyclerView.Adapter<UserAddressList
 
         if (Utility.isOnline(context)) {
             if (addresslist.get(position).getId() != 0) {
-                callDeleteAddressService(addresslist.get(position).getAddressId(), position);
+                callDeleteAddressService(position);
             } else {
 
 //                Intent intent = new Intent("data_action");
@@ -150,18 +148,18 @@ public class UserAddressListAdapter extends RecyclerView.Adapter<UserAddressList
 
 
     //delete address
-    private void callDeleteAddressService(int addressId, final int position) {
+    private void callDeleteAddressService(final int position) {
         DbHelper dbHelper = new DbHelper(context);
         Result data = dbHelper.getUserData();
         if (data != null) {
             SharedPreferences sharedPreferences = context.getSharedPreferences("Login", Context.MODE_PRIVATE);
-           String phone=sharedPreferences.getString("Login", "");
+            String phone = sharedPreferences.getString("Login", "");
             final ServiceCaller serviceCaller = new ServiceCaller(context);
             serviceCaller.callDeleteAddressService(addresslist.get(position).getId(), phone, new IAsyncWorkCompletedCallback() {
                 @Override
                 public void onDone(String workName, boolean isComplete) {
                     if (isComplete) {
-                        if (workName.trim().equalsIgnoreCase("yes")){
+                        if (workName.trim().equalsIgnoreCase("yes")) {
 //                            DbHelper dbHelper = new DbHelper(context);
 //                        dbHelper.deleteAddressData(addresslist.get(position).getAddressId());
                             addresslist.remove(position);
@@ -169,10 +167,8 @@ public class UserAddressListAdapter extends RecyclerView.Adapter<UserAddressList
                             intent.putExtra("flag", "true");
                             context.sendBroadcast(intent);
                             notifyDataSetChanged();
-                        }
-
-                        else {
-                            Toast.makeText(context, "No Address Found To Delete", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(context, "Address not Deleted", Toast.LENGTH_SHORT).show();
                         }
 
                     } else {
