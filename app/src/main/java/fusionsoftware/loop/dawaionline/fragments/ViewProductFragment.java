@@ -139,7 +139,6 @@ public class ViewProductFragment extends Fragment {
         });
     }
 
-
 //    public void addItemToCart(int position) {
 //        DbHelper dbHelper = new DbHelper(context);
 //        Result myBasket = new Result();
@@ -165,6 +164,7 @@ public class ViewProductFragment extends Fragment {
 //        dbHelper.upsertBasketOrderData(myBasket);
 //        notify();
 //    }
+
 
     private void getProductDataById() {
         if (Utility.isOnline(context)) {
