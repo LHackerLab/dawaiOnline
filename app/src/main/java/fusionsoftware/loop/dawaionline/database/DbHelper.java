@@ -27,7 +27,7 @@ import fusionsoftware.loop.dawaionline.utilities.Contants;
 public class DbHelper extends SQLiteOpenHelper {
 
     // If you change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION = 8;
+    public static final int DATABASE_VERSION = 9;
     public static final String DATABASE_NAME = Contants.DATABASE_NAME;
 
     public DbHelper(Context context) {
@@ -58,7 +58,7 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_user_TABLE);
         String CREATE_city_TABLE = "CREATE TABLE cityData(cityId INTEGER,cityName TEXT,shippingCharge REAL)";
         db.execSQL(CREATE_city_TABLE);
-        String CREATE_MyOrder_TABLE = "CREATE TABLE MyOrderDataEntity(id INTEGER, mc_name TEXT, product_name TEXT, product_subtitle TEXT, product_comp_name TEXT, product_mrp REAL, product_dis REAL, product_details TEXT, product_pic TEXT, p_qty TEXT)";
+        String CREATE_MyOrder_TABLE = "CREATE TABLE MyOrderDataEntity(id INTEGER, mc_name TEXT, product_name TEXT, product_subtitle TEXT, product_comp_name TEXT, product_mrp REAL, product_dis REAL, product_details TEXT, product_pic TEXT, p_qty TEXT,Quantity REAL)";
         db.execSQL(CREATE_MyOrder_TABLE);
         String searchProductEntity = "CREATE TABLE searchProductEntity(ProductId INTEGER,ProductName TEXT,UnitPrice REAL,Discount REAL,ProductDetails TEXT,CategoryId INTEGER,ProductPicturesUrl TEXT,ProductSubTitle TEXT)";
         db.execSQL(searchProductEntity);
@@ -346,6 +346,7 @@ public class DbHelper extends SQLiteOpenHelper {
         ob.setProduct_details(cursor.getString(7));
         ob.setPic(cursor.getString(8));
         ob.setP_qty(cursor.getString(9));
+        ob.setQuantity(cursor.getFloat(10));
     }
 
     //show  Basket Order list data
@@ -431,6 +432,7 @@ public class DbHelper extends SQLiteOpenHelper {
         values.put("product_details", ob.getProduct_details());
         values.put("product_pic", ob.getPic());
         values.put("p_qty", ob.getP_qty());
+        values.put("Quantity", ob.getQuantity());
 
     }
 
