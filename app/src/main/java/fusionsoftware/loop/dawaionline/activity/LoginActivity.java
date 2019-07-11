@@ -148,10 +148,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         dialog.dismiss();
                         if (isComplete){
                             Toast.makeText(LoginActivity.this, Contants.SEND_MESSAGE, Toast.LENGTH_SHORT).show();
-                            SharedPreferences sharedPreferences = getSharedPreferences("PhoneNumber", Context.MODE_PRIVATE);
-                            SharedPreferences.Editor editor = sharedPreferences.edit();
-                            editor.putString("p_numb", phone);
-                            editor.apply();
                             Intent intent=new Intent(LoginActivity.this, OTPVerifyActivity.class);
                             intent.putExtra("phone", phone);
                             startActivity(intent);

@@ -43,7 +43,7 @@ public class Contants {
     public static final String GetUserProfile = "Login/GetUserProfile";
     public static final String UpdateProfile = "Login/UpdateProfile";
     public static final String AddNewAddress = "addUserAddress.php";
-    public static final String UpdateAddress = "Address/UpdateAddress";
+    public static final String UpdateAddress = "updateAddress.php";
     public static final String GetAllAddress = "getUserAddressByMobile.php";
     public static final String DeleteAddress = "deleteUserAddress.php";
     public static final String GetAllCategoryList = "getAllCategoryList.php";

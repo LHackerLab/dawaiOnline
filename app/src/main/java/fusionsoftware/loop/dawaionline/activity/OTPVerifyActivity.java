@@ -206,7 +206,7 @@ public class OTPVerifyActivity extends AppCompatActivity implements View.OnClick
                                     if (result.getStatus().equalsIgnoreCase("1")) {
                                         SharedPreferences sharedPreferences = getSharedPreferences("Login", Context.MODE_PRIVATE);
                                         SharedPreferences.Editor editor = sharedPreferences.edit();
-                                        editor.putString("Login", phone);
+                                        editor.putString("key", phone);
                                         editor.apply();
                                         Toast.makeText(OTPVerifyActivity.this, "Login Successfully", Toast.LENGTH_SHORT).show();
                                         Intent intent = new Intent(OTPVerifyActivity.this, DashboardActivity.class);

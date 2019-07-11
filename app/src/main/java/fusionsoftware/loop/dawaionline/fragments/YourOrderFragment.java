@@ -94,7 +94,7 @@ public class YourOrderFragment extends Fragment implements View.OnClickListener 
     private LinearLayout  layout_promoCode, tv_continueLayout, layout_done;
     private Boolean editFlag = false;
     private double SubTotalPrice = 0;
-    double totalPrice = 0.0,  dis=0.0, grandTotal = 0.0;
+    double totalPrice = 0.0,  dis=0.0, grandTotal = 0.0, totalDiscount=0.0;
     DbHelper dbHelper;
     DashboardActivity rootActivity;
     float shippingChareges = 0;
@@ -248,14 +248,15 @@ public class YourOrderFragment extends Fragment implements View.OnClickListener 
     private void getCalculation(List<Result> orderList) {
 
         for (Result myBasket : orderList) {
-            int productId = myBasket.getProductId();
+            int productId = myBasket.getId();
             Result myBaskets = dbHelper.getBasketOrderData(productId);
-            float  discount= myBaskets.getProduct_dis();
-            double total = myBaskets.getProduct_mrp();
+            float  discount=myBaskets.getProduct_dis();;
+            double total = myBaskets.getProduct_mrp();;
             double qty = myBaskets.getQuantity();
             SubTotalPrice = (total * qty);
-            totalPrice = totalPrice + SubTotalPrice;
-            dis = dis +  discount;
+            totalPrice=totalPrice+SubTotalPrice;
+            dis = qty * discount;
+            totalDiscount=totalDiscount+dis;
 //            clearValue();
             setValues();
         }
@@ -280,8 +281,8 @@ public class YourOrderFragment extends Fragment implements View.OnClickListener 
 //        }
         DecimalFormat format = new DecimalFormat("0.0");
         total_amount.setText(format.format(totalPrice));
-        tv_specialDiscount_charges.setText(format.format(dis));
-        grandTotal = grandTotal + (totalPrice - dis) ;
+        tv_specialDiscount_charges.setText(format.format(totalDiscount));
+        grandTotal = totalPrice - totalDiscount ;
         grand_amount.setText(format.format(grandTotal));
 //        shipping_charges.setText(format.format(shippingChareges));
     }

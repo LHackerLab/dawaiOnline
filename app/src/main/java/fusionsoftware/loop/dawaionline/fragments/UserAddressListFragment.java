@@ -119,7 +119,7 @@ public class UserAddressListFragment extends Fragment implements View.OnClickLis
     }
 
     private void addNewAddress() {
-        AddNewAddressFragment fragment = AddNewAddressFragment.newInstance(0, false);//0, and false for add new address
+        AddNewAddressFragment fragment = AddNewAddressFragment.newInstance(0, false, "", "", "", "", "", "");//0, and false for add new address
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.container, fragment)

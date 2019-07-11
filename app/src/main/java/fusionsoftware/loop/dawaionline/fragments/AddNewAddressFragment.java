@@ -54,13 +54,25 @@ import fusionsoftware.loop.dawaionline.utilities.Utility;
 public class AddNewAddressFragment extends Fragment implements View.OnClickListener {
     private int addressId;
     private Boolean editFlag;
+    private String lacality;
+    private String addrss;
+    private String landmark;
+    private String cityName;
+    private String pincode;
+    private String fullName;
 
     // TODO: Rename and change types and number of parameters
-    public static AddNewAddressFragment newInstance(int addressId, Boolean editFlag) {
+    public static AddNewAddressFragment newInstance(int addressId, Boolean editFlag, String lacality, String addrss, String landmark, String cityName, String pincode, String fullName) {
         AddNewAddressFragment fragment = new AddNewAddressFragment();
         Bundle args = new Bundle();
         args.putInt("addressId", addressId);
         args.putBoolean("editFlag", editFlag);
+        args.putString("lacality", lacality);
+        args.putString("addrss", addrss);
+        args.putString("landmark", landmark);
+        args.putString("cityName", cityName);
+        args.putString("pincode", pincode);
+        args.putString("fullName", fullName);
         fragment.setArguments(args);
         return fragment;
     }
@@ -71,6 +83,12 @@ public class AddNewAddressFragment extends Fragment implements View.OnClickListe
         if (getArguments() != null) {
             addressId = getArguments().getInt("addressId");
             editFlag = getArguments().getBoolean("editFlag");
+            lacality = getArguments().getString("lacality");
+            addrss = getArguments().getString("addrss");
+            landmark = getArguments().getString("landmark");
+            cityName = getArguments().getString("cityName");
+            pincode = getArguments().getString("pincode");
+            fullName = getArguments().getString("fullName");
         }
     }
 
@@ -141,6 +159,8 @@ public class AddNewAddressFragment extends Fragment implements View.OnClickListe
 //        select_locality.setTypeface(regular);
 //        spinner = view.findViewById(R.id.spinner);
         save_address.setOnClickListener(this);
+        SharedPreferences sharedPreferences = context.getSharedPreferences("Login", Context.MODE_PRIVATE);
+        phone = sharedPreferences.getString("Login", "");
         if (editFlag) {//only for edit
             saveaddress.setText("Update Address");
             setValueForEditAddrss();
@@ -157,9 +177,13 @@ public class AddNewAddressFragment extends Fragment implements View.OnClickListe
 //        Addresses addresses = dbHelper.getAllAddressesData(addressId);
 //        if (addresses != null) {
 //            addNewAddress.setText(addresses.getCompleteAddress());
-//            addNewPhoneNumber.setText(addresses.getPhoneNumber());
-//            addNewPinCode.setText(addresses.getZipCode());
-//            addNewLandMark.setText(addresses.getLandMark());
+        addNewName.setText("" + fullName);
+        addNewAddress.setText("" + addrss);
+        addNewPinCode.setText("" + pincode);
+//        addNewPhoneNumber.setText("" + phone);
+        addNewLandMark.setText("" + landmark);
+        addNewLocality.setText("" + locality);
+        addNewCity.setText("" + cityName);
 //        }
     }
 
@@ -218,8 +242,8 @@ public class AddNewAddressFragment extends Fragment implements View.OnClickListe
         pinCode = addNewPinCode.getText().toString();
 //        phone = addNewPhoneNumber.getText().toString();
         landMark = addNewLandMark.getText().toString();
-        locality=addNewLocality.getText().toString();
-        city=addNewCity.getText().toString();
+        locality = addNewLocality.getText().toString();
+        city = addNewCity.getText().toString();
 
         if (name.length() == 0) {
             addNewAddress.setError("Please Enter Name");
@@ -227,55 +251,41 @@ public class AddNewAddressFragment extends Fragment implements View.OnClickListe
             return false;
 //        } else {
 //            layout_address.setErrorEnabled(false);
-        }
-
-       else if (address.length() == 0) {
+        } else if (address.length() == 0) {
             addNewAddress.setError("Please Enter Address");
             requestFocus(addNewAddress);
             return false;
 //        } else {
 //            layout_address.setErrorEnabled(false);
-        }
-
-       else if (landMark.length() == 0) {
+        } else if (landMark.length() == 0) {
             addNewAddress.setError("Please Enter Landmark");
             requestFocus(addNewAddress);
             return false;
 //        } else {
 //            layout_address.setErrorEnabled(false);
-        }
-
-        else if (city.length() == 0) {
+        } else if (city.length() == 0) {
             addNewAddress.setError("Please Enter City");
             requestFocus(addNewCity);
             return false;
 //        } else {
 //            layout_address.setErrorEnabled(false);
-        }
-
-
-        else  if (pinCode.length() == 0) {
+        } else if (pinCode.length() == 0) {
             addNewPinCode.setError("Please Enter Pincode");
             requestFocus(addNewPinCode);
             return false;
-        }
-        else if (pinCode.length() != 6) {
+        } else if (pinCode.length() != 6) {
             addNewPinCode.setError("Please Enter  Valid Pincode");
             requestFocus(addNewPinCode);
             return false;
 //        } else {
 //            layout_pincode.setErrorEnabled(false);
-        }
-
-
-        else if (locality.length() == 0) {
+        } else if (locality.length() == 0) {
             addNewPhoneNumber.setError("Please Enter Locality");
             requestFocus(addNewPhoneNumber);
             return false;
 //        } else {
 //            layout_phone.setErrorEnabled(false);
         }
-
 
 
         return true;
@@ -291,18 +301,15 @@ public class AddNewAddressFragment extends Fragment implements View.OnClickListe
                 Result data = dbHelper.getUserData();
 //                int loginId = data.getLoginID();
                 int loginId = 1;
-                SharedPreferences sharedPreferences = context.getSharedPreferences("Login", Context.MODE_PRIVATE);
-                phone=sharedPreferences.getString("Login", "");
                 ServiceCaller serviceCaller = new ServiceCaller(context);
                 serviceCaller.callAddNewAddressService(address, landMark, city, name, pinCode, locality, phone, new IAsyncWorkCompletedCallback() {
                     @Override
                     public void onDone(String workName, boolean isComplete) {
                         if (isComplete) {
-                            if (workName.trim().equalsIgnoreCase("yes")){
+                            if (workName.trim().equalsIgnoreCase("yes")) {
                                 Toast.makeText(context, Contants.ADD_NEW_ADDRESS, Toast.LENGTH_LONG).show();
                                 getActivity().getSupportFragmentManager().popBackStack();//back to previes screen
-                            }
-                            else {
+                            } else {
                                 Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
                             }
 
@@ -330,10 +337,10 @@ public class AddNewAddressFragment extends Fragment implements View.OnClickListe
                 //utility.customProgressDialog(getActivity());
                 DbHelper dbHelper = new DbHelper(context);
                 Result data = dbHelper.getUserData();
-                int loginId = data.getLoginId();
+//                int loginId = data.getLoginId();
                 ServiceCaller serviceCaller = new ServiceCaller(context);
                 //get login id from data base ..................
-                serviceCaller.updateAddressService(addressId, loginId, address, phone, pinCode, landMark, new IAsyncWorkCompletedCallback() {
+                serviceCaller.callUpdateAddressService(addressId, phone, locality, addrss, landmark, cityName, pincode, fullName, new IAsyncWorkCompletedCallback() {
                     @Override
                     public void onDone(String workName, boolean isComplete) {
                         if (isComplete) {

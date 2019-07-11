@@ -331,6 +331,39 @@ public class ServiceCaller {
     }
 
 
+    //get update address data...........
+    public void callUpdateAddressService(final int id, final String address, final String landmark, final String city, final String name, final String pincode, final String locality, final String mobile, final IAsyncWorkCompletedCallback workCompletedCallback) {
+        final String url = Contants.SERVICE_BASE_URL + Contants.UpdateAddress;
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                workCompletedCallback.onDone(response, true);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                workCompletedCallback.onDone(error.getMessage(), false);
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("id", String.valueOf(id));
+                params.put("address", address);
+                params.put("landmark", landmark);
+                params.put("city", city);
+                params.put("patient_name", name);
+                params.put("pincode", pincode);
+                params.put("locality", locality);
+                params.put("mobile", mobile);
+                return params;
+            }
+        };
+
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(20000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        AppController.getInstance().addToRequestQueue(stringRequest);//, tag_json_obj);
+    }
+
 
     //for get user profile................
     public void getUserProfileService(int LoginID, final IAsyncWorkCompletedCallback workCompletedCallback) {

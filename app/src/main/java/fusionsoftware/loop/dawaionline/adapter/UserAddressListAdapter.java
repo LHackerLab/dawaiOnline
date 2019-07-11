@@ -73,7 +73,7 @@ public class UserAddressListAdapter extends RecyclerView.Adapter<UserAddressList
         holder.tv_edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AddNewAddressFragment fragment = AddNewAddressFragment.newInstance(addresslist.get(position).getAddressId(), true);//AddressId and true for edit address
+                AddNewAddressFragment fragment = AddNewAddressFragment.newInstance(addresslist.get(position).getId(), true, addresslist.get(position).getLocality(), addresslist.get(position).getAddress(), addresslist.get(position).getLandmark(),addresslist.get(position).getCity(), addresslist.get(position).getPincode(), addresslist.get(position).getPatient_name());//AddressId and true for edit address
                 moveFragment(fragment);
             }
         });
@@ -149,9 +149,9 @@ public class UserAddressListAdapter extends RecyclerView.Adapter<UserAddressList
 
     //delete address
     private void callDeleteAddressService(final int position) {
-        DbHelper dbHelper = new DbHelper(context);
-        Result data = dbHelper.getUserData();
-        if (data != null) {
+//        DbHelper dbHelper = new DbHelper(context);
+//        Result data = dbHelper.getUserData();
+//        if (data != null) {
             SharedPreferences sharedPreferences = context.getSharedPreferences("Login", Context.MODE_PRIVATE);
             String phone = sharedPreferences.getString("Login", "");
             final ServiceCaller serviceCaller = new ServiceCaller(context);
@@ -176,7 +176,7 @@ public class UserAddressListAdapter extends RecyclerView.Adapter<UserAddressList
                     }
                 }
             });
-        }
+//        }
     }
 
     @Override
