@@ -32,13 +32,13 @@
                         android:id="@+id/layout_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:hint="Full Name"
                         android:layout_marginBottom="@dimen/dimValue_10">
 
                         <EditText
                             android:id="@+id/edt_name"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:hint="Full Name"
                             android:inputType="text"
                             android:singleLine="true"
                             android:textColor="@color/primary_text"
@@ -53,13 +53,13 @@
                         android:id="@+id/layout_phone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:hint="Locality"
                         android:layout_marginBottom="@dimen/dimValue_10">
 
                         <EditText
                             android:id="@+id/edt_locality"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:hint="Locality"
                             android:inputType="text"
                             android:singleLine="true"
                             android:textColorHint="@color/primary_text"
@@ -73,13 +73,13 @@
                         android:id="@+id/layout_address"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:hint="Address"
                         android:layout_marginBottom="@dimen/dimValue_10">
 
                         <EditText
                             android:id="@+id/edt_address"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:hint="Address"
                             android:inputType="text"
                             android:singleLine="true"
                             android:textColor="@color/primary_text"
@@ -90,16 +90,15 @@
                     </android.support.design.widget.TextInputLayout>
 
                     <android.support.design.widget.TextInputLayout
-
                         android:id="@+id/layout_landmark"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:hint="Landmark">
 
                         <EditText
                             android:id="@+id/edt_landmark"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:hint="Landmark"
                             android:inputType="text"
                             android:singleLine="true"
                             android:textColorHint="@color/primary_text"
@@ -139,13 +138,13 @@
                         android:id="@+id/layout_city"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:hint="City"
                         android:layout_marginTop="@dimen/dimValue_10">
 
                         <EditText
                             android:id="@+id/edt_city"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:hint="City"
                             android:inputType="text"
                             android:singleLine="true"
                             android:textColorHint="@color/primary_text"
@@ -160,6 +159,7 @@
                         android:id="@+id/layout_pincode"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:hint="Pincode"
                         android:layout_marginTop="@dimen/dimValue_10"
                         android:layout_marginBottom="@dimen/dimValue_10">
 
@@ -167,7 +167,6 @@
                             android:id="@+id/edt_pincode"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:hint="Pincode"
                             android:inputType="number"
                             android:maxLength="6"
                             android:singleLine="true"

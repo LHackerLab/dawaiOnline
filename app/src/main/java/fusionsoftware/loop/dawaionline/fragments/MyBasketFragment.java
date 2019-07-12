@@ -114,9 +114,9 @@ public class MyBasketFragment extends Fragment implements View.OnClickListener {
         bold = FontManager.getFontTypeface(context, "fonts/roboto.bold.ttf");
         DashboardActivity rootActivity = (DashboardActivity) getActivity();
         rootActivity.setScreenTitle("My Basket");
-        rootActivity.setScreencart(false);
+        rootActivity.setScreencart(true);
         rootActivity.setScreenSave(false);
-        rootActivity.setScreenCartDot(false);
+        rootActivity.setScreenCartDot(true);
         rootActivity.setItemCart();
         arrow_icon = (TextView) view.findViewById(R.id.arrow_icon);
         tv_continue = (TextView) view.findViewById(R.id.tv_continue);

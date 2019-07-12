@@ -463,7 +463,7 @@ public class DbHelper extends SQLiteOpenHelper {
     public boolean deleteBasketOrderDataByCategoryName(String mc_name) {
         boolean result = false;
         SQLiteDatabase db = this.getWritableDatabase();
-        String query = "mc_name = " + mc_name + "'";
+        String query = "mc_name = '" + mc_name + "'";
         db.delete("MyOrderDataEntity", query, null);
         db.close();
         return result;

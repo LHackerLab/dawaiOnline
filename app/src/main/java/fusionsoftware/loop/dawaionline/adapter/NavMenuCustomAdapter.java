@@ -144,6 +144,8 @@ public class NavMenuCustomAdapter extends BaseAdapter {
                     }
 
                    else if (position == 6) {
+                       DbHelper dbHelper=new DbHelper(context);
+                       dbHelper.deleteAllBasketOrderData();
                         SharedPreferences preferences = context.getSharedPreferences("Login", Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = preferences.edit();
                         editor.clear();

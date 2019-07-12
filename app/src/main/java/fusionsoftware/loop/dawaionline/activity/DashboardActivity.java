@@ -96,6 +96,9 @@ public class DashboardActivity extends AppCompatActivity
         int storeId = intent.getIntExtra("storeId", 0);
         int LoginId = intent.getIntExtra("LoginId", 0);
         String storeName = intent.getStringExtra("storeName");
+        SharedPreferences sharedPreferences = getSharedPreferences("Login", Context.MODE_PRIVATE);
+        String phone = sharedPreferences.getString("key", "");
+        phoneNumber.setText(""+phone);
 //        if (NavigateValue == 1) {//come from payment and notification  onclick
 //            TrackOrderStatusFragment fragment = TrackOrderStatusFragment.newInstance(orderNumber, storeId, orderId, storeName,LoginId);
 //            moveFragment(fragment);
@@ -165,7 +168,6 @@ public class DashboardActivity extends AppCompatActivity
         Result data = dbHelper.getUserData();
         if (data != null) {
             showLogin(false);
-            phoneNumber.setText(data.getPhoneNumber());
             username.setText(data.getName());
             String url = data.getProfilePictureUrl();
             Picasso.with(this).load(url).memoryPolicy(MemoryPolicy.NO_CACHE)

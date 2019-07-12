@@ -95,7 +95,7 @@ public class AddNewAddressFragment extends Fragment implements View.OnClickListe
     private EditText addNewAddress, addNewPinCode, addNewPhoneNumber, addNewLandMark, addNewName, addNewLocality, addNewCity;
     private View view;
     private TextView address_icon, saveaddress, select_locality;
-    private String name, address, phone, pinCode, landMark, city, locality;
+    private String name, address, phone, pinCode, landMark, city, locality, prefPhone;
     private TextInputLayout layout_address, layout_pincode, layout_phone, layout_landmark;
     private LinearLayout save_address, selectCityLayout;
     private Context context;
@@ -155,12 +155,12 @@ public class AddNewAddressFragment extends Fragment implements View.OnClickListe
         save_address = (LinearLayout) view.findViewById(R.id.save_address);
         address_icon = (TextView) view.findViewById(R.id.address_icon);
         saveaddress = (TextView) view.findViewById(R.id.saveaddress);
+        SharedPreferences sharedPreferences = context.getSharedPreferences("Login", Context.MODE_PRIVATE);
+        prefPhone=sharedPreferences.getString("key", "");
 //        select_locality = (TextView) view.findViewById(R.id.select_locality_textView);
 //        select_locality.setTypeface(regular);
 //        spinner = view.findViewById(R.id.spinner);
         save_address.setOnClickListener(this);
-        SharedPreferences sharedPreferences = context.getSharedPreferences("Login", Context.MODE_PRIVATE);
-        phone = sharedPreferences.getString("Login", "");
         if (editFlag) {//only for edit
             saveaddress.setText("Update Address");
             setValueForEditAddrss();
@@ -230,7 +230,13 @@ public class AddNewAddressFragment extends Fragment implements View.OnClickListe
         FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.container, fragment, tag)
-                .addToBackStack(null)
+                .commit();
+    }
+
+    private void moveFragment(Fragment fragment) {
+        FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.container, fragment)
                 .commit();
     }
 
@@ -245,45 +251,34 @@ public class AddNewAddressFragment extends Fragment implements View.OnClickListe
         city = addNewCity.getText().toString();
 
         if (name.length() == 0) {
-            addNewAddress.setError("Please Enter Name");
+            addNewName.setError("Please Enter Name");
             requestFocus(addNewName);
             return false;
-//        } else {
-//            layout_address.setErrorEnabled(false);
+
+        } else if (locality.length() == 0) {
+            addNewLocality.setError("Please Enter Locality");
+            requestFocus(addNewLocality);
+            return false;
         } else if (address.length() == 0) {
             addNewAddress.setError("Please Enter Address");
             requestFocus(addNewAddress);
             return false;
-//        } else {
-//            layout_address.setErrorEnabled(false);
         } else if (landMark.length() == 0) {
-            addNewAddress.setError("Please Enter Landmark");
-            requestFocus(addNewAddress);
+            addNewLandMark.setError("Please Enter Landmark");
+            requestFocus(addNewLandMark);
             return false;
-//        } else {
-//            layout_address.setErrorEnabled(false);
         } else if (city.length() == 0) {
-            addNewAddress.setError("Please Enter City");
+            addNewCity.setError("Please Enter City");
             requestFocus(addNewCity);
             return false;
-//        } else {
-//            layout_address.setErrorEnabled(false);
         } else if (pinCode.length() == 0) {
             addNewPinCode.setError("Please Enter Pincode");
             requestFocus(addNewPinCode);
             return false;
         } else if (pinCode.length() != 6) {
-            addNewPinCode.setError("Please Enter  Valid Pincode");
+            addNewPinCode.setError("Please Enter Valid Pincode");
             requestFocus(addNewPinCode);
             return false;
-//        } else {
-//            layout_pincode.setErrorEnabled(false);
-        } else if (locality.length() == 0) {
-            addNewPhoneNumber.setError("Please Enter Locality");
-            requestFocus(addNewPhoneNumber);
-            return false;
-//        } else {
-//            layout_phone.setErrorEnabled(false);
         }
 
 
@@ -297,13 +292,22 @@ public class AddNewAddressFragment extends Fragment implements View.OnClickListe
             if (Utility.isOnline(context)) {
                 final BallTriangleDialog dotDialog = new BallTriangleDialog(context);
                 dotDialog.show();
+                Toast.makeText(context, ""+prefPhone, Toast.LENGTH_SHORT).show();
                 ServiceCaller serviceCaller = new ServiceCaller(context);
-                serviceCaller.callAddNewAddressService(address, landMark, city, name, pinCode, locality, phone, new IAsyncWorkCompletedCallback() {
+                serviceCaller.callAddNewAddressService(address, landMark, city, name, pinCode, locality, prefPhone, new IAsyncWorkCompletedCallback() {
                     @Override
                     public void onDone(String workName, boolean isComplete) {
                         if (isComplete) {
                             if (workName.trim().equalsIgnoreCase("yes")) {
                                 Toast.makeText(context, Contants.ADD_NEW_ADDRESS, Toast.LENGTH_LONG).show();
+                                UserAddressListFragment addressListFragment=new UserAddressListFragment();
+                                        moveFragment(addressListFragment);
+                                        addNewName.setText("");
+                                        addNewLocality.setText("");
+                                        addNewAddress.setText("");
+                                        addNewLandMark.setText("");
+                                        addNewCity.setText("");
+                                        addNewPinCode.setText("");
 //                                getActivity().getSupportFragmentManager().popBackStack();//back to previes screen
                             } else {
                                 Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
@@ -325,23 +329,28 @@ public class AddNewAddressFragment extends Fragment implements View.OnClickListe
 
     //update address..............
     public void setUpdateAddress() {
-        // check validation for new address............
         if (isValidate()) {
             if (Utility.isOnline(context)) {
-                final Utility utility = new Utility();
-                //utility.customProgressDialog(getActivity());
+                final BallTriangleDialog dotDialog = new BallTriangleDialog(context);
+                dotDialog.show();
                 DbHelper dbHelper = new DbHelper(context);
                 Result data = dbHelper.getUserData();
-//                int loginId = data.getLoginId();
+                Toast.makeText(context, ""+prefPhone, Toast.LENGTH_SHORT).show();
                 ServiceCaller serviceCaller = new ServiceCaller(context);
-                //get login id from data base ..................
-                serviceCaller.callUpdateAddressService(addressId, phone, localityName, addrss, landmark, cityName, pincode, fullName, new IAsyncWorkCompletedCallback() {
+                serviceCaller.callUpdateAddressService(addressId, address, landMark, city, name, pinCode, locality, prefPhone, new IAsyncWorkCompletedCallback() {
                     @Override
                     public void onDone(String workName, boolean isComplete) {
+                        dotDialog.dismiss();
                         if (isComplete) {
-                            // utility.customProgressDialogDismiss();
                             Toast.makeText(context, "Address Update Successfully", Toast.LENGTH_LONG).show();
-//                            getFragmentManager().popBackStack();//back to previous screen
+                            UserAddressListFragment addressListFragment=new UserAddressListFragment();
+                            moveFragment(addressListFragment);
+                            addNewName.setText("");
+                            addNewLocality.setText("");
+                            addNewAddress.setText("");
+                            addNewLandMark.setText("");
+                            addNewCity.setText("");
+                            addNewPinCode.setText("");
                         } else {
                             Utility.alertForErrorMessage("Address not Update Successfully", context);// do not add address message.......
                         }

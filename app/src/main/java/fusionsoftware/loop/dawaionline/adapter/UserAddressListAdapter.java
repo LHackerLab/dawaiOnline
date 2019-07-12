@@ -41,7 +41,7 @@ public class UserAddressListAdapter extends RecyclerView.Adapter<UserAddressList
     private Context context;
     Typeface roboto_light, regular, materialdesignicons_font, medium;
     private LayoutInflater layoutInflater;
-    private Boolean navigateFlag;
+    private Boolean navigateFlag=false;
     private int localityId;
 
 

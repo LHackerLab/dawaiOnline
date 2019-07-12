@@ -92,6 +92,7 @@ public class UserAddressListFragment extends Fragment implements View.OnClickLis
         }
         view = inflater.inflate(R.layout.fragment_user_address_list, container, false);
         DashboardActivity rootActivity = (DashboardActivity) getActivity();
+        rootActivity.setScreenCartDot(true);
         rootActivity.setScreencart(true);
         rootActivity.setItemCart();
         rootActivity.setScreenSave(false);
