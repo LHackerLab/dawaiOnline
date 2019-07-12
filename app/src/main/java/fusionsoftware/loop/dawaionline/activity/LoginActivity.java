@@ -107,14 +107,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     //intilization.............
     private void init() {
-        tv_proceed = (TextView) findViewById(R.id.tv_proceed);
-        phone_icon = (TextView) findViewById(R.id.phone_icon);
-//        tv_description = (TextView) findViewById(R.id.tv_description);
-        edt_phone = (EditText) findViewById(R.id.edt_phone);
-        tv_or = (TextView) findViewById(R.id.tv_or);
-        tv_see_menu_icon = (TextView) findViewById(R.id.tv_see_menu_icon);
-//        SeeMenu = (TextView) findViewById(R.id.tv_see_menu_text);
-        layout_seeMenu = (LinearLayout) findViewById(R.id.layout_seeMenu);
+        tv_proceed = findViewById(R.id.tv_proceed);
+        phone_icon = findViewById(R.id.phone_icon);
+        edt_phone = findViewById(R.id.edt_phone);
+        tv_or = findViewById(R.id.tv_or);
+        tv_see_menu_icon = findViewById(R.id.tv_see_menu_icon);
+        layout_seeMenu = findViewById(R.id.layout_seeMenu);
         tv_proceed.setOnClickListener(this);
         layout_seeMenu.setOnClickListener(this);
     }
@@ -126,12 +124,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.tv_proceed:
                 loginWithPhone();//sign up with phone method.......
                 break;
-//            case R.id.layout_facebook:
-//                facebookLogin();
-//                break;
-//            case R.id.layout_seeMenu:
-//                startActivity(new Intent(LoginActivity.this, DashboardActivity.class));
-//                break;
         }
     }
 
@@ -166,39 +158,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 Toast.makeText(this, Contants.OFFLINE_MESSAGE, Toast.LENGTH_SHORT).show();
             }
         }
-        else {
-            Toast.makeText(this, "Please Enter Valid Details", Toast.LENGTH_SHORT).show();
-        }
-
-//        if (validation()) {
-            //check internet connection
-//            if (Utility.isOnline(this)) {
-//                final BallTriangleDialog dotDialog = new BallTriangleDialog(LoginActivity.this);
-//                dotDialog.show();
-//                ServiceCaller serviceCaller = new ServiceCaller(this);
-//                serviceCaller.callLoginService(phone, new IAsyncWorkCompletedCallback() {
-//                    @Override
-//                    public void onDone(String workName, boolean isComplete) {
-////                        Toast.makeText(LoginActivity.this, workName, Toast.LENGTH_SHORT).show();
-//                        if (isComplete) {
-//                            //sendDeviceTokenRegistrationToServer();
-////                            Toast.makeText(LoginActivity.this, Contants.SEND_MESSAGE, Toast.LENGTH_LONG).show();
-////                            Intent intent = new Intent(LoginActivity.this, OTPVerifyActivity.class);
-////                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-////                            startActivity(intent);
-////                        } else {
-//                            Toast.makeText(LoginActivity.this, "User Skip To Menu For Demo", Toast.LENGTH_SHORT).show();
-////                            Utility.alertForErrorMessage(Contants.Dont_SEND_MESSAGE, LoginActivity.this);
-//                        }
-//                        if (dotDialog.isShowing()) {
-//                            dotDialog.dismiss();
-//                        }
-//                    }
-//                });
-//            } else {
-//                Utility.alertForErrorMessage(Contants.OFFLINE_MESSAGE, this);//off line msg....
-//            }
-//        }
     }
 
     //validation for phone
@@ -232,89 +191,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         return super.dispatchTouchEvent(event);
     }
 
-    //check storage and camera run time permission
-//    private Boolean checkRuntimePermission() {
-//        List<String> permissionsNeeded = new ArrayList<String>();
-//
-//        final List<String> permissionsList = new ArrayList<String>();
-//        if (!addPermission(permissionsList, Manifest.permission.SEND_SMS))
-//            permissionsNeeded.add("Send SMS");
-//        if (!addPermission(permissionsList, Manifest.permission.RECEIVE_SMS))
-//            permissionsNeeded.add("Receive SMS");
-//        if (!addPermission(permissionsList, Manifest.permission.READ_PHONE_STATE))
-//            permissionsNeeded.add("Read Phone State");
-//        if (!addPermission(permissionsList, Manifest.permission.READ_SMS))
-//            permissionsNeeded.add("Read SMS");
-//
-//        if (permissionsList.size() > 0) {
-//            if (permissionsNeeded.size() > 0) {
-                // Need Rationale
-//                String message = "You Need To Grant Access To " + permissionsNeeded.get(0);
-//                for (int i = 1; i < permissionsNeeded.size(); i++) {
-//                    message = message + ", " + permissionsNeeded.get(i);
-//                    showMessageOKCancel(message,
-//                            new DialogInterface.OnClickListener() {
-//                                @Override
-//                                public void onClick(DialogInterface dialog, int which) {
-//                                    ActivityCompat.requestPermissions(LoginActivity.this, permissionsList.toArray(new String[permissionsList.size()]),
-//                                            REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS);
-//                                }
-//                            });
-//                }
-//                return false;
-//            }
-//            ActivityCompat.requestPermissions(LoginActivity.this, permissionsList.toArray(new String[permissionsList.size()]),
-//                    REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS);
-//            return false;
-//        }
-//        return true;
-//    }
-
-    //add run time permission
-    private boolean addPermission(List<String> permissionsList, String permission) {
-        if (ContextCompat.checkSelfPermission(LoginActivity.this, permission) != PackageManager.PERMISSION_GRANTED) {
-            permissionsList.add(permission);
-            // Check for Rationale Option
-            if (!ActivityCompat.shouldShowRequestPermissionRationale(LoginActivity.this, permission))
-                return false;
-        }
-        return true;
-    }
-
-    //show permission alert
-    private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
-        new AlertDialog.Builder(LoginActivity.this)
-                .setMessage(message)
-                .setPositiveButton("OK", okListener)
-                .setNegativeButton("Cancel", null)
-                .create()
-                .show();
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        switch (requestCode) {
-//            case REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS: {
-//                Map<String, Integer> perms = new HashMap<String, Integer>();
-//                perms.put(Manifest.permission.READ_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
-//                perms.put(Manifest.permission.CAMERA, PackageManager.PERMISSION_GRANTED);
-//                for (int i = 0; i < permissions.length; i++)
-//                    perms.put(permissions[i], grantResults[i]);
-//                if (perms.get(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
-//                        && perms.get(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-//                    selectImage();
-//                } else {
-//                     Permission Denied
-//                    Toast.makeText(LoginActivity.this, "Permission is Denied", Toast.LENGTH_SHORT)
-//                            .show();
-//
-//                }
-//            }
-//            break;
-            default:
-                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        }
-    }
 }
 
 

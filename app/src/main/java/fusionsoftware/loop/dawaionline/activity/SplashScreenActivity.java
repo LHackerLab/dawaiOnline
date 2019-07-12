@@ -34,7 +34,6 @@ import fusionsoftware.loop.dawaionline.utilities.Contants;
 public class SplashScreenActivity extends AppCompatActivity {
     private Boolean CheckOrientation = false;
     private String token;
-    Button tv_one, tv_two;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,29 +44,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splash_screen);
         chechPortaitAndLandSacpe();//chech Portait And LandSacpe Orientation
-        init();
         waitForLogin(); //wait for 3 seconds
-    }
-
-    private void init() {
-        tv_one = findViewById(R.id.tv_one);
-        tv_two = findViewById(R.id.tv_two);
-//        tv_one.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(SplashScreenActivity.this, LoginWithPhoneActivity.class);
-//                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-//                startActivity(intent);
-//            }
-//        });
-//        tv_two.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(SplashScreenActivity.this, LoginActivity.class);
-//                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-//                startActivity(intent);
-//            }
-//        });
     }
 
     //chech Portait And LandSacpe Orientation
@@ -83,40 +60,25 @@ public class SplashScreenActivity extends AppCompatActivity {
 
     //wait for 3 seconds
     private void waitForLogin() {
-        DbHelper dbhelper = new DbHelper(SplashScreenActivity.this);
-        Result data = dbhelper.getUserData();
-//        if (data == null) {
-            tv_one.setVisibility(View.INVISIBLE);
-            tv_two.setVisibility(View.INVISIBLE);
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    SharedPreferences preferences = getSharedPreferences("Login", Context.MODE_PRIVATE);
-                    String phone = preferences.getString("key", "");
-                    if (phone!=null){
-                        Intent intent = new Intent(SplashScreenActivity.this, DashboardActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent);
-                        finish();
-                    }
-                    else {
-                        Intent intent = new Intent(SplashScreenActivity.this, LoginActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent);
-                        finish();
-                    }
-
-
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                SharedPreferences preferences = getSharedPreferences("Login", Context.MODE_PRIVATE);
+                String phone = preferences.getString("key", null);
+                if (phone != null) {
+                    Intent intent = new Intent(SplashScreenActivity.this, DashboardActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Intent intent = new Intent(SplashScreenActivity.this, LoginActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                    finish();
                 }
-            }, 3000);
-//        } else
 
-//        {
-//            tv_one.setVisibility(View.VISIBLE);
-//            tv_two.setVisibility(View.VISIBLE);
-//            Intent intent = new Intent(SplashScreenActivity.this, LoginActivity.class);
-//            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-//            startActivity(intent);
-//        }
+
+            }
+        }, 3000);
     }
 }

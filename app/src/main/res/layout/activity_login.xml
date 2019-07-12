@@ -21,7 +21,6 @@
             android:layout_marginLeft="@dimen/dimValue_20"
             android:layout_marginRight="@dimen/dimValue_20"
             android:layout_marginBottom="@dimen/dimValue_20"
-            android:background="@drawable/border_layout_red"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -32,6 +31,7 @@
                 android:gravity="center"
                 android:paddingRight="@dimen/dimValue_15"
                 android:text="s"
+                android:visibility="gone"
                 android:textColor="@color/white1"
                 android:textSize="@dimen/dimTextSize_20" />
 
@@ -43,7 +43,7 @@
                 android:text="Login"
                 android:textStyle="bold"
                 android:textColor="@color/white1"
-                android:textSize="@dimen/dimTextSize_18" />
+                android:textSize="@dimen/dimTextSize_22" />
         </LinearLayout>
 
         <LinearLayout

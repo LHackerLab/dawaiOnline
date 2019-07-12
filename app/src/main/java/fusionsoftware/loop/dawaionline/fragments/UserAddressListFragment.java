@@ -232,7 +232,7 @@ public class UserAddressListFragment extends Fragment implements View.OnClickLis
         nodata.setTypeface(regular);
         nodataIcon.setTypeface(materialdesignicons_font);
         nodataIcon.setText(Html.fromHtml("&#xf187;"));
-        nodata.setText("Your Address Not Found");
+        nodata.setText("Any Address Not Found");
         linearLayout.setGravity(Gravity.CENTER_VERTICAL);
         linearLayout.removeAllViews();
         linearLayout.addView(view);
