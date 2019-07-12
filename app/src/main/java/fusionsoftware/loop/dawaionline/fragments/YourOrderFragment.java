@@ -313,16 +313,16 @@ public class YourOrderFragment extends Fragment implements View.OnClickListener 
 //            final DbHelper dbHelper = new DbHelper(context);
 //            Data data = dbHelper.getUserData();
 //            int loginId = data.getLoginID();
-            ServiceCaller serviceCaller = new ServiceCaller(context);
-            serviceCaller.createOrderService(1, 1, orderDetailsesList, totalPrice, dis, shippingChareges, grandTotal,
-                    new IAsyncWorkCompletedCallback() {
-                        @Override
-                        public void onDone(String result, boolean isComplete) {
-                            Toast.makeText(context, result, Toast.LENGTH_SHORT).show();
-                            if (isComplete) {
+//            ServiceCaller serviceCaller = new ServiceCaller(context);
+//            serviceCaller.createOrderService(1, 1, orderDetailsesList, totalPrice, dis, shippingChareges, grandTotal,
+//                    new IAsyncWorkCompletedCallback() {
+//                        @Override
+//                        public void onDone(String result, boolean isComplete) {
+//                            Toast.makeText(context, result, Toast.LENGTH_SHORT).show();
+//                            if (isComplete) {
 
 //                                if (result != null) {
-                                OrderConfirmFragment fragment = OrderConfirmFragment.newInstance(completeAddress, zipcode, phone, result, totalPrice, dis, shippingChareges, grandTotal);
+                                OrderConfirmFragment fragment = OrderConfirmFragment.newInstance(completeAddress, zipcode, phone, "", totalPrice, dis, shippingChareges, grandTotal);
                                 moveFragmentWithTag(fragment, "OrderPlacedFragment");
 
 //                                } else {
@@ -330,17 +330,17 @@ public class YourOrderFragment extends Fragment implements View.OnClickListener 
 //                                }
 //                            } else {
 //                                Utility.alertForErrorMessage("Order not Placed Successfully", context);
-                            }
+//                            }
                             if (dotDialog.isShowing()) {
                                 dotDialog.dismiss();
                             }
                         }
-                    });
+//                    });
 
 
-        } else {
-            Utility.alertForErrorMessage(Contants.OFFLINE_MESSAGE, context);
-        }
+//        } else {
+//            Utility.alertForErrorMessage(Contants.OFFLINE_MESSAGE, context);
+//        }
     }
 
     //

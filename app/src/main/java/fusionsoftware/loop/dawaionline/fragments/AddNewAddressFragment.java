@@ -54,7 +54,7 @@ import fusionsoftware.loop.dawaionline.utilities.Utility;
 public class AddNewAddressFragment extends Fragment implements View.OnClickListener {
     private int addressId;
     private Boolean editFlag;
-    private String lacality;
+    private String localityName;
     private String addrss;
     private String landmark;
     private String cityName;
@@ -62,12 +62,12 @@ public class AddNewAddressFragment extends Fragment implements View.OnClickListe
     private String fullName;
 
     // TODO: Rename and change types and number of parameters
-    public static AddNewAddressFragment newInstance(int addressId, Boolean editFlag, String lacality, String addrss, String landmark, String cityName, String pincode, String fullName) {
+    public static AddNewAddressFragment newInstance(int addressId, Boolean editFlag, String localityName, String addrss, String landmark, String cityName, String pincode, String fullName) {
         AddNewAddressFragment fragment = new AddNewAddressFragment();
         Bundle args = new Bundle();
         args.putInt("addressId", addressId);
         args.putBoolean("editFlag", editFlag);
-        args.putString("lacality", lacality);
+        args.putString("localityName", localityName);
         args.putString("addrss", addrss);
         args.putString("landmark", landmark);
         args.putString("cityName", cityName);
@@ -83,7 +83,7 @@ public class AddNewAddressFragment extends Fragment implements View.OnClickListe
         if (getArguments() != null) {
             addressId = getArguments().getInt("addressId");
             editFlag = getArguments().getBoolean("editFlag");
-            lacality = getArguments().getString("lacality");
+            localityName= getArguments().getString("localityName");
             addrss = getArguments().getString("addrss");
             landmark = getArguments().getString("landmark");
             cityName = getArguments().getString("cityName");
@@ -180,9 +180,8 @@ public class AddNewAddressFragment extends Fragment implements View.OnClickListe
         addNewName.setText("" + fullName);
         addNewAddress.setText("" + addrss);
         addNewPinCode.setText("" + pincode);
-//        addNewPhoneNumber.setText("" + phone);
         addNewLandMark.setText("" + landmark);
-        addNewLocality.setText("" + locality);
+        addNewLocality.setText("" + localityName);
         addNewCity.setText("" + cityName);
 //        }
     }
@@ -340,7 +339,7 @@ public class AddNewAddressFragment extends Fragment implements View.OnClickListe
 //                int loginId = data.getLoginId();
                 ServiceCaller serviceCaller = new ServiceCaller(context);
                 //get login id from data base ..................
-                serviceCaller.callUpdateAddressService(addressId, phone, locality, addrss, landmark, cityName, pincode, fullName, new IAsyncWorkCompletedCallback() {
+                serviceCaller.callUpdateAddressService(addressId, phone, localityName, addrss, landmark, cityName, pincode, fullName, new IAsyncWorkCompletedCallback() {
                     @Override
                     public void onDone(String workName, boolean isComplete) {
                         if (isComplete) {
