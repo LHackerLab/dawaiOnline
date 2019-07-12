@@ -74,6 +74,7 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
         return view;
     }
 
+
     // initilization ...............
     private void init(View view) {
         DashboardActivity rootActivity = (DashboardActivity) getActivity();
