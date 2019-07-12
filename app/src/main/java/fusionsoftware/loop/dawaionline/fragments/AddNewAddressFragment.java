@@ -307,7 +307,6 @@ public class AddNewAddressFragment extends Fragment implements View.OnClickListe
                             } else {
                                 Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
                             }
-
                         } else {
                             Utility.alertForErrorMessage(Contants.DoNot_NEW_ADDRESS, context);
                         }
