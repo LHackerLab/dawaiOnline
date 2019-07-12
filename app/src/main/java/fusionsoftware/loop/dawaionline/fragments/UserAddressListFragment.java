@@ -107,9 +107,9 @@ public class UserAddressListFragment extends Fragment implements View.OnClickLis
 
 
     private void init() {
-        addNewAddress = (TextView) view.findViewById(R.id.tv_add_new_address);
-        addressIcon = (TextView) view.findViewById(R.id.address_icon);
-        linearLayout = (LinearLayout) view.findViewById(R.id.linearLayout);
+        addNewAddress = view.findViewById(R.id.tv_add_new_address);
+        addressIcon = view.findViewById(R.id.address_icon);
+        linearLayout = view.findViewById(R.id.linearLayout);
         regular = FontManager.getFontTypeface(context, "fonts/roboto.regular.ttf");
         materialdesignicons_font = FontManager.getFontTypefaceMaterialDesignIcons(context, "fonts/materialdesignicons-webfont.otf");
         medium = FontManager.getFontTypeface(context, "fonts/roboto.medium.ttf");
@@ -134,11 +134,6 @@ public class UserAddressListFragment extends Fragment implements View.OnClickLis
         if (Utility.isOnline(context)) {
             final BallTriangleDialog dotDialog = new BallTriangleDialog(context);
             dotDialog.show();
-            DbHelper dbHelper = new DbHelper(context);
-            Result data = dbHelper.getUserData();
-//            if (data != null) {
-//                int loginId = data.getLoginID();
-//                int loginId = 1;
             SharedPreferences sharedPreferences = context.getSharedPreferences("Login", Context.MODE_PRIVATE);
             phoneNumber = sharedPreferences.getString("Login", "");
             if (phoneNumber != null) {
