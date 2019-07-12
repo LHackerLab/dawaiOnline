@@ -142,7 +142,6 @@ public class UserAddressListAdapter extends RecyclerView.Adapter<UserAddressList
 
     }
 
-
     //delete address
     private void callDeleteAddressService(final int position) {
         if (Utility.isOnline(context)) {
