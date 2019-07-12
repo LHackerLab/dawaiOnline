@@ -42,14 +42,12 @@ public class UserAddressListAdapter extends RecyclerView.Adapter<UserAddressList
     Typeface roboto_light, regular, materialdesignicons_font, medium;
     private LayoutInflater layoutInflater;
     private Boolean navigateFlag=false;
-    private int localityId;
 
 
     public UserAddressListAdapter(Context context, List<Result> addresslist, Boolean navigateFlag) {
         this.context = context;
         this.addresslist = addresslist;
         this.navigateFlag = navigateFlag;
-        this.localityId = localityId;
         layoutInflater = (LayoutInflater.from(context));
         roboto_light = FontManager.getFontTypefaceMaterialDesignIcons(context, "fonts/roboto.light.ttf");
         this.medium = FontManager.getFontTypeface(context, "fonts/roboto.medium.ttf");
@@ -69,7 +67,6 @@ public class UserAddressListAdapter extends RecyclerView.Adapter<UserAddressList
         holder.completeaddress.setText(addresslist.get(position).getLocality() + ", " + addresslist.get(position).getAddress() + ", " + addresslist.get(position).getLandmark() + ", " + addresslist.get(position).getCity());
         holder.Zipcode.setText(addresslist.get(position).getPincode());
         holder.phonenumber.setText(addresslist.get(position).getMobile());
-//        holder.locality_name.setText(addresslist.get(position).getCityName());
         holder.tv_edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -108,7 +105,6 @@ public class UserAddressListAdapter extends RecyclerView.Adapter<UserAddressList
     public void alertForDeletetMessage(final int position) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(context);
         final AlertDialog alert = builder.create();
-        // alert.getWindow().getAttributes().windowAnimations = R.style.alertAnimation;
         View view = alert.getLayoutInflater().inflate(R.layout.delete_alert, null);
         TextView dec1 = (TextView) view.findViewById(R.id.dec1);
         dec1.setTypeface(regular);
@@ -133,11 +129,6 @@ public class UserAddressListAdapter extends RecyclerView.Adapter<UserAddressList
             if (addresslist.get(position).getId() != 0) {
                 callDeleteAddressService(position);
             } else {
-
-//                Intent intent = new Intent("data_action");
-//                intent.putExtra("flag", "true");
-//                context.sendBroadcast(intent);
-
             }
         } else {
             Toast.makeText(context, Contants.OFFLINE_MESSAGE, Toast.LENGTH_LONG).show();
@@ -149,19 +140,14 @@ public class UserAddressListAdapter extends RecyclerView.Adapter<UserAddressList
 
     //delete address
     private void callDeleteAddressService(final int position) {
-//        DbHelper dbHelper = new DbHelper(context);
-//        Result data = dbHelper.getUserData();
-//        if (data != null) {
             SharedPreferences sharedPreferences = context.getSharedPreferences("Login", Context.MODE_PRIVATE);
-            String phone = sharedPreferences.getString("Login", "");
+            String phone = sharedPreferences.getString("key", null);
             final ServiceCaller serviceCaller = new ServiceCaller(context);
             serviceCaller.callDeleteAddressService(addresslist.get(position).getId(), phone, new IAsyncWorkCompletedCallback() {
                 @Override
                 public void onDone(String workName, boolean isComplete) {
                     if (isComplete) {
                         if (workName.trim().equalsIgnoreCase("yes")) {
-//                            DbHelper dbHelper = new DbHelper(context);
-//                        dbHelper.deleteAddressData(addresslist.get(position).getAddressId());
                             addresslist.remove(position);
                             Intent intent = new Intent("data");
                             intent.putExtra("flag", "true");
@@ -190,22 +176,18 @@ public class UserAddressListAdapter extends RecyclerView.Adapter<UserAddressList
 
         public ViewHolder(View view) {
             super(view);
-            completename = (TextView) view.findViewById(R.id.completename);
-            completeaddress = (TextView) view.findViewById(R.id.completeaddress);
-//            locality_name = (TextView) view.findViewById(R.id.locality_name);
-            Zipcode = (TextView) view.findViewById(R.id.Zipcode);
-            phonenumber = (TextView) view.findViewById(R.id.phonenumber);
-            tv_edit = (TextView) view.findViewById(R.id.tv_edit);
-            tv_delete = (TextView) view.findViewById(R.id.tv_delete);
-            mainLayout = (LinearLayout) view.findViewById(R.id.mainLayout);
+            completename = view.findViewById(R.id.completename);
+            completeaddress = view.findViewById(R.id.completeaddress);
+            Zipcode = view.findViewById(R.id.Zipcode);
+            phonenumber = view.findViewById(R.id.phonenumber);
+            tv_edit = view.findViewById(R.id.tv_edit);
+            tv_delete = view.findViewById(R.id.tv_delete);
+            mainLayout = view.findViewById(R.id.mainLayout);
             completeaddress.setTypeface(medium);
             Zipcode.setTypeface(medium);
             tv_edit.setTypeface(medium);
             tv_delete.setTypeface(medium);
             phonenumber.setTypeface(medium);
-//            locality_name.setTypeface(regular);
-
-
         }
     }
 }

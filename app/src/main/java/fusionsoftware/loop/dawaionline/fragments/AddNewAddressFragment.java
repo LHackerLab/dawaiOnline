@@ -94,13 +94,11 @@ public class AddNewAddressFragment extends Fragment implements View.OnClickListe
 
     private EditText addNewAddress, addNewPinCode, addNewPhoneNumber, addNewLandMark, addNewName, addNewLocality, addNewCity;
     private View view;
-    private TextView address_icon, saveaddress, select_locality;
-    private String name, address, phone, pinCode, landMark, city, locality, prefPhone;
-    private TextInputLayout layout_address, layout_pincode, layout_phone, layout_landmark;
-    private LinearLayout save_address, selectCityLayout;
+    private TextView address_icon, saveaddress;
+    private String name, address, pinCode, landMark, city, locality, prefPhone;
+    private LinearLayout save_address;
     private Context context;
     private Typeface materialdesignicons_font, regular, medium;
-//    Spinner spinner;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -126,7 +124,6 @@ public class AddNewAddressFragment extends Fragment implements View.OnClickListe
         saveaddress.setTypeface(medium);
         addNewLandMark.setTypeface(regular);
         addNewPinCode.setTypeface(regular);
-//        addNewPhoneNumber.setTypeface(regular);
         addNewAddress.setTypeface(regular);
 
     }
@@ -144,15 +141,11 @@ public class AddNewAddressFragment extends Fragment implements View.OnClickListe
         addNewPinCode = view.findViewById(R.id.edt_pincode);
         addNewCity = view.findViewById(R.id.edt_city);
         addNewLandMark = view.findViewById(R.id.edt_landmark);
-        layout_address = view.findViewById(R.id.layout_address);
-        layout_phone = view.findViewById(R.id.layout_phone);
-        layout_pincode = view.findViewById(R.id.layout_pincode);
-        layout_landmark = view.findViewById(R.id.layout_landmark);
         save_address = view.findViewById(R.id.save_address);
         address_icon = view.findViewById(R.id.address_icon);
         saveaddress = view.findViewById(R.id.saveaddress);
         SharedPreferences sharedPreferences = context.getSharedPreferences("Login", Context.MODE_PRIVATE);
-        prefPhone=sharedPreferences.getString("key", "");
+        prefPhone=sharedPreferences.getString("key", null);
         save_address.setOnClickListener(this);
         if (editFlag) {//only for edit
             saveaddress.setText("Update Address");
@@ -245,7 +238,6 @@ public class AddNewAddressFragment extends Fragment implements View.OnClickListe
             if (Utility.isOnline(context)) {
                 final BallTriangleDialog dotDialog = new BallTriangleDialog(context);
                 dotDialog.show();
-                Toast.makeText(context, ""+prefPhone, Toast.LENGTH_SHORT).show();
                 ServiceCaller serviceCaller = new ServiceCaller(context);
                 serviceCaller.callAddNewAddressService(address, landMark, city, name, pinCode, locality, prefPhone, new IAsyncWorkCompletedCallback() {
                     @Override
@@ -285,9 +277,6 @@ public class AddNewAddressFragment extends Fragment implements View.OnClickListe
             if (Utility.isOnline(context)) {
                 final BallTriangleDialog dotDialog = new BallTriangleDialog(context);
                 dotDialog.show();
-                DbHelper dbHelper = new DbHelper(context);
-                Result data = dbHelper.getUserData();
-                Toast.makeText(context, ""+prefPhone, Toast.LENGTH_SHORT).show();
                 ServiceCaller serviceCaller = new ServiceCaller(context);
                 serviceCaller.callUpdateAddressService(addressId, address, landMark, city, name, pinCode, locality, prefPhone, new IAsyncWorkCompletedCallback() {
                     @Override

@@ -135,7 +135,7 @@ public class UserAddressListFragment extends Fragment implements View.OnClickLis
             final BallTriangleDialog dotDialog = new BallTriangleDialog(context);
             dotDialog.show();
             SharedPreferences sharedPreferences = context.getSharedPreferences("Login", Context.MODE_PRIVATE);
-            phoneNumber = sharedPreferences.getString("Login", "");
+            phoneNumber = sharedPreferences.getString("key", null);
             if (phoneNumber != null) {
                 ServiceCaller serviceCaller = new ServiceCaller(context);
                 serviceCaller.callGetAllAddressService(phoneNumber, new IAsyncWorkCompletedCallback() {
