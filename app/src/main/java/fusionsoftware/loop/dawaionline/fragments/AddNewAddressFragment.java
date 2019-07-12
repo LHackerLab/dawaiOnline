@@ -363,6 +363,7 @@ public class AddNewAddressFragment extends Fragment implements View.OnClickListe
         }
     }
 
+
     //regquest focus ................
     private void requestFocus(View view) {
         if (view.requestFocus()) {
