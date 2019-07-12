@@ -113,7 +113,7 @@ public class UserAddressListAdapter extends RecyclerView.Adapter<UserAddressList
         TextView dec1 = (TextView) view.findViewById(R.id.dec1);
         dec1.setTypeface(regular);
 
-        TextView ok = (TextView) view.findViewById(R.id.Ok);
+        TextView ok = view.findViewById(R.id.Ok);
         ok.setTypeface(regular);
 
         alert.setCustomTitle(view);

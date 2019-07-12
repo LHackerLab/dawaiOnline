@@ -83,7 +83,7 @@ public class AddNewAddressFragment extends Fragment implements View.OnClickListe
         if (getArguments() != null) {
             addressId = getArguments().getInt("addressId");
             editFlag = getArguments().getBoolean("editFlag");
-            localityName= getArguments().getString("localityName");
+            localityName = getArguments().getString("localityName");
             addrss = getArguments().getString("addrss");
             landmark = getArguments().getString("landmark");
             cityName = getArguments().getString("cityName");
@@ -296,10 +296,6 @@ public class AddNewAddressFragment extends Fragment implements View.OnClickListe
             if (Utility.isOnline(context)) {
                 final BallTriangleDialog dotDialog = new BallTriangleDialog(context);
                 dotDialog.show();
-                DbHelper dbHelper = new DbHelper(context);
-                Result data = dbHelper.getUserData();
-//                int loginId = data.getLoginID();
-                int loginId = 1;
                 ServiceCaller serviceCaller = new ServiceCaller(context);
                 serviceCaller.callAddNewAddressService(address, landMark, city, name, pinCode, locality, phone, new IAsyncWorkCompletedCallback() {
                     @Override
@@ -307,7 +303,7 @@ public class AddNewAddressFragment extends Fragment implements View.OnClickListe
                         if (isComplete) {
                             if (workName.trim().equalsIgnoreCase("yes")) {
                                 Toast.makeText(context, Contants.ADD_NEW_ADDRESS, Toast.LENGTH_LONG).show();
-                                getActivity().getSupportFragmentManager().popBackStack();//back to previes screen
+//                                getActivity().getSupportFragmentManager().popBackStack();//back to previes screen
                             } else {
                                 Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
                             }
@@ -345,7 +341,7 @@ public class AddNewAddressFragment extends Fragment implements View.OnClickListe
                         if (isComplete) {
                             // utility.customProgressDialogDismiss();
                             Toast.makeText(context, "Address Update Successfully", Toast.LENGTH_LONG).show();
-                            getFragmentManager().popBackStack();//back to previous screen
+//                            getFragmentManager().popBackStack();//back to previous screen
                         } else {
                             Utility.alertForErrorMessage("Address not Update Successfully", context);// do not add address message.......
                         }
