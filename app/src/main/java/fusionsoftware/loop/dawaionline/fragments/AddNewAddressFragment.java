@@ -351,6 +351,7 @@ public class AddNewAddressFragment extends Fragment implements View.OnClickListe
                             addNewLandMark.setText("");
                             addNewCity.setText("");
                             addNewPinCode.setText("");
+
                         } else {
                             Utility.alertForErrorMessage("Address not Update Successfully", context);// do not add address message.......
                         }
