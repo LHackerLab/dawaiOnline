@@ -17,9 +17,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.util.Util;
+
 import java.util.List;
 
 import fusionsoftware.loop.dawaionline.R;
+import fusionsoftware.loop.dawaionline.balltrianglecustomprogress.BallTriangleDialog;
 import fusionsoftware.loop.dawaionline.database.DbHelper;
 import fusionsoftware.loop.dawaionline.fragments.AddNewAddressFragment;
 import fusionsoftware.loop.dawaionline.fragments.YourOrderFragment;
@@ -128,20 +131,13 @@ public class UserAddressListAdapter extends RecyclerView.Adapter<UserAddressList
     }
 
     private void deleteAddress(int position) {
-
-        if (Utility.isOnline(context)) {
             if (addresslist.get(position).getId() != 0) {
                 callDeleteAddressService(position);
             } else {
-
 //                Intent intent = new Intent("data_action");
 //                intent.putExtra("flag", "true");
 //                context.sendBroadcast(intent);
-
             }
-        } else {
-            Toast.makeText(context, Contants.OFFLINE_MESSAGE, Toast.LENGTH_LONG).show();
-        }
         notifyDataSetChanged();
 
     }
@@ -152,12 +148,16 @@ public class UserAddressListAdapter extends RecyclerView.Adapter<UserAddressList
 //        DbHelper dbHelper = new DbHelper(context);
 //        Result data = dbHelper.getUserData();
 //        if (data != null) {
+        if (Utility.isOnline(context)) {
+            BallTriangleDialog dialog = new BallTriangleDialog(context);
+            dialog.show();
             SharedPreferences sharedPreferences = context.getSharedPreferences("Login", Context.MODE_PRIVATE);
             String phone = sharedPreferences.getString("Login", "");
             final ServiceCaller serviceCaller = new ServiceCaller(context);
             serviceCaller.callDeleteAddressService(addresslist.get(position).getId(), phone, new IAsyncWorkCompletedCallback() {
                 @Override
                 public void onDone(String workName, boolean isComplete) {
+                    dialog.dismiss();
                     if (isComplete) {
                         if (workName.trim().equalsIgnoreCase("yes")) {
 //                            DbHelper dbHelper = new DbHelper(context);
@@ -176,7 +176,9 @@ public class UserAddressListAdapter extends RecyclerView.Adapter<UserAddressList
                     }
                 }
             });
-//        }
+        } else {
+            Toast.makeText(context, Contants.OFFLINE_MESSAGE, Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
