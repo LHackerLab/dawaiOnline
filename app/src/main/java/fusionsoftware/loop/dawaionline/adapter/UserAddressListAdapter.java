@@ -139,7 +139,6 @@ public class UserAddressListAdapter extends RecyclerView.Adapter<UserAddressList
 //                context.sendBroadcast(intent);
             }
         notifyDataSetChanged();
-
     }
 
     //delete address
