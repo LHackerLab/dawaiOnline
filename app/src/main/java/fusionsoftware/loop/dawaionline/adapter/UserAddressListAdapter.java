@@ -145,9 +145,6 @@ public class UserAddressListAdapter extends RecyclerView.Adapter<UserAddressList
 
     //delete address
     private void callDeleteAddressService(final int position) {
-//        DbHelper dbHelper = new DbHelper(context);
-//        Result data = dbHelper.getUserData();
-//        if (data != null) {
         if (Utility.isOnline(context)) {
             BallTriangleDialog dialog = new BallTriangleDialog(context);
             dialog.show();
