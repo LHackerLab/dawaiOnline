@@ -74,16 +74,17 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
         return view;
     }
 
+
     // initilization ...............
     private void init(View view) {
         DashboardActivity rootActivity = (DashboardActivity) getActivity();
         rootActivity.setScreencart(true);
         rootActivity.setItemCart();
         rootActivity.setScreenSave(false);
-        user_icon = (TextView) view.findViewById(R.id.user_icon);
-        phone_icon = (TextView) view.findViewById(R.id.phone_icon);
-        email_icon = (TextView) view.findViewById(R.id.email_icon);
-        tv_UserName = (TextView) view.findViewById(R.id.textView_UserName);
+        user_icon = view.findViewById(R.id.user_icon);
+        phone_icon = view.findViewById(R.id.phone_icon);
+        email_icon = view.findViewById(R.id.email_icon);
+        tv_UserName = view.findViewById(R.id.textView_UserName);
         tv_UserPhone = (TextView) view.findViewById(R.id.textView_UserPhoneNo);
         textView_UserEmail = (TextView) view.findViewById(R.id.textView_UserEmail);
         name = (TextView) view.findViewById(R.id.tv_username);

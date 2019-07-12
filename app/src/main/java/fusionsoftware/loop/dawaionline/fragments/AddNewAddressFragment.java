@@ -94,15 +94,11 @@ public class AddNewAddressFragment extends Fragment implements View.OnClickListe
 
     private EditText addNewAddress, addNewPinCode, addNewPhoneNumber, addNewLandMark, addNewName, addNewLocality, addNewCity;
     private View view;
-    private TextView address_icon, saveaddress, select_locality;
-    private String name, address, phone, pinCode, landMark, city, locality, prefPhone;
-    private TextInputLayout layout_address, layout_pincode, layout_phone, layout_landmark;
-    private LinearLayout save_address, selectCityLayout;
+    private TextView address_icon, saveaddress;
+    private String name, address, pinCode, landMark, city, locality, prefPhone;
+    private LinearLayout save_address;
     private Context context;
-    private Button btn_proceed;
-    private Boolean localityFlag = false;
     private Typeface materialdesignicons_font, regular, medium;
-//    Spinner spinner;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -128,7 +124,6 @@ public class AddNewAddressFragment extends Fragment implements View.OnClickListe
         saveaddress.setTypeface(medium);
         addNewLandMark.setTypeface(regular);
         addNewPinCode.setTypeface(regular);
-//        addNewPhoneNumber.setTypeface(regular);
         addNewAddress.setTypeface(regular);
 
     }
@@ -138,28 +133,19 @@ public class AddNewAddressFragment extends Fragment implements View.OnClickListe
         DashboardActivity rootActivity = (DashboardActivity) getActivity();
         rootActivity.setScreencart(true);
         rootActivity.setScreenSave(false);
-//        rootActivity.setScreenFavourite(false);
-//        rootActivity.setScreenLocation(false);
         rootActivity.setItemCart();
-        addNewName = (EditText) view.findViewById(R.id.edt_name);
-        addNewLocality = (EditText) view.findViewById(R.id.edt_locality);
-        addNewAddress = (EditText) view.findViewById(R.id.edt_address);
-        addNewPhoneNumber = (EditText) view.findViewById(R.id.edt_phone);
-        addNewPinCode = (EditText) view.findViewById(R.id.edt_pincode);
-        addNewCity = (EditText) view.findViewById(R.id.edt_city);
-        addNewLandMark = (EditText) view.findViewById(R.id.edt_landmark);
-        layout_address = (TextInputLayout) view.findViewById(R.id.layout_address);
-        layout_phone = (TextInputLayout) view.findViewById(R.id.layout_phone);
-        layout_pincode = (TextInputLayout) view.findViewById(R.id.layout_pincode);
-        layout_landmark = (TextInputLayout) view.findViewById(R.id.layout_landmark);
-        save_address = (LinearLayout) view.findViewById(R.id.save_address);
-        address_icon = (TextView) view.findViewById(R.id.address_icon);
-        saveaddress = (TextView) view.findViewById(R.id.saveaddress);
+        addNewName = view.findViewById(R.id.edt_name);
+        addNewLocality = view.findViewById(R.id.edt_locality);
+        addNewAddress = view.findViewById(R.id.edt_address);
+        addNewPhoneNumber = view.findViewById(R.id.edt_phone);
+        addNewPinCode = view.findViewById(R.id.edt_pincode);
+        addNewCity = view.findViewById(R.id.edt_city);
+        addNewLandMark = view.findViewById(R.id.edt_landmark);
+        save_address = view.findViewById(R.id.save_address);
+        address_icon = view.findViewById(R.id.address_icon);
+        saveaddress = view.findViewById(R.id.saveaddress);
         SharedPreferences sharedPreferences = context.getSharedPreferences("Login", Context.MODE_PRIVATE);
-        prefPhone=sharedPreferences.getString("key", "");
-//        select_locality = (TextView) view.findViewById(R.id.select_locality_textView);
-//        select_locality.setTypeface(regular);
-//        spinner = view.findViewById(R.id.spinner);
+        prefPhone=sharedPreferences.getString("key", null);
         save_address.setOnClickListener(this);
         if (editFlag) {//only for edit
             saveaddress.setText("Update Address");
@@ -168,22 +154,16 @@ public class AddNewAddressFragment extends Fragment implements View.OnClickListe
             saveaddress.setText("Save Address");
         }
         setIcon();
-        getCityList();
     }
 
     //sho prefilds value for edit
     private void setValueForEditAddrss() {
-        DbHelper dbHelper = new DbHelper(context);
-//        Addresses addresses = dbHelper.getAllAddressesData(addressId);
-//        if (addresses != null) {
-//            addNewAddress.setText(addresses.getCompleteAddress());
         addNewName.setText("" + fullName);
         addNewAddress.setText("" + addrss);
         addNewPinCode.setText("" + pincode);
         addNewLandMark.setText("" + landmark);
         addNewLocality.setText("" + localityName);
         addNewCity.setText("" + cityName);
-//        }
     }
 
     @Override
@@ -200,39 +180,6 @@ public class AddNewAddressFragment extends Fragment implements View.OnClickListe
 
     }
 
-    private void getCityList() {
-        final List<String> stringList = new ArrayList<>();
-        DbHelper dbHelper = new DbHelper(context);
-        List<Result> resultList = dbHelper.GetAllCityData();
-        for (Result result : resultList) {
-            stringList.addAll(Arrays.asList(result.getCityName()));
-        }
-        ArrayAdapter<String> stringArrayAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, stringList);
-//        stringArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-////        spinner.setAdapter(stringArrayAdapter);
-////        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-////            @Override
-////            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-////                city = adapterView.getSelectedItem().toString();
-////            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> adapterView) {
-//
-//            }
-//        });
-
-
-    }
-
-
-    private void moveFragmentWithTag(Fragment fragment, String tag) {
-        FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.container, fragment, tag)
-                .commit();
-    }
-
     private void moveFragment(Fragment fragment) {
         FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
         fragmentManager.beginTransaction()
@@ -245,7 +192,6 @@ public class AddNewAddressFragment extends Fragment implements View.OnClickListe
         name = addNewName.getText().toString();
         address = addNewAddress.getText().toString();
         pinCode = addNewPinCode.getText().toString();
-//        phone = addNewPhoneNumber.getText().toString();
         landMark = addNewLandMark.getText().toString();
         locality = addNewLocality.getText().toString();
         city = addNewCity.getText().toString();
@@ -292,7 +238,6 @@ public class AddNewAddressFragment extends Fragment implements View.OnClickListe
             if (Utility.isOnline(context)) {
                 final BallTriangleDialog dotDialog = new BallTriangleDialog(context);
                 dotDialog.show();
-                Toast.makeText(context, ""+prefPhone, Toast.LENGTH_SHORT).show();
                 ServiceCaller serviceCaller = new ServiceCaller(context);
                 serviceCaller.callAddNewAddressService(address, landMark, city, name, pinCode, locality, prefPhone, new IAsyncWorkCompletedCallback() {
                     @Override
@@ -308,7 +253,6 @@ public class AddNewAddressFragment extends Fragment implements View.OnClickListe
                                         addNewLandMark.setText("");
                                         addNewCity.setText("");
                                         addNewPinCode.setText("");
-//                                getActivity().getSupportFragmentManager().popBackStack();//back to previes screen
                             } else {
                                 Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
                             }
@@ -333,9 +277,6 @@ public class AddNewAddressFragment extends Fragment implements View.OnClickListe
             if (Utility.isOnline(context)) {
                 final BallTriangleDialog dotDialog = new BallTriangleDialog(context);
                 dotDialog.show();
-                DbHelper dbHelper = new DbHelper(context);
-                Result data = dbHelper.getUserData();
-                Toast.makeText(context, ""+prefPhone, Toast.LENGTH_SHORT).show();
                 ServiceCaller serviceCaller = new ServiceCaller(context);
                 serviceCaller.callUpdateAddressService(addressId, address, landMark, city, name, pinCode, locality, prefPhone, new IAsyncWorkCompletedCallback() {
                     @Override
