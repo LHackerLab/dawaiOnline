@@ -314,7 +314,7 @@ public class YourOrderFragment extends Fragment implements View.OnClickListener 
 //            Data data = dbHelper.getUserData();
 //            int loginId = data.getLoginID();
 //            ServiceCaller serviceCaller = new ServiceCaller(context);
-//            serviceCaller.createOrderService(1, 1, orderDetailsesList, totalPrice, dis, shippingChareges, grandTotal,
+//            serviceCaller.createOrderService(1, 1, orderDetailsesList, totalPrizzzzzce, dis, shippingChareges, grandTotal,
 //                    new IAsyncWorkCompletedCallback() {
 //                        @Override
 //                        public void onDone(String result, boolean isComplete) {
