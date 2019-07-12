@@ -155,9 +155,6 @@ public class AddNewAddressFragment extends Fragment implements View.OnClickListe
         save_address = (LinearLayout) view.findViewById(R.id.save_address);
         address_icon = (TextView) view.findViewById(R.id.address_icon);
         saveaddress = (TextView) view.findViewById(R.id.saveaddress);
-//        select_locality = (TextView) view.findViewById(R.id.select_locality_textView);
-//        select_locality.setTypeface(regular);
-//        spinner = view.findViewById(R.id.spinner);
         save_address.setOnClickListener(this);
         SharedPreferences sharedPreferences = context.getSharedPreferences("Login", Context.MODE_PRIVATE);
         phone = sharedPreferences.getString("Login", "");
@@ -168,22 +165,16 @@ public class AddNewAddressFragment extends Fragment implements View.OnClickListe
             saveaddress.setText("Save Address");
         }
         setIcon();
-        getCityList();
     }
 
     //sho prefilds value for edit
     private void setValueForEditAddrss() {
-        DbHelper dbHelper = new DbHelper(context);
-//        Addresses addresses = dbHelper.getAllAddressesData(addressId);
-//        if (addresses != null) {
-//            addNewAddress.setText(addresses.getCompleteAddress());
         addNewName.setText("" + fullName);
         addNewAddress.setText("" + addrss);
         addNewPinCode.setText("" + pincode);
         addNewLandMark.setText("" + landmark);
         addNewLocality.setText("" + localityName);
         addNewCity.setText("" + cityName);
-//        }
     }
 
     @Override
@@ -197,31 +188,6 @@ public class AddNewAddressFragment extends Fragment implements View.OnClickListe
                 }
                 break;
         }
-
-    }
-
-    private void getCityList() {
-        final List<String> stringList = new ArrayList<>();
-        DbHelper dbHelper = new DbHelper(context);
-        List<Result> resultList = dbHelper.GetAllCityData();
-        for (Result result : resultList) {
-            stringList.addAll(Arrays.asList(result.getCityName()));
-        }
-        ArrayAdapter<String> stringArrayAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, stringList);
-//        stringArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-////        spinner.setAdapter(stringArrayAdapter);
-////        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-////            @Override
-////            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-////                city = adapterView.getSelectedItem().toString();
-////            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> adapterView) {
-//
-//            }
-//        });
-
 
     }
 
@@ -328,13 +294,7 @@ public class AddNewAddressFragment extends Fragment implements View.OnClickListe
         // check validation for new address............
         if (isValidate()) {
             if (Utility.isOnline(context)) {
-                final Utility utility = new Utility();
-                //utility.customProgressDialog(getActivity());
-                DbHelper dbHelper = new DbHelper(context);
-                Result data = dbHelper.getUserData();
-//                int loginId = data.getLoginId();
                 ServiceCaller serviceCaller = new ServiceCaller(context);
-                //get login id from data base ..................
                 serviceCaller.callUpdateAddressService(addressId, phone, localityName, addrss, landmark, cityName, pincode, fullName, new IAsyncWorkCompletedCallback() {
                     @Override
                     public void onDone(String workName, boolean isComplete) {
