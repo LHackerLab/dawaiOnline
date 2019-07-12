@@ -290,6 +290,7 @@ public class AddNewAddressFragment extends Fragment implements View.OnClickListe
         return true;
     }
 
+
     //add new address..............
     public void setAddNewAddress() {
         if (isValidate()) {
