@@ -170,6 +170,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             edt_phone.setError("Please Enter Valid  Mobile Number");
             return false;
         }
+        else if (phone.contains("+")){
+            edt_phone.setError("Please Enter Valid  Mobile Number");
+            return false;
+        }
         return true;
     }
 

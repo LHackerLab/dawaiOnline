@@ -1,5 +1,6 @@
 package fusionsoftware.loop.dawaionline.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -152,7 +153,9 @@ public class NavMenuCustomAdapter extends BaseAdapter {
                         editor.apply();
                         Intent intent=new Intent(context, LoginActivity.class);
                         context.startActivity(intent);
+                        ((Activity)context).finish();
                     }
+
                 int pos = (int) view.getTag();
                 if (selectedPosition.contains(pos)) {
                     //selectedPosition.remove(pos);

@@ -44,7 +44,7 @@ public class UserAddressListAdapter extends RecyclerView.Adapter<UserAddressList
     private Context context;
     Typeface roboto_light, regular, materialdesignicons_font, medium;
     private LayoutInflater layoutInflater;
-    private Boolean navigateFlag=false;
+    private Boolean navigateFlag;
     private int localityId;
 
 
@@ -147,7 +147,7 @@ public class UserAddressListAdapter extends RecyclerView.Adapter<UserAddressList
             BallTriangleDialog dialog = new BallTriangleDialog(context);
             dialog.show();
             SharedPreferences sharedPreferences = context.getSharedPreferences("Login", Context.MODE_PRIVATE);
-            String phone = sharedPreferences.getString("Login", "");
+            String phone = sharedPreferences.getString("key", null);
             final ServiceCaller serviceCaller = new ServiceCaller(context);
             serviceCaller.callDeleteAddressService(addresslist.get(position).getId(), phone, new IAsyncWorkCompletedCallback() {
                 @Override
