@@ -29,6 +29,7 @@ import fusionsoftware.loop.dawaionline.fragments.MyBasketFragment;
 import fusionsoftware.loop.dawaionline.fragments.ParentFragment;
 import fusionsoftware.loop.dawaionline.fragments.SelectCategoryFragment;
 import fusionsoftware.loop.dawaionline.fragments.TrackOrderFragment;
+import fusionsoftware.loop.dawaionline.fragments.UpdateProfileFragment;
 import fusionsoftware.loop.dawaionline.fragments.UserAddressListFragment;
 import fusionsoftware.loop.dawaionline.fragments.UserProfileFragment;
 import fusionsoftware.loop.dawaionline.model.Data;
@@ -140,7 +141,7 @@ public class NavMenuCustomAdapter extends BaseAdapter {
                     }
 
                     else if (position == 5) {
-                        UserProfileFragment fragment = UserProfileFragment.newInstance("", "");
+                        UpdateProfileFragment fragment = UpdateProfileFragment.newInstance("", "");
                         moveFragment(fragment);
                     }
 

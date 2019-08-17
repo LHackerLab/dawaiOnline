@@ -17,6 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.5"
+            android:visibility="gone"
             android:orientation="vertical">
 
             <ImageView
@@ -99,6 +100,60 @@
                             android:text=""
                             android:textSize="@dimen/dimTextSize_16" />
                     </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/textInputLayout_age"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimValue_20">
+
+                        <EditText
+                            android:id="@+id/edit_age"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Age"
+                            android:inputType="textEmailAddress"
+                            android:singleLine="true"
+                            android:text=""
+                            android:textSize="@dimen/dimTextSize_16" />
+                    </android.support.design.widget.TextInputLayout>
+
+                    <RadioGroup
+                        android:id="@+id/radio_group"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="5dp"
+                            android:gravity="center"
+                            android:hint="Gender:"
+                            android:textSize="14sp"
+                            android:textStyle="normal" />
+
+                        <RadioButton
+                            android:id="@+id/male"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="5dp"
+                            android:checked="true"
+                            android:hint="Male"
+                            android:textSize="14sp"
+                            android:textStyle="normal" />
+
+                        <RadioButton
+                            android:id="@+id/female"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:hint="Female"
+                            android:textSize="14sp"
+                            android:textStyle="normal" />
+                    </RadioGroup>
+
+
                 </LinearLayout>
             </android.support.v4.widget.NestedScrollView>
         </LinearLayout>
@@ -120,6 +175,7 @@
             android:background="@drawable/user_profile_circle"
             android:gravity="center"
             android:textColor="@color/Header_fg"
+            android:visibility="gone"
             android:textSize="@dimen/dimTextSize_25" />
 
     </LinearLayout>

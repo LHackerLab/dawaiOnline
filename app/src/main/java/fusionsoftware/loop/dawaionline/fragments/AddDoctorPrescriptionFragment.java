@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -99,20 +100,16 @@ public class AddDoctorPrescriptionFragment extends Fragment {
     View view;
     Typeface materialDesignIcons, regular;
     Button btn_upload, btn_saved;
-    ImageView image_view;
-
+    ImageView image_view, img;
     Bitmap bitmap;
-
     boolean check = true;
-
-
     ProgressDialog progressDialog;
-
     String url = Contants.SERVICE_BASE_URL + Contants.uploadPrescription;
-
     int LoginId = 1;
-
     String ImagePath = "CategoryPictures";
+    boolean isImageFitToScreen;
+    LinearLayout layout;
+    TextView tv_title;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -134,6 +131,9 @@ public class AddDoctorPrescriptionFragment extends Fragment {
         btn_upload = view.findViewById(R.id.btn_upload);
         btn_saved = view.findViewById(R.id.btn_saved);
         image_view = view.findViewById(R.id.image_view);
+        img = view.findViewById(R.id.img);
+        layout = view.findViewById(R.id.layout);
+        tv_title = view.findViewById(R.id.tv_title);
         btn_saved.setOnClickListener(v -> {
             DoctorPrescriptionFragment doctorPrescriptionFragment = DoctorPrescriptionFragment.newInstance("", "");
             moveFragment(doctorPrescriptionFragment);
@@ -162,6 +162,27 @@ public class AddDoctorPrescriptionFragment extends Fragment {
 
                 image_view.setImageBitmap(bitmap);
                 btn_upload.setText("Upload Prescription");
+                image_view.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if(isImageFitToScreen) {
+                            isImageFitToScreen=false;
+                            image_view.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                            image_view.setAdjustViewBounds(true);
+                        }else{
+                            isImageFitToScreen=true;
+                            image_view.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+                            image_view.setScaleType(ImageView.ScaleType.FIT_XY);
+                            btn_upload.setVisibility(View.GONE);
+                            btn_saved.setVisibility(View.GONE);
+                            img.setVisibility(View.GONE);
+                            tv_title.setVisibility(View.GONE);
+                            layout.setBackgroundColor(Color.parseColor("#ffffff"));
+
+                        }
+                    }
+
+                });
 
             } catch (IOException e) {
 
@@ -211,7 +232,6 @@ public class AddDoctorPrescriptionFragment extends Fragment {
 
                 @Override
                 protected String doInBackground(Void... params) {
-
                     ImageProcessClass imageProcessClass = new ImageProcessClass();
 
                     HashMap<String, String> HashMapParams = new HashMap<String, String>();

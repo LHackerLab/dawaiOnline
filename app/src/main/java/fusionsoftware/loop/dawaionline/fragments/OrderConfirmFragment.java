@@ -61,7 +61,6 @@ public class OrderConfirmFragment extends Fragment implements View.OnClickListen
     public static OrderConfirmFragment newInstance(String completeAddress, String zipCode, String phone, String result, double totalPrice, double dis, float shippingChareges, double grandTotal) {
         OrderConfirmFragment fragment = new OrderConfirmFragment();
         Bundle args = new Bundle();
-
         args.putString("completeAddress", completeAddress);
         args.putString("zipCode", zipCode);
         args.putString("phone", phone);

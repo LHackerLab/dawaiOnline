@@ -322,7 +322,7 @@ public class YourOrderFragment extends Fragment implements View.OnClickListener 
 //                            if (isComplete) {
 
 //                                if (result != null) {
-                                OrderConfirmFragment fragment = OrderConfirmFragment.newInstance(completeAddress, zipcode, phone, "", totalPrice, dis, shippingChareges, grandTotal);
+                                OrderConfirmFragment fragment = OrderConfirmFragment.newInstance(completeAddress, zipcode, phone, "", totalPrice, totalDiscount, shippingChareges, grandTotal);
                                 moveFragmentWithTag(fragment, "OrderPlacedFragment");
 
 //                                } else {
