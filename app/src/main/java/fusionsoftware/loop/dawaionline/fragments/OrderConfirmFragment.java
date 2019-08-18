@@ -73,6 +73,7 @@ public class OrderConfirmFragment extends Fragment implements View.OnClickListen
         return fragment;
     }
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
