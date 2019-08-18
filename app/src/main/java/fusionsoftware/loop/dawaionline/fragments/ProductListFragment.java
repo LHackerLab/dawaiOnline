@@ -199,22 +199,22 @@ public class ProductListFragment extends Fragment {
                 public void onDone(String workName, boolean isComplete) {
                     dialog.dismiss();
                     Toast.makeText(context, workName, Toast.LENGTH_SHORT).show();
-//                    if (isComplete){
+                    if (isComplete){
 //                        if(workName.trim().equals("no")) {
-//                            MyPojo myPojo = new Gson().fromJson(workName, MyPojo.class);
-//                            for (Result result : myPojo.getResult()) {
-//                                productList.addAll(Arrays.asList(result));
-//                            }
-//                            setProductData(productList);
+                            MyPojo myPojo = new Gson().fromJson(workName, MyPojo.class);
+                            for (Result result : myPojo.getResult()) {
+                                productList.addAll(Arrays.asList(result));
+                            }
+                            setProductData(productList);
 //                        }
 //                        else{
 //                            Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
 //                        }
-//                    }
-//
-//                    else {
-//                        noDataFound();
-//                    }
+                    }
+
+                    else {
+                        noDataFound();
+                    }
                 }
             });
         }
