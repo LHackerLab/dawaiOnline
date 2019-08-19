@@ -188,7 +188,7 @@ public class ServiceCaller {
 
 
     //call all product list data
-    public void callAllProductListService(String categoryName, final int id, final IAsyncWorkCompletedCallback workCompletedCallback) {
+    public void callAllProductListService(String categoryName, final int id,final int page, final IAsyncWorkCompletedCallback workCompletedCallback) {
         final String url = Contants.SERVICE_BASE_URL + Contants.GetAllProductList;
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
@@ -206,6 +206,7 @@ public class ServiceCaller {
                 Map<String, String> params = new HashMap<>();
                 params.put("main_category", categoryName);
                 params.put("id", String.valueOf(id));
+                params.put("page", String.valueOf(page));
                 return params;
             }
         };

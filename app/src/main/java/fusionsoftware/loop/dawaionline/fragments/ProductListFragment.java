@@ -82,9 +82,10 @@ public class ProductListFragment extends Fragment {
     RecyclerView recyclerView;
     private Context context;
     View view;
-    TextView tv_placeOrder, title;
+    TextView title;
     private List<Result> productList;
     Typeface materialDesignIcons, bold;
+    int page = 1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -132,7 +133,7 @@ public class ProductListFragment extends Fragment {
         title.setText(categoryName);
         title.setTypeface(bold);
         if (productList != null && productList.size() > 0) {
-            ProductListAdapter adapter = new ProductListAdapter(context, productList,categoryName);
+            ProductListAdapter adapter = new ProductListAdapter(context, productList, categoryName);
             recyclerView.setAdapter(adapter);
             adapter.setActionListener(new ProductListAdapter.ProductItemActionListener() {
                 @Override
@@ -162,7 +163,7 @@ public class ProductListFragment extends Fragment {
 
                             }
                         }).startAnimation();
-                          circleAnimationUtil.setOriginRect(133,50);
+                        circleAnimationUtil.setOriginRect(133, 50);
                     }
                 }
             });
@@ -191,35 +192,30 @@ public class ProductListFragment extends Fragment {
     //get all Product list data
     private void getAllProductList() {
         if (Utility.isOnline(context)) {
-            BallTriangleDialog dialog=new BallTriangleDialog(context);
+            BallTriangleDialog dialog = new BallTriangleDialog(context);
             dialog.show();
-            ServiceCaller serviceCaller=new ServiceCaller(context);
-            serviceCaller.callAllProductListService(categoryName, id, new IAsyncWorkCompletedCallback() {
+            ServiceCaller serviceCaller = new ServiceCaller(context);
+            serviceCaller.callAllProductListService(categoryName, id, page, new IAsyncWorkCompletedCallback() {
                 @Override
                 public void onDone(String workName, boolean isComplete) {
                     dialog.dismiss();
-                    Toast.makeText(context, workName, Toast.LENGTH_SHORT).show();
-                    if (isComplete){
-//                        if(workName.trim().equals("no")) {
+//                    Toast.makeText(context, workName, Toast.LENGTH_SHORT).show();
+                    if (isComplete) {
+                        if (!workName.trim().equalsIgnoreCase("no")) {
                             MyPojo myPojo = new Gson().fromJson(workName, MyPojo.class);
                             for (Result result : myPojo.getResult()) {
                                 productList.addAll(Arrays.asList(result));
                             }
                             setProductData(productList);
-//                        }
-//                        else{
-//                            Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
-//                        }
-                    }
-
-                    else {
+                        } else {
+                            Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
                         noDataFound();
                     }
                 }
             });
-        }
-
-        else {
+        } else {
             // Utility.alertForErrorMessage(Contants.OFFLINE_MESSAGE, context);//off line msg....
             LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View view = inflater.inflate(R.layout.no_data_found, null);

@@ -55,7 +55,7 @@ public class LalitRecyclerViewStatic extends RecyclerView {
 
         try {
             setDemoLayoutReference(a.getResourceId(R.styleable.LalitRecyclerView_shimmer_demo_layout, R.layout.layout_single_view));
-            setDemoChildCount(a.getInteger(R.styleable.LalitRecyclerView_shimmer_demo_child_count, 3));
+            setDemoChildCount(a.getInteger(R.styleable.LalitRecyclerView_shimmer_demo_child_count, 6));
             setGridChildCount(a.getInteger(R.styleable.LalitRecyclerView_shimmer_demo_grid_child_count, 2));
 
             final int value = a.getInteger(R.styleable.LalitRecyclerView_shimmer_demo_layout_manager_type, 0);

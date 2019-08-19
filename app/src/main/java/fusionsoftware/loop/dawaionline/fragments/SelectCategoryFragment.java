@@ -128,7 +128,7 @@ public class SelectCategoryFragment extends Fragment {
                         DbHelper dbHelper = new DbHelper(context);
                         MyPojo myPojo=new Gson().fromJson(workName, MyPojo.class);
                         for (Result result:myPojo.getResult()){
-                            categoryList = dbHelper.GetAllCategoryData();
+//                            categoryList = dbHelper.GetAllCategoryData();
                             categoryList.addAll(Arrays.asList(result));
                         }
                         if (categoryList != null && categoryList.size() > 0) {

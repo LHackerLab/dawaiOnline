@@ -2,6 +2,11 @@ package fusionsoftware.loop.dawaionline.adapter;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapShader;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Shader;
 import android.graphics.Typeface;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -17,6 +22,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Transformation;
 
 import java.util.List;
 
@@ -41,14 +47,14 @@ public class SelectCatagoryAdapter extends RecyclerView.Adapter<SelectCatagoryAd
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView title;
-        public CircleImageView imageView;
+        public ImageView imageView;
         public CardView card_view;
 
         public MyViewHolder(View view) {
             super(view);
-            title = (TextView) view.findViewById(R.id.tv_catagory_name);
-            imageView = (CircleImageView) view.findViewById(R.id.image_catagory);
-            card_view = (CardView) view.findViewById(R.id.card_view);
+            title = view.findViewById(R.id.tv_catagory_name);
+            imageView = view.findViewById(R.id.image_catagory);
+            card_view = view.findViewById(R.id.card_view);
             title.setTypeface(medium);
         }
     }
@@ -68,12 +74,50 @@ public class SelectCatagoryAdapter extends RecyclerView.Adapter<SelectCatagoryAd
 
         return new MyViewHolder(itemView);
     }
+    public class CircleTransform implements Transformation {
+        @Override
+        public Bitmap transform(Bitmap source) {
+            int size = Math.min(source.getWidth(), source.getHeight());
 
+            int x = (source.getWidth() - size) / 2;
+            int y = (source.getHeight() - size) / 2;
+
+            Bitmap squaredBitmap = Bitmap.createBitmap(source, x, y, size, size);
+            if (squaredBitmap != source) {
+                source.recycle();
+            }
+
+            Bitmap bitmap = Bitmap.createBitmap(size, size, source.getConfig());
+
+            Canvas canvas = new Canvas(bitmap);
+            Paint paint = new Paint();
+            BitmapShader shader = new BitmapShader(squaredBitmap,
+                    Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+            paint.setShader(shader);
+            paint.setAntiAlias(true);
+
+            float r = size / 2f;
+            canvas.drawCircle(r, r, r, paint);
+
+            squaredBitmap.recycle();
+            return bitmap;
+        }
+
+        @Override
+        public String key() {
+            return "circle";
+        }
+    }
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         holder.title.setText(categoryList.get(position).getCategory());
-        Glide.with(mContext).load(categoryList.get(position).getProductSubTitle()).into(holder.imageView);
-//        Picasso.with(mContext).load(categoryList.get(position).getPic()).resize(100, 100).placeholder(R.drawable.logo).into(holder.imageView);
+//        Glide.with(mContext).load(categoryList.get(position).getProductSubTitle()).into(holder.imageView);
+        if (categoryList.get(position).getPic() != null && !categoryList.get(position).getPic().equalsIgnoreCase("")) {
+            Picasso.with(mContext).load(categoryList.get(position).getPic()).resize(200, 200).transform(new CircleTransform()).placeholder(R.drawable.logo).into(holder.imageView);
+        } else {
+            Picasso.with(mContext).load(R.drawable.logo).into(holder.imageView);
+
+        }
         holder.card_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
