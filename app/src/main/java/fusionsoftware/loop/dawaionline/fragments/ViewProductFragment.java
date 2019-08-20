@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -94,6 +95,8 @@ public class ViewProductFragment extends Fragment {
     Result result;
     private ProductItemActionListener actionListener;
     List<Result> resultList;
+    boolean isImageFitToScreen;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -164,6 +167,24 @@ public class ViewProductFragment extends Fragment {
             }
 
         });
+
+        product_img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isImageFitToScreen){
+                    isImageFitToScreen=false;
+                    product_img.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                    product_img.setAdjustViewBounds(true);
+                }
+
+                else {
+                    isImageFitToScreen=true;
+                    product_img.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+                    product_img.setScaleType(ImageView.ScaleType.FIT_XY);
+                }
+            }
+        });
+
     }
 
     public void addItemToCart() {

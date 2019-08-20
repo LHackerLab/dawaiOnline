@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -85,7 +87,11 @@ public class ProductListFragment extends Fragment {
     TextView title;
     private List<Result> productList;
     Typeface materialDesignIcons, bold;
-    int page = 1;
+    int page = 4;
+    ProgressBar pb;
+    private boolean itShouldLoadMore = true;
+    private String lastId = "0";
+    ProductListAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -104,7 +110,7 @@ public class ProductListFragment extends Fragment {
         rootActivity.setScreenSave(false);
         materialDesignIcons = FontManager.getFontTypefaceMaterialDesignIcons(context, "fonts/materialdesignicons-webfont.otf");
         init();
-        getAllProductList();
+//        getAllProductList();
         return view;
     }
 
@@ -113,9 +119,15 @@ public class ProductListFragment extends Fragment {
         productList = new ArrayList<>();
         linearLayout = (LinearLayout) view.findViewById(R.id.linearLayout);
         recyclerView = (RecyclerView) view.findViewById(R.id.CategoriesItems_recycler_view);
+        pb = view.findViewById(R.id.pb);
+        adapter = new ProductListAdapter(context, productList, categoryName);
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
+        ProductListAdapter adapter = new ProductListAdapter(context, productList, categoryName);
+        recyclerView.setHasFixedSize(true);
+//        recyclerView.setAdapter(adapter);
+        firstLoadData();
         // orderPlaceLayout = (LinearLayout) view.findViewById(R.id.orderPlaceLayout);
         //  tv_placeOrder = (TextView) view.findViewById(R.id.tv_placeOrder);
 
@@ -125,6 +137,19 @@ public class ProductListFragment extends Fragment {
 
         // tv_placeOrder.setTypeface(bold);
         // orderPlaceLayout.setOnClickListener(this);
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy > 0) {
+                    if (recyclerView.canScrollVertically(RecyclerView.FOCUS_DOWN)) {
+                        if (itShouldLoadMore) {
+                            loadMore();
+                        }
+                    }
+                }
+            }
+        });
 
     }
 
@@ -132,9 +157,8 @@ public class ProductListFragment extends Fragment {
     private void setProductData(List<Result> productList) {
         title.setText(categoryName);
         title.setTypeface(bold);
-        if (productList != null && productList.size() > 0) {
-            ProductListAdapter adapter = new ProductListAdapter(context, productList, categoryName);
-            recyclerView.setAdapter(adapter);
+//        if (productList != null && productList.size() > 0) {
+//            recyclerView.setAdapter(adapter);
             adapter.setActionListener(new ProductListAdapter.ProductItemActionListener() {
                 @Override
                 public void onItemTap(ImageView imageView) {
@@ -167,9 +191,9 @@ public class ProductListFragment extends Fragment {
                     }
                 }
             });
-        } else {
-            noDataFound();
-        }
+//        } else {
+//            noDataFound();
+//        }
     }
 
     private void noDataFound() {
@@ -189,6 +213,9 @@ public class ProductListFragment extends Fragment {
     }
 
 
+
+    
+
     //get all Product list data
     private void getAllProductList() {
         if (Utility.isOnline(context)) {
@@ -201,6 +228,56 @@ public class ProductListFragment extends Fragment {
                     dialog.dismiss();
 //                    Toast.makeText(context, workName, Toast.LENGTH_SHORT).show();
                     if (isComplete) {
+                        itShouldLoadMore = true;
+                        if (!workName.trim().equalsIgnoreCase("no")) {
+                            MyPojo myPojo = new Gson().fromJson(workName, MyPojo.class);
+                            for (Result result : myPojo.getResult()) {
+                                productList.addAll(Arrays.asList(result));
+                            }
+                            if (productList != null && productList.size() > 0) {
+                                recyclerView.setAdapter(adapter);
+//                                firstLoadData();
+                                setProductData(productList);
+                            }
+                        } else {
+                            Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        noDataFound();
+                    }
+                }
+            });
+        } else {
+            // Utility.alertForErrorMessage(Contants.OFFLINE_MESSAGE, context);//off line msg....
+            LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View view = inflater.inflate(R.layout.no_data_found, null);
+            TextView nodata = (TextView) view.findViewById(R.id.nodata);
+            nodata.setText("No internet connection found");
+            linearLayout.setGravity(Gravity.CENTER);
+            linearLayout.removeAllViews();
+            linearLayout.addView(view);
+        }
+
+    }
+
+    private void firstLoadData() {
+        itShouldLoadMore = false;
+        getAllProductList();
+    }
+
+
+    private void loadMore() {
+        itShouldLoadMore = false;
+        pb.setVisibility(View.VISIBLE);
+        if (Utility.isOnline(context)) {
+            ServiceCaller serviceCaller = new ServiceCaller(context);
+            serviceCaller.callAllProductListService(categoryName, id, page, new IAsyncWorkCompletedCallback() {
+                @Override
+                public void onDone(String workName, boolean isComplete) {
+                    pb.setVisibility(View.GONE);
+//                    Toast.makeText(context, workName, Toast.LENGTH_SHORT).show();
+                    if (isComplete) {
+                        itShouldLoadMore = true;
                         if (!workName.trim().equalsIgnoreCase("no")) {
                             MyPojo myPojo = new Gson().fromJson(workName, MyPojo.class);
                             for (Result result : myPojo.getResult()) {
@@ -225,7 +302,6 @@ public class ProductListFragment extends Fragment {
             linearLayout.removeAllViews();
             linearLayout.addView(view);
         }
-
     }
 
 }
