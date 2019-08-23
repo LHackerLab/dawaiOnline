@@ -188,7 +188,7 @@ public class ServiceCaller {
 
 
     //call all product list data
-    public void callAllProductListService(String categoryName, final int id,final int page, final IAsyncWorkCompletedCallback workCompletedCallback) {
+    public void callAllProductListService(String categoryName, final int id, final int page, final IAsyncWorkCompletedCallback workCompletedCallback) {
         final String url = Contants.SERVICE_BASE_URL + Contants.GetAllProductList;
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
@@ -274,7 +274,6 @@ public class ServiceCaller {
         stringRequest.setRetryPolicy(new DefaultRetryPolicy(20000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         AppController.getInstance().addToRequestQueue(stringRequest);//, tag_json_obj);
     }
-
 
 
     //get all address data...........
@@ -366,6 +365,34 @@ public class ServiceCaller {
     }
 
 
+    public void callUploadImageData(final String cid, final String dr_name, final String prescription_pic, final IAsyncWorkCompletedCallback workCompletedCallback ) {
+        String url = Contants.SERVICE_BASE_URL + Contants.uploadPrescription;
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                workCompletedCallback.onDone(response, true);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                workCompletedCallback.onDone(error.toString(), false);
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("dr_name", dr_name);
+                params.put("prescription_pic", prescription_pic);
+                params.put("cid", cid);
+                return params;
+            }
+        };
+
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(20000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        AppController.getInstance().addToRequestQueue(stringRequest);//, tag_json_obj);
+    }
+
+
     //for get user profile................
     public void getUserProfileService(int LoginID, final IAsyncWorkCompletedCallback workCompletedCallback) {
 
@@ -389,8 +416,6 @@ public class ServiceCaller {
             }
         });
     }
-
-
 
 
     //parse and save get user profile
@@ -547,8 +572,6 @@ public class ServiceCaller {
             }
         });
     }
-
-
 
 
     //call Delete address data

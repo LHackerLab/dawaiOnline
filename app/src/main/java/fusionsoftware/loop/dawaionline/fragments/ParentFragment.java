@@ -3,6 +3,7 @@ package fusionsoftware.loop.dawaionline.fragments;
 import android.animation.Animator;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Rect;
 import android.graphics.Typeface;
@@ -45,6 +46,7 @@ import java.util.TimerTask;
 
 import fusionsoftware.loop.dawaionline.R;
 import fusionsoftware.loop.dawaionline.activity.DashboardActivity;
+import fusionsoftware.loop.dawaionline.activity.SearchActivity;
 import fusionsoftware.loop.dawaionline.adapter.ProductListAdapter;
 import fusionsoftware.loop.dawaionline.adapter.SelectCatagoryAdapter;
 import fusionsoftware.loop.dawaionline.adapter.SlidingImageSecondAdapter;
@@ -143,7 +145,6 @@ public class ParentFragment extends Fragment implements View.OnClickListener {
         layout_otc = view.findViewById(R.id.layout_otc);
         btn_orderPre = view.findViewById(R.id.btn_orderPre);
         linearLayout = view.findViewById(R.id.linearLayout);
-        search.setOnClickListener(this);
         layout_medicin.setOnClickListener(this);
         layout_lab.setOnClickListener(this);
         layout_healthrecord.setOnClickListener(this);
@@ -151,6 +152,13 @@ public class ParentFragment extends Fragment implements View.OnClickListener {
         layout_healtharticle.setOnClickListener(this);
         layout_otc.setOnClickListener(this);
         btn_orderPre.setOnClickListener(this);
+        search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(context, SearchActivity.class);
+                startActivity(intent);
+            }
+        });
         getViewPagerData();
         getAllProductList();
 //        viewPagerSetUp();

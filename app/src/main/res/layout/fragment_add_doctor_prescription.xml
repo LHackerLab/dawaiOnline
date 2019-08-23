@@ -30,13 +30,30 @@
             android:layout_marginTop="@dimen/dimValue_10"
             android:orientation="vertical">
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
             <ImageView
                 android:id="@+id/image_view"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:layout_gravity="center"
                 android:layout_marginTop="10dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
                 android:src="@drawable/ic_menu_camera" />
+
+                <TextView
+                    android:id="@+id/txt_addcam"
+                    android:layout_width="@dimen/dimValue_50"
+                    android:layout_height="@dimen/dimValue_50"
+                    android:layout_alignLeft="@id/image_view"
+                    android:layout_alignTop="@id/image_view"
+                    android:layout_marginBottom="90dp"
+                    android:background="@drawable/ic_add_a_photo_black_24dp" />
+
+            </RelativeLayout>
+
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/textInputLayout_username"
@@ -45,7 +62,7 @@
                 android:layout_margin="10dp">
 
                 <EditText
-                    android:id="@+id/edit_username"
+                    android:id="@+id/edit_docname"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Enter Doctor Name"
@@ -54,6 +71,8 @@
                     android:textSize="16sp" />
 
             </android.support.design.widget.TextInputLayout>
+
+
 
             <Button
                 android:id="@+id/btn_upload"
@@ -66,6 +85,7 @@
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="@dimen/dimTextSize_14" />
+
         </LinearLayout>
 
         <LinearLayout
