@@ -159,38 +159,38 @@ public class ProductListFragment extends Fragment {
         title.setTypeface(bold);
 //        if (productList != null && productList.size() > 0) {
 //            recyclerView.setAdapter(adapter);
-            adapter.setActionListener(new ProductListAdapter.ProductItemActionListener() {
-                @Override
-                public void onItemTap(ImageView imageView) {
-                    DashboardActivity rootActivity = (DashboardActivity) context;
-                    if (rootActivity != null) {
-                        TextView textView = (TextView) rootActivity.cart.findViewById(R.id.cart);
-                        CircleAnimationUtil circleAnimationUtil = new CircleAnimationUtil();
-                        circleAnimationUtil.attachActivity(getActivity()).setTargetView(imageView).setMoveDuration(200).setDestView(textView).setAnimationListener(new Animator.AnimatorListener() {
-                            @Override
-                            public void onAnimationStart(Animator animation) {
+        adapter.setActionListener(new ProductListAdapter.ProductItemActionListener() {
+            @Override
+            public void onItemTap(ImageView imageView) {
+                DashboardActivity rootActivity = (DashboardActivity) context;
+                if (rootActivity != null) {
+                    TextView textView = (TextView) rootActivity.cart.findViewById(R.id.cart);
+                    CircleAnimationUtil circleAnimationUtil = new CircleAnimationUtil();
+                    circleAnimationUtil.attachActivity(getActivity()).setTargetView(imageView).setMoveDuration(200).setDestView(textView).setAnimationListener(new Animator.AnimatorListener() {
+                        @Override
+                        public void onAnimationStart(Animator animation) {
 
-                            }
+                        }
 
-                            @Override
-                            public void onAnimationEnd(Animator animation) {
-                                //addItemToCart();
-                            }
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            //addItemToCart();
+                        }
 
-                            @Override
-                            public void onAnimationCancel(Animator animation) {
+                        @Override
+                        public void onAnimationCancel(Animator animation) {
 
-                            }
+                        }
 
-                            @Override
-                            public void onAnimationRepeat(Animator animation) {
+                        @Override
+                        public void onAnimationRepeat(Animator animation) {
 
-                            }
-                        }).startAnimation();
-                        circleAnimationUtil.setOriginRect(133, 50);
-                    }
+                        }
+                    }).startAnimation();
+                    circleAnimationUtil.setOriginRect(133, 50);
                 }
-            });
+            }
+        });
 //        } else {
 //            noDataFound();
 //        }
@@ -212,9 +212,6 @@ public class ProductListFragment extends Fragment {
         linearLayout.addView(view);
     }
 
-
-
-    
 
     //get all Product list data
     private void getAllProductList() {

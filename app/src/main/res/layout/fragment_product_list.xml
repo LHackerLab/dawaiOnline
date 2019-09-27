@@ -46,7 +46,7 @@
                 android:layout_gravity="center"
                 android:indeterminate="true"
                 android:indeterminateTint="@color/white"
-                android:visibility="gone"/>
+                android:visibility="visible"/>
 
         </LinearLayout>
         <!--<LinearLayout-->
