@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -88,14 +90,16 @@ public class ViewProductFragment extends Fragment {
 
     Context context;
     View view;
-    TextView txt_name, txt_price, txt_discount, txt_stock, decrement_Product, textView_nos, increase_Product, textView_addToCart, txt_subtitile;
+    TextView txt_name, txt_price, txt_discount, txt_stock, decrement_Product, textView_nos, increase_Product, textView_addToCart, txt_subtitile, textView_app_name, textView_about;
     ImageView product_img, productImageCopy;
     WebView productDetails;
+    CardView card_quantity;
     int count = 1;
     Result result;
     private ProductItemActionListener actionListener;
     List<Result> resultList;
     boolean isImageFitToScreen;
+    View blue_view;
 
 
     @Override
@@ -130,6 +134,10 @@ public class ViewProductFragment extends Fragment {
         increase_Product = view.findViewById(R.id.increase_Product);
         productDetails = view.findViewById(R.id.productDetails);
         textView_addToCart = view.findViewById(R.id.textView_addToCart);
+        card_quantity = view.findViewById(R.id.card_quantity);
+        blue_view = view.findViewById(R.id.blue_view);
+        textView_app_name = view.findViewById(R.id.textView_app_name);
+        textView_about = view.findViewById(R.id.textView_about);
 
         increase_Product.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -173,14 +181,31 @@ public class ViewProductFragment extends Fragment {
             public void onClick(View v) {
                 if (isImageFitToScreen){
                     isImageFitToScreen=false;
-                    product_img.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                    product_img.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
                     product_img.setAdjustViewBounds(true);
                 }
 
                 else {
                     isImageFitToScreen=true;
-                    product_img.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+                    product_img.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
                     product_img.setScaleType(ImageView.ScaleType.FIT_XY);
+//                    product_img.setForegroundGravity(Cent);
+                    txt_name.setVisibility(View.GONE);
+                    txt_subtitile.setVisibility(View.GONE);
+                    txt_discount.setVisibility(View.GONE);
+                    txt_price.setVisibility(View.GONE);
+                    txt_stock.setVisibility(View.GONE);
+                    increase_Product.setVisibility(View.GONE);
+                    decrement_Product.setVisibility(View.GONE);
+                    textView_nos.setVisibility(View.GONE);
+                    productDetails.setVisibility(View.GONE);
+                    textView_addToCart.setVisibility(View.GONE);
+                    productImageCopy.setVisibility(View.GONE);
+                    card_quantity.setVisibility(View.GONE);
+                    textView_app_name.setVisibility(View.GONE);
+                    blue_view.setVisibility(View.GONE);
+                    textView_about.setVisibility(View.GONE);
+
                 }
             }
         });
@@ -196,7 +221,7 @@ public class ViewProductFragment extends Fragment {
         myBasket.setProduct_subtitle(resultList.get(0).getProduct_subtitle());
         myBasket.setProduct_mrp(resultList.get(0).getProduct_mrp());
         myBasket.setProduct_dis(resultList.get(0).getProduct_dis());
-        myBasket.setQuantity(resultList.get(0).getCountValue());
+        myBasket.setQuantity(count);
         myBasket.setProduct_details(resultList.get(0).getProduct_details());
         myBasket.setPic(resultList.get(0).getPic());
         myBasket.setP_qty(resultList.get(0).getP_qty());

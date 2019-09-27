@@ -432,6 +432,7 @@
             android:layout_marginLeft="@dimen/dimValue_10"
             android:layout_marginRight="@dimen/dimValue_10"
             android:layout_marginTop="@dimen/dimValue_5"
+            android:visibility="gone"
             android:text="Trending Articles"
             android:textColor="@color/shop_name"
             android:textSize="@dimen/dimTextSize_14" />

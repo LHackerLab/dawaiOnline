@@ -53,7 +53,7 @@ public class Contants {
     public static final String getAllLHealthArticles = "getAllLHealthArticles.php";
     public static final String getAllPrescription = "getAllPrescription.php";
     public static final String productSearch = "productSearch.php";
-    public static final String uploadPrescription = "uploadPrescription.php";
+    public static final String uploadPrescription = "addPrescription.php";
     public static final String getViewPager = "getViewPager.php";
     public static final String getCity = "getCity.php";
     public static final String GetAllProductByCategory = "GetAllProductByCategory.php";
